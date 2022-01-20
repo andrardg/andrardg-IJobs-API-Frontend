@@ -1,0 +1,17 @@
+<table mdbTable>
+    <thead>
+      <tr>
+        <th *ngFor="let user of users" scope="col">{{user}} </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr mdbTableCol *ngFor="let user of users">
+        <th scope="row">{{user.FirstName}}</th>
+        <td>{{user.LastName}}</td>
+        <td>{{user.Email}}</td>
+        <td>{{user.Password}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>companies works!</p>
