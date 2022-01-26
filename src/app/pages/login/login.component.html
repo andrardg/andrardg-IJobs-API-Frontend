@@ -1,7 +1,51 @@
-<p>login works!</p>
-{{text}}
 
-<h4>Welcome {{user.email}}!</h4>
+<div fxLayoutAlign="center center" fxFlexFill class="main-div">
+    
+    <mat-card fxFlex="30" style="background-color: rgb(255, 251, 247);">
+        <mat-toolbar fxLayout="row" style="background-color:darkslategray;">
+            Sign in
+            <span fxFlex></span>
+            
+        </mat-toolbar>
+        <form fxLayoutAlign="stretch" fxLayout="column" class="login-form" [formGroup]="formGroup" (ngSubmit)="doLogin()">
+
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="email" formControlName="email">
+            </mat-form-field>
+
+            <p>
+            <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input matInput type="password" placeholder="password" formControlName="password">
+            </mat-form-field>
+
+            <p>
+            <p fxLayoutAlign="center center" fxFlexFill style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
+            <button mat-raised-button type="submit" style="background-color: brown;">Sign in</button>
+
+            <hr>
+            <span style="cursor:pointer" (click)="register()">Don't have an account yet?</span>
+
+          </form>
+    </mat-card>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <p>login works!</p>
+
 <div class="form-group">
     <label>Email</label>
     <input class="form-control" [(ngModel)]="user.email" (keydown.enter)="doLogin()"/>
@@ -16,10 +60,13 @@
 <div class="alert alert-danger" [style.display]="error?'block':'none'">{{ error }}</div>
 
 
-<!--[class] = "isDisabled ? 'btn btn-primary' : 'btn btn-success'"-->
+[class] = "isDisabled ? 'btn btn-primary' : 'btn btn-success'"
 <button
  class = "btn"
  [ngClass] = "isDisabled ? 'btn-primary' : 'btn-success'"
  [disabled] = "isDisabled"
  (click)="doLogin()"
  >Login</button>
+
+
+  -->

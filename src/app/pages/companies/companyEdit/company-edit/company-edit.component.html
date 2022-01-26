@@ -1,0 +1,160 @@
+<h1 style="text-align:center; margin-top: 5%;">Company Edit</h1>
+
+<hr>
+<!-- 
+<div class="centered">
+<mat-form-field>
+
+  <div class = "Simple example">
+
+    <mat-form-field appearance = "fill">  
+      <mat-label> Company Name </mat-label>
+      <input placeholder="{{Company.name}}">  
+    </mat-form-field>  
+    <br>  
+
+    <mat-form-field appearance = "fill">  
+        <mat-label> Company Email </mat-label>  
+        <input placeholder="{{Company.email}}">  
+      </mat-form-field>  
+      <br> 
+
+       <mat-form-field appearance = "fill">  
+        <mat-label> Company Password </mat-label>  
+        <input matInput [type] = "hide ? 'password' : 'text'">  
+            <button mat-icon-button matSuffix (click) = "hide = !hide" [attr.aria-label] = "'Hide password'" [attr.aria-pressed] = "hide">  
+                <mat-icon> {{hide ? 'visibility_off' : 'visibility'}} </mat-icon>  
+            </button>  
+      </mat-form-field>  
+      <br> 
+
+      <mat-form-field appearance = "fill">  
+        <mat-label> Company Address </mat-label>  
+        <input placeholder="{{Company.address}}">  
+      </mat-form-field>  
+      <br> 
+
+      <mat-form-field appearance = "fill">  
+        <mat-label> Company Description </mat-label>  
+        <input placeholder="{{Company.description}}">  
+      </mat-form-field>  
+      <br> 
+
+
+    <mat-form-field appearance = "fill">  
+      <mat-label>Account Verified as Company</mat-label>  
+      <mat-select>  
+        <mat-option value = "option"> True </mat-option>  
+        <mat-option value = "option"> False </mat-option>  
+      </mat-select>  
+    </mat-form-field>  
+    <br>  
+
+    <button mat-button style=
+        "background-color:red; 
+        color:white"
+        (click)="cancel()">
+        Cancel 
+    </button>
+
+    <button mat-button style=
+        "background-color:green; 
+        color:white"
+        (click)="save()">
+        Save
+    </button>
+
+  </div>   -->
+
+
+
+
+
+
+<form [formGroup]="form" (ngSubmit)="save()" style="width: 70%; margin-left: 30%; margin-top: 5%;">
+    <div class = "panel panel-primary">
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="name">Name</label>
+                <div class="col-sm-8">
+                    <input id="name" formControlName="name" type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="email">Email</label>
+                <div class="col-sm-8">
+                    <input id="email" formControlName="email" type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group">
+
+
+
+                <label class="col-sm-2 control-label" for="password">Password</label>
+                <div class="col-sm-8">
+
+                    <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" class="form-control" formControlName="password" required>
+                    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    
+                    <!-- <input matInput [type] = "hide ? 'password' : 'text'" id="password" formControlName="password" type="text" class="form-control">
+                        <button mat-icon-button matSuffix (click) = "hide = !hide" [attr.aria-label] = "'Hide password'" [attr.aria-pressed] = "hide">  
+                            <mat-icon> {{hide ? 'visibility_off' : 'visibility'}} </mat-icon>  
+                        </button>   -->
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="address">Address</label>
+                <div class="col-sm-8">
+                    <input id="address" formControlName="address" type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="description">Description</label>
+                <div class="col-sm-8">
+                    <input id="description" formControlName="description" type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="verifiedAccount">Account verified</label>
+                <div class="col-sm-8">
+                      <input type="checkbox" name="checkbox" formControlName="verifiedAccount">
+
+                      
+                        <label for="verifiedAccount"> Verified account</label><br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        <button mat-button style=
+        "background-color:red; 
+        color:white"
+        (click)="cancel()">
+        Cancel 
+        </button>
+
+        <button mat-button style=
+        "background-color:green; 
+        color:white"
+        type="submit">
+        Save
+        </button>
+
+</form>

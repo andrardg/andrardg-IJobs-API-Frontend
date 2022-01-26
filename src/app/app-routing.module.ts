@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CompaniesComponent } from './pages/companies/companies.component';
+import { CompanyDetailComponent } from './pages/companies/companyDetail/company-detail/company-detail.component';
+import { CompanyEditComponent } from './pages/companies/companyEdit/company-edit/company-edit.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ProfileComponent } from './pages/profile/profile.component';
@@ -36,6 +38,14 @@ const routes: Routes = [
   {
     path: 'companies',
     component : CompaniesComponent,
+  },
+  {
+    path:'companies/:id',
+    component: CompanyDetailComponent,
+  },
+  {
+    path:'companies/edit/:id',
+    component: CompanyEditComponent,
   }
 ];
 

@@ -1,45 +1,42 @@
-<h1>Companies</h1>
+<h1 style="text-align:center; margin-top: 5%;">All the companies</h1>
+
+<hr>
 
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<!-- <span style="cursor:pointer" (click)="register()">Add a new company</span> -->
+<p></p>
 
-  <!-- User name Definition -->
+<table mat-table [dataSource]="CompanyList" class="mat-elevation-z8" style="width: 50%; margin-left: 25%; margin-top: 5%;">
+
   <ng-container matColumnDef="Name">
     <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.Name}} </mat-cell>
+    <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
   </ng-container>
 
-  <!-- Age Definition -->
   <ng-container matColumnDef="Email">
     <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.Email}} </mat-cell>
+    <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
   </ng-container>
 
-  <!-- Title Definition -->
-  <ng-container matColumnDef="Password">
-    <mat-header-cell *matHeaderCellDef> Password </mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.Password}} </mat-cell>
-  </ng-container>
-
-    <!-- User name Definition -->
     <ng-container matColumnDef="Address">
       <mat-header-cell *matHeaderCellDef> Address </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.Address}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{row.address}} </mat-cell>
     </ng-container>
   
-    <!-- Age Definition -->
-    <ng-container matColumnDef="Description">
-      <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.Description}} </mat-cell>
-    </ng-container>
-  
-    <!-- Title Definition -->
     <ng-container matColumnDef="verifiedAccount">
       <mat-header-cell *matHeaderCellDef> verifiedAccount </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.verifiedAccount}} </mat-cell>
+    </ng-container> -->
+
+    <ng-container matColumnDef="Options">
+      <mat-header-cell *matHeaderCellDef> Options</mat-header-cell>
+      <mat-cell *matCellDef="let row"> 
+        <mat-icon style="cursor:pointer" (click)="getCompanyDetails(row.id)">edit</mat-icon> 
+        <mat-icon style="cursor:pointer" (click)="removeCompany(row.id)">delete</mat-icon>
+      </mat-cell>
     </ng-container>
 
-  <!-- Header and Row Declarations -->
+
   <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
   <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
   

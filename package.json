@@ -20,7 +20,11 @@
     "@angular/platform-browser": "~13.0.0",
     "@angular/platform-browser-dynamic": "~13.0.0",
     "@angular/router": "~13.0.0",
+    "@ngneat/error-tailor": "^2.1.0",
     "cors": "^2.8.5",
+    "dayjs": "^1.10.7",
+    "ngx-pipes": "^3.0.0",
+    "ngx-toastr": "^14.2.1",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

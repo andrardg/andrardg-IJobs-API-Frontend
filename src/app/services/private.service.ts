@@ -17,10 +17,12 @@ export class PrivateService {
   constructor(private http: HttpClient) { }
 
   getUsers(){
-    return this.http.get(this.baseUrl + 'api/Users', this.privateHeader);
+    //return this.http.get(this.baseUrl + 'api/Users', this.privateHeader);
+    return this.http.get<any>(`${environment.baseUrl}api/Users`);
   }
 
-  getCompanies(){
-    return this.http.get(this.baseUrl + 'api/Companies', this.privateHeader);
-  }
+  // getCompanies(){
+  //   //return this.http.get(this.baseUrl + 'api/Companies', this.privateHeader);
+  //   return this.http.get<any>(`${environment.baseUrl}api/Companies`);
+  // }
 }
