@@ -22,6 +22,7 @@ export class JobsComponent implements OnInit {
     private authService: AuthService) { }
   
   ngOnInit(): void {
+    this.getJobList();
   }
 
   getJobList(){

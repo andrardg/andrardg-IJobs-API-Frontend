@@ -26,15 +26,13 @@
 
 <hr>
 
-
-<!-- <span style="cursor:pointer" (click)="register()">Add a new company</span> -->
 <p></p>
 
 <table mat-table [dataSource]="JobList" class="mat-elevation-z8" style="width: 50%; margin-left: 25%; margin-top: 5%;">
 
   <ng-container matColumnDef="JobTitle">
     <mat-header-cell *matHeaderCellDef> JobTitle </mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.jobTitle}} </mat-cell>
+    <mat-cell *matCellDef="let row"> {{row.jobTitle | jobTitle:row.salary}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="Description">
@@ -44,7 +42,7 @@
 
     <ng-container matColumnDef="Salary">
       <mat-header-cell *matHeaderCellDef> Salary </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.salary}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{row.salary | currency: 'USD':true:'1.3-3'}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="JobType">

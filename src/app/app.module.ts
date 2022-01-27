@@ -37,7 +37,7 @@ import { JobsService } from './pages/jobs/jobs.service';
 import { UsersService } from './pages/users/users.service';
 import { CompaniesService } from './pages/companies/companies.service';
 import { CompanyModule } from './modules/company.module';
-import { CompanyRoutingModule } from './modules/company-routing.module';
+import { JobTitlePipe } from './pages/jobs/jobtitle.pipe';
 
 @NgModule({
   declarations: [
@@ -49,6 +49,7 @@ import { CompanyRoutingModule } from './modules/company-routing.module';
     UsersComponent,
     AdminDashboardComponent,
     JobsComponent,
+    JobTitlePipe
     // CompanyDetailComponent,
     // CompanyEditComponent,
     // CompaniesComponent
