@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CompaniesService } from '../../companies.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-company-detail',
@@ -13,11 +14,13 @@ export class CompanyDetailComponent implements OnInit {
 
   Company:any;
   public id: any;
+  admin = localStorage.getItem('admin');
 
   constructor(
     private activatedRoute:ActivatedRoute,
     private router:Router,
-    private service: CompaniesService) { }
+    private service: CompaniesService,
+    private authService: AuthService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: any) => {
@@ -46,5 +49,8 @@ export class CompanyDetailComponent implements OnInit {
   }
   back(){
     this.router.navigate(['/companies']);
+  }
+  logout() {
+    this.authService.logout();
   }
 }

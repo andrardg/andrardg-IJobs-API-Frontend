@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { User } from 'src/app/interfaces/user';
-import { AuthService } from 'src/app/services/auth.service';
+import { lastValueFrom } from 'rxjs';
+import { User } from 'app/interfaces/user';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -12,23 +13,16 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  
-  public formGroup!: FormGroup;
-  error = "";
-
-  // public text:string = "";
-  // public isDisabled: boolean = false;
-  // public user: any = {
-  //   Email: '',
-  //   Password: '',
-  // };
-  // public error: boolean|string = false;
-  // public user2 : User = { //din interfata
-  //   Email: '',
-  //   Password: '',
-  // };
-
-
+  public user: User = {
+    Email: '',
+    PasswordHash: '',
+  };
+  public formGroup = new FormGroup({
+    email: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
+  });
+  public error: boolean | string = false;
+  public invalid: Boolean = false;
 
   constructor(
     private authService:AuthService, 
@@ -36,63 +30,48 @@ export class LoginComponent implements OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    if(localStorage.getItem('Token')){
-      this.router.navigate(['/']);
-    }
-    this.formGroup = new FormGroup({
-      email: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
-    });
+
+    localStorage.clear();
+    // if(localStorage.getItem('Token')){
+    //   this.router.navigate(['/']);
+    // }
   }
 
-    // convenience getter for easy access to form fields
-    get formData() { return this.formGroup.controls; }
+  async doLogin(): Promise<void> {
+    this.error = false;
 
-  doLogin(): void{
-    if (this.formGroup.invalid) {
-      return;
-    }
-    if(this.validateEmail(this.formData['email'].value)){
-      this.router.navigate(['/dashboard']);
+    this.user.Email = this.formGroup.controls["email"].value;
+    this.user.PasswordHash = this.formGroup.controls["password"].value;
 
-      this.authService.login(this.formData['email'].value, this.formData['password'].value)
-        .subscribe((response:any) => {
-          if(response && response.token) {
-            this.toastr.clear()
-            this.toastr.success("Login successfull");
-            localStorage.setItem('Token', JSON.stringify(response.token));
-            
-            let tokenData = response.token.split('.')[1]
-            let decodedTokenData = JSON.parse(window.atob(tokenData))
-            localStorage.setItem('Role', decodedTokenData["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]);
+    if (this.validateEmail(this.user.Email)) {  
+    
+    this.authService.login(this.user).subscribe(async data => {
+      //var user = await lastValueFrom(data);
+        console.log(data);
+
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('role', data.role);
+
+        if(data.role == '0')
+          {
+            localStorage.setItem('admin', data);
+            this.router.navigate(['/admin-dashboard']);
           }
-        },
-        error => {
-          this.error = error.error;
+        else if(data.role == '1' || data.role == '2')
+          {
+            localStorage.setItem('user', data);
+            this.router.navigate(['/dashboard']);
+          }
+          console.log(localStorage.getItem('admin'));
+          console.log(localStorage.getItem('user'));
         });
-      }else{
-        this.error='Email is not valid';
+    }
+    else {
+        this.error = 'Wrong email format';
+        console.log(this.error);
       }
-
-
-//     this.error=false;
-//     console.log('LOGIN CLICKED', this.user);
-//     if(this.validateEmail(this.user.email)){
-// //serviciul de login
-//       this.authService.login(this.user).subscribe((response: any) =>{
-//         console.log(response)
-
-//         if(response && response.token){
-//           localStorage.setItem('token', response.token);
-//           this.router.navigate(['/dashboard']);
-//         }
-//         });
-
-
-//     }else{
-//       this.error='Email is not valid';
-//     }
-  }
+}
+  
   validateEmail(email:string) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());

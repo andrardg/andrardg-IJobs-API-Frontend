@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormService } from 'src/app/services/form.service';
+import { AuthService } from 'app/services/auth.service';
 import { CompaniesService } from '../../companies.service';
 
 @Component({
@@ -12,6 +12,7 @@ import { CompaniesService } from '../../companies.service';
 export class CompanyEditComponent implements OnInit {
 
   Company:any;
+  admin = localStorage.getItem('admin');
   public id: any; 
   public hide: boolean = true; //for the password
   public form: FormGroup = new FormGroup({
@@ -27,7 +28,7 @@ export class CompanyEditComponent implements OnInit {
     private activatedRoute:ActivatedRoute,
     private router:Router,
     private service: CompaniesService,
-    private formService: FormService) { }
+    private authService: AuthService) { }
 
   ngOnInit(): void {
 
@@ -59,7 +60,6 @@ export class CompanyEditComponent implements OnInit {
     this.router.navigate(['/companies', this.id]);
   }
   save(){
-    console.log(this.form.controls['verifiedAccount'].value);
     this.Company.name = this.form.controls['name'].value;
     this.Company.email = this.form.controls['email'].value;
     this.Company.passwordHash = this.form.controls['password'].value;
@@ -72,5 +72,7 @@ export class CompanyEditComponent implements OnInit {
     });
     this.router.navigate(['/companies', this.id]);
   }
-
+  logout() {
+    this.authService.logout();
+  }
 }

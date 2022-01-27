@@ -1,41 +1,48 @@
-<form [formGroup] = "myForm" (ngSubmit) = "doRegister()">
-    <div class="form-group">
-        <label>Email</label>
-        <input class = "form-control" formControlName = "email"
-        [ngClass]=
-        "myForm.controls['email'].dirty && myForm.controls['email'].errors ? 'is-invalid' : '' "
 
-        />
-    </div>
+<div fxLayoutAlign="center center" fxFlexFill class="main-div">
+    
+    <mat-card fxFlex="30" style="background-color: rgb(255, 251, 247);">
+        <mat-toolbar fxLayout="row" style="background-color:darkslategray;">
+            Register
+            <span fxFlex></span>
+            
+        </mat-toolbar>
+        <form fxLayoutAlign="center center" fxLayout="column" class="login-form" [formGroup]="myForm" (ngSubmit)="doRegister()">
 
-    <div class="form-group">
-        <label>First Name</label>
-        <input class = "form-control" formControlName = "firstName"
-        [ngClass]=
-        "myForm.controls['email'].dirty && myForm.controls['firstName'].errors ? 'is-invalid' : '' "
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="email" formControlName="email">
+            </mat-form-field>
+            <p>
 
-        />
-    </div>
+            <mat-form-field>
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName = "firstName"
+                     [ngClass]= "myForm.controls['firstName'].dirty && myForm.controls['firstName'].errors ? 'is-invalid' : '' ">
+            </mat-form-field>
 
-    <div class="form-group">
-        <label>Last Name</label>
-        <input class = "form-control" formControlName = "lastName"
-        [ngClass]=
-        "myForm.controls['email'].dirty && myForm.controls['lastName'].errors ? 'is-invalid' : '' "
+            <p>
 
-        />
-    </div>
+                <mat-form-field>
+                    <mat-label>Last Name</mat-label>
+                    <input matInput formControlName = "lastName"
+                         [ngClass]= "myForm.controls['lastName'].dirty && myForm.controls['lastName'].errors ? 'is-invalid' : '' ">
+                </mat-form-field>
 
-    <div class="form-group">
-        <label>Password</label>
-        <input class = "form-control" formControlName = "password"
-        [ngClass]=
-        "myForm.controls['email'].dirty && myForm.controls['password'].errors ? 'is-invalid' : '' "
+            <p>
 
-        />
-    </div>
+            <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input matInput type="password" placeholder="password" formControlName="password">
+            </mat-form-field>
 
-    <button [disabled] = "myForm.invalid" type="submit" class="btn btn-success">Register</button>
-    <hr>
-    <span style="cursor:pointer" (click)="login()" >Already have an account?</span>
-</form>
+            <p>
+            <p fxLayoutAlign="center center" fxFlexFill style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
+            <button mat-raised-button type="submit" style="background-color: brown;">Register</button>
+
+            <hr>
+            <span style="cursor:pointer" (click)="login()">Already have an account?</span>
+
+          </form>
+    </mat-card>
+</div>

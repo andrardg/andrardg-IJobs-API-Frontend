@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PrivateService } from 'src/app/services/private.service';
+import { Router } from '@angular/router';
+import { AuthService } from 'app/services/auth.service';
+import { PrivateService } from 'app/services/private.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,17 +10,14 @@ import { PrivateService } from 'src/app/services/private.service';
 })
 export class DashboardComponent implements OnInit {
 
-  public users: any[] = [];
-
-  constructor(private privateService: PrivateService) { }
-
+  constructor(
+    private router: Router,
+    private authService: AuthService) { 
+    }
   ngOnInit(): void {
-    this.getAllUsers();
   }
-
-  getAllUsers(){
-    this.privateService.getUsers().subscribe((response: any)=>{
-      this.users = response.allUsers;
-    });
+  
+  logout() {
+    this.authService.logout();
   }
 }

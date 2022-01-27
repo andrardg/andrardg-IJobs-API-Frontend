@@ -4,6 +4,7 @@ export interface Company {
     Password:string;
     Address?:string;
     Description?:string;
+    Role?:string;
     verifiedAccount:boolean;
   }
   

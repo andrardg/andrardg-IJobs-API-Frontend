@@ -1,17 +1,71 @@
-<table mdbTable>
-    <thead>
-      <tr>
-        <th *ngFor="let user of users" scope="col">{{user}} </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr mdbTableCol *ngFor="let user of users">
-        <th scope="row">{{user.FirstName}}</th>
-        <td>{{user.LastName}}</td>
-        <td>{{user.Email}}</td>
-        <td>{{user.Password}}</td>
-      </tr>
-    </tbody>
-  </table>
+<mat-toolbar style="background-color: chocolate;">
+  <button *ngIf="admin" mat-flat-button color="primary" routerLink="/admin-dashboard">
+    <h1>IJobs</h1>
+</button>
+<button *ngIf="!admin" mat-flat-button color="primary" routerLink="/dashboard">
+    <h1>IJobs</h1>
+</button>
+  <span class="menu-spacer"></span>
+  <div>
+    <a mat-button routerLink="/companies"> Companies </a>
+    <a mat-button routerLink="/jobs"> Jobs </a>
+    <a *ngIf="admin "mat-button routerLink="/users"> Users </a>
+  </div>
+  <div fxFlex fxLayout fxLayoutAlign="flex-end" fxLayoutGap="10px">
+      
+      <span style="width: 50px;"></span>
+      <button mat-raised-button color="basic" fxLayoutAlign="stretch">Profile</button>
+      <button mat-raised-button color="warn" (click)="logout()" fxLayoutAlign="stretch">Logout</button>
+  </div>
+</mat-toolbar>
+<div fxLayoutAlign="center center" fxFlexFill class="main-div">
 
-  <p>companies works!</p>
+</div>
+
+<h1 style="text-align:center; margin-top: 5%;">All the users</h1>
+
+<hr>
+
+
+<!-- <span style="cursor:pointer" (click)="register()">Add a new company</span> -->
+<p></p>
+
+<table mat-table [dataSource]="UserList" class="mat-elevation-z8" style="width: 50%; margin-left: 25%; margin-top: 5%;">
+
+  <ng-container matColumnDef="FirstName">
+    <mat-header-cell *matHeaderCellDef> FirstName </mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.firstName}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="LastName">
+    <mat-header-cell *matHeaderCellDef> LastName </mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.lastName}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="Email">
+    <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
+  </ng-container>
+  
+    <ng-container matColumnDef="PasswordHash">
+      <mat-header-cell *matHeaderCellDef> PasswordHash </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.passwordHash}} </mat-cell>
+    </ng-container> -->
+
+    <ng-container matColumnDef="Role">
+      <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.role}} </mat-cell>
+    </ng-container> -->
+
+    <ng-container matColumnDef="Options">
+      <mat-header-cell *matHeaderCellDef> Options</mat-header-cell>
+      <mat-cell *matCellDef="let row"> 
+        <mat-icon style="cursor:pointer" (click)="removeUser(row.id)">delete</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+
+  <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+  
+</table>

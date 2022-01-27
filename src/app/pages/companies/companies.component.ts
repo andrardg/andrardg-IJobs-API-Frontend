@@ -1,9 +1,9 @@
-import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { Company } from 'src/app/interfaces/company';
-import { PrivateService } from 'src/app/services/private.service';
+import { Company } from 'app/interfaces/company';
+import { AuthService } from 'app/services/auth.service';
+import { PrivateService } from 'app/services/private.service';
 import { CompaniesService } from './companies.service';
 
 @Component({
@@ -13,35 +13,20 @@ import { CompaniesService } from './companies.service';
 })
 export class CompaniesComponent implements OnInit {
 
-  public companies:   Company[] = [];
+  CompanyList:any=[];
+  columnsToDisplay : string[] = ['Name', 'Email', 'Address', 'Role', 'verifiedAccount', 'Options'];
+  dataSource = new MatTableDataSource<Company>(this.CompanyList);
+
+  admin = localStorage.getItem('admin');
   constructor(
     private router:Router,
-    private service: CompaniesService) { }
-
-  // Name?: string | undefined;
-  // Email: string = "";
-  // Password: string ="";
-  // Address?: string | undefined;
-  // Description?: string | undefined;
-  // verifiedAccount: boolean = true;
-
-  columnsToDisplay : string[] = ['Name', 'Email', 'Address', 'verifiedAccount', 'Options'];
-  dataSource = new MatTableDataSource<Company>(this.companies);
-  CompanyList:any=[];
-  Company:any;
+    private service: CompaniesService,
+    private authService: AuthService) { }
+    
   
   ngOnInit(): void {
     //this.getAllCompanies();
     this.refreshCompanyList();
-  }
-
-  getAllCompanies(){
-
-    let resp = this.service.getCompanies();
-    resp.subscribe(report => this.dataSource.data = report as Company[])
-    //this.privateService.getCompanies().subscribe((response: any)=>{
-    //  this.companies = response.allUsers;
-    //});
   }
 
   refreshCompanyList(){
@@ -60,5 +45,8 @@ export class CompaniesComponent implements OnInit {
       console.log("success");
       this.refreshCompanyList();
  });
+  }
+  logout() {
+    this.authService.logout();
   }
 }

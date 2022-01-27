@@ -1,0 +1,82 @@
+<mat-toolbar style="background-color: chocolate;">
+  <button *ngIf="admin" mat-flat-button color="primary" routerLink="/admin-dashboard">
+    <h1>IJobs</h1>
+</button>
+<button *ngIf="!admin" mat-flat-button color="primary" routerLink="/dashboard">
+    <h1>IJobs</h1>
+</button>
+    <span class="menu-spacer"></span>
+    <div>
+      <a mat-button routerLink="/companies"> Companies </a>
+      <a mat-button routerLink="/jobs"> Jobs </a>
+      <a *ngIf="admin "mat-button routerLink="/users"> Users </a>
+    </div>
+    <div fxFlex fxLayout fxLayoutAlign="flex-end" fxLayoutGap="10px">
+        
+        <span style="width: 50px;"></span>
+        <button mat-raised-button color="basic" fxLayoutAlign="stretch">Profile</button>
+        <button mat-raised-button color="warn" (click)="logout()" fxLayoutAlign="stretch">Logout</button>
+    </div>
+  </mat-toolbar>
+<div fxLayoutAlign="center center" fxFlexFill class="main-div">
+  
+</div>
+
+<h1 style="text-align:center; margin-top: 5%;">All the jobs</h1>
+
+<hr>
+
+
+<!-- <span style="cursor:pointer" (click)="register()">Add a new company</span> -->
+<p></p>
+
+<table mat-table [dataSource]="JobList" class="mat-elevation-z8" style="width: 50%; margin-left: 25%; margin-top: 5%;">
+
+  <ng-container matColumnDef="JobTitle">
+    <mat-header-cell *matHeaderCellDef> JobTitle </mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.jobTitle}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="Description">
+    <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.description}} </mat-cell>
+  </ng-container>
+
+    <ng-container matColumnDef="Salary">
+      <mat-header-cell *matHeaderCellDef> Salary </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.salary}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="JobType">
+      <mat-header-cell *matHeaderCellDef> JobType </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.jobType}} </mat-cell>
+    </ng-container>
+  
+    <ng-container matColumnDef="Experience">
+      <mat-header-cell *matHeaderCellDef> Experience </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.experience}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Open">
+        <mat-header-cell *matHeaderCellDef> Open </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.open}} </mat-cell>
+      </ng-container>
+    
+      <!-- <ng-container matColumnDef="Company">
+        <mat-header-cell *matHeaderCellDef> Company </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.Company.name}} </mat-cell>
+      </ng-container> -->
+
+    <ng-container matColumnDef="Options">
+      <mat-header-cell *matHeaderCellDef> Options</mat-header-cell>
+      <mat-cell *matCellDef="let row"> 
+        <mat-icon style="cursor:pointer" (click)="getJobDetails(row.id)">edit</mat-icon> 
+        <mat-icon style="cursor:pointer" (click)="removeJob(row.id)">delete</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+
+  <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+  
+</table>

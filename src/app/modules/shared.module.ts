@@ -1,4 +1,4 @@
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ErrorTailorModule } from '@ngneat/error-tailor';
@@ -13,6 +13,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import * as dayjs from 'dayjs';
+import { HttpClientModule } from '@angular/common/http';
+import { MatTableModule } from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatMenuModule } from '@angular/material/menu';
+import { ToastrModule } from 'ngx-toastr';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [],
@@ -35,17 +44,23 @@ import * as dayjs from 'dayjs';
         },
       },
     }),
-    MatCheckboxModule,
-    MatButtonModule,
-    MatCardModule,
-    NgPipesModule,
-    MatRadioModule,
-    MatIconModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
+    CommonModule,
+    FormsModule,  
+    HttpClientModule,
     ReactiveFormsModule,
+    MatTableModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatToolbarModule,
     MatInputModule,
-    MatNativeDateModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    MatGridListModule,
+    MatMenuModule,
+    ToastrModule.forRoot(),
+    MatSelectModule,
   ],
   exports: [
     CommonModule,
@@ -54,7 +69,9 @@ import * as dayjs from 'dayjs';
     MatCheckboxModule,
     MatButtonModule,
     MatCardModule,
+    MatTableModule,
     NgPipesModule,
+    MatToolbarModule,
     MatRadioModule,
     MatIconModule,
     MatDatepickerModule,
