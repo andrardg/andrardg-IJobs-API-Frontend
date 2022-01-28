@@ -4,6 +4,9 @@ import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { JobCreateComponent } from './pages/jobs/job-create/job-create.component';
+import { JobDetailsComponent } from './pages/jobs/job-details/job-details.component';
+import { JobEditComponent } from './pages/jobs/job-edit/job-edit.component';
 import { JobsComponent } from './pages/jobs/jobs.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ProfileComponent } from './pages/profile/profile.component';
@@ -44,21 +47,22 @@ const routes: Routes = [
     component: JobsComponent,
     canActivate: [AuthGuard],
   },
-  //  {
-  //    path: 'companies',
-  //    component: CompaniesComponent,
-  //    canActivate: [AuthGuard],
-  //  },
-  //  {
-  //    path: 'companies/:id',
-  //    component: CompanyDetailComponent,
-  //    canActivate: [AuthGuard],
-  //  },
-  //  {
-  //    path: 'companies/edit/:id',
-  //    component: CompanyEditComponent,
-  //    canActivate: [AuthGuard],
-  //  },
+  {
+    path:'jobs/create',
+    component: JobCreateComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path:'jobs/:id',
+    component: JobDetailsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path:'jobs/edit/:id',
+    component: JobEditComponent,
+    canActivate: [AuthGuard],
+  },
+  
 ];
 
 @NgModule({

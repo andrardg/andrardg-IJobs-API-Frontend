@@ -25,7 +25,7 @@ export class HttpErrorsInterceptor implements HttpInterceptor {
       }
 
       if(error.status == 400){
-        location.reload();
+        //location.reload();
       }
 
       if(error.status == 401){

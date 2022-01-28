@@ -56,15 +56,7 @@ export class RegisterComponent implements OnInit {
      });
      
      this.router.navigate(['/login']);
- // .subscribe((response:any) => {
-      //     if(response) {
-      //       this.toastr.clear()
-      //       this.toastr.success("User registered successfully");
-      //     }
-      //   },
-      //   error => {
-      //     this.error = error.error;
-      //   });
+
   }
   
   login() {

@@ -1,1 +1,107 @@
-<p>job-edit works!</p>
+<mat-toolbar style="background-color: chocolate;">
+    <button *ngIf="admin" mat-flat-button color="primary" routerLink="/admin-dashboard">
+        <h1>IJobs</h1>
+    </button>
+    <button *ngIf="!admin" mat-flat-button color="primary" routerLink="/dashboard">
+        <h1>IJobs</h1>
+    </button>
+    <span class="menu-spacer"></span>
+    <div>
+      <a mat-button routerLink="/companies"> Companies </a>
+      <a mat-button routerLink="/jobs"> Jobs </a>
+      <a *ngIf="admin "mat-button routerLink="/users"> Users </a>
+    </div>
+    <div fxFlex fxLayout fxLayoutAlign="flex-end" fxLayoutGap="10px">
+        
+        <span style="width: 50px;"></span>
+        <button mat-raised-button color="basic" fxLayoutAlign="stretch">Profile</button>
+        <button mat-raised-button color="warn" (click)="logout()" fxLayoutAlign="stretch">Logout</button>
+    </div>
+  </mat-toolbar>
+<div fxLayoutAlign="center center" fxFlexFill class="main-div">
+  
+</div>
+
+
+<h1 style="text-align:center; margin-top: 5%;">Job Edit</h1>
+
+<hr>
+
+
+
+
+<form [formGroup]="form" (ngSubmit)="save()" style="width: 70%; margin-left: 30%; margin-top: 5%;">
+    <div class = "panel panel-primary">
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="jobTitle">Job Title</label>
+                <div class="col-sm-8">
+                    <input id="jobTitle" formControlName="jobTitle" type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="description">Description</label>
+                <div class="col-sm-8">
+                    <input id="description" formControlName="description" type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="salary">Salary</label>
+                <div class="col-sm-8">
+                    <input id="salary" formControlName="salary" type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="jobType">Job Type</label>
+                <div class="col-sm-8">
+                    <input id="jobType" formControlName="jobType" type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="experience">Experience</label>
+                <div class="col-sm-8">
+                    <input id="experience" formControlName="experience" type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="open">Vacant Position</label>
+                <div class="col-sm-8">
+                      <input type="checkbox" name="checkbox" formControlName="open">
+                        <label for="open"> Open</label><br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        <button mat-button style=
+        "background-color:red; 
+        color:white"
+        (click)="cancel()">
+        Cancel 
+        </button>
+
+        <button mat-button style=
+        "background-color:green; 
+        color:white"
+        type="submit">
+        Save
+        </button>
+
+</form>

@@ -26,7 +26,6 @@ export class CompaniesService {
     return this.http.get<any>(`${environment.baseUrl}api/Companies/${id}`, this.privateHeaders);
   }
   removeCompany(id: any){
-    console.log(`${environment.baseUrl}api/Companies/${id}`);
     return this.http.delete<any>(`${environment.baseUrl}api/Companies/${id}`, this.privateHeaders);
   }
   saveCompany(Company:any){

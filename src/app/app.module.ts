@@ -83,6 +83,7 @@ import { JobCreateComponent } from './pages/jobs/job-create/job-create.component
     MatMenuModule,
     ToastrModule.forRoot(),
     MatSelectModule,
+    //DropDownsModule,
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS,useClass : HttpErrorsInterceptor, multi:true,},

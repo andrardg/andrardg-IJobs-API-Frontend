@@ -3,6 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Job } from 'app/interfaces/job';
 import { AuthService } from 'app/services/auth.service';
+import { CompaniesService } from '../companies/companies.service';
 import { JobsService } from './jobs.service';
 @Component({
   selector: 'app-jobs',
@@ -49,8 +50,11 @@ export class JobsComponent implements OnInit {
         console.log("success");
         this.getJobList();
     });
-    }
-    
+    }  
+  }
+
+  create() {
+    this.router.navigate(['/jobs/create']);
   }
 
   logout() {

@@ -1,1 +1,174 @@
-<p>job-details works!</p>
+<mat-toolbar style="background-color: chocolate;">
+    <button *ngIf="admin" mat-flat-button color="primary" routerLink="/admin-dashboard">
+        <h1>IJobs</h1>
+    </button>
+    <button *ngIf="!admin" mat-flat-button color="primary" routerLink="/dashboard">
+        <h1>IJobs</h1>
+    </button>
+    <span class="menu-spacer"></span>
+    <div>
+      <a mat-button routerLink="/companies"> Companies </a>
+      <a mat-button routerLink="/jobs"> Jobs </a>
+      <a *ngIf="admin "mat-button routerLink="/users"> Users </a>
+    </div>
+    <div fxFlex fxLayout fxLayoutAlign="flex-end" fxLayoutGap="10px">
+        
+        <span style="width: 50px;"></span>
+        <button mat-raised-button color="basic" fxLayoutAlign="stretch">Profile</button>
+        <button mat-raised-button color="warn" (click)="logout()" fxLayoutAlign="stretch">Logout</button>
+    </div>
+  </mat-toolbar>
+<div fxLayoutAlign="center center" fxFlexFill class="main-div">
+  
+</div>
+
+<h1 style="text-align:center; margin-top: 5%;">Job Details</h1>
+
+<hr>
+
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>Job Title</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div>
+            <p>
+            {{Job.jobTitle}}
+            </p>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+
+
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>Job Description</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div *ngIf="Job.description; else empty">
+            <p>
+            {{Job.description}}
+            </p>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+
+
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>Job Salary</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div>
+            <p>
+            {{Job.salary}}
+            </p>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+
+
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>Job Type</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div *ngIf="Job.type; else empty">
+            <p>
+            {{Job.type}}
+            </p>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+
+
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>Job Experience</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div *ngIf="Job.experience; else empty">
+            <p>
+            {{Job.experience}}
+            </p>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+
+
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>Vacant Position</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div *ngIf="Job.open; else notOpen">
+            <p>
+            True
+            </p>
+        </div>
+    </mat-card-content>
+
+
+
+
+    <mat-card class="example-card">
+        <mat-card-header>
+            <mat-card-title>Company</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div>
+                <p>
+                {{Job.Company.name}}
+                </p>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+
+
+
+    <ng-template #empty>
+        <p>
+          Empty Field
+        </p>
+      </ng-template>
+
+    <ng-template #notOpen>
+        <p>
+          False
+        </p>
+      </ng-template>
+
+</mat-card>
+
+
+<mat-card class="example-card">
+    <mat-card-actions>
+        <button mat-button style=
+                "background-color:blue; 
+                color:white"
+                (click)="editJob(Job.id)">
+            Edit 
+        </button>
+
+        <button mat-button style=
+                "background-color:red; 
+                color:white"
+                (click)="removeJob(Job.id)"> 
+            Delete 
+        </button>
+
+        <button mat-button style=
+                "background-color:green; 
+                color:white"
+                (click)="back()">
+            Back
+        </button>
+    </mat-card-actions>
+</mat-card>
