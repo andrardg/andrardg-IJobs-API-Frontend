@@ -12,7 +12,7 @@ export class PrivateService {
   private privateHeader = {
     headers: new HttpHeaders({
       'content-type' : 'application/json',
-      Authorization: 'Bearer ' + localStorage.getItem('token'),
+      Authorization: 'Bearer ' + sessionStorage.getItem('token'),
     }),
   };
   constructor(private http: HttpClient) { }

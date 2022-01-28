@@ -14,7 +14,8 @@ export class JobsComponent implements OnInit {
   JobList:any=[];
   columnsToDisplay : string[] = ['JobTitle', 'Description', 'Salary', 'JobType', 'Experience', 'Open', 'Options'];
   dataSource = new MatTableDataSource<Job>(this.JobList);
-  admin = localStorage.getItem('admin');
+  admin = sessionStorage.getItem('admin');
+  deleteProgress = 0;
 
   constructor(
     private router:Router,
@@ -35,13 +36,23 @@ export class JobsComponent implements OnInit {
     console.log(id);
     this.router.navigate(['/jobs', id]);
   }
-  removeJob(id:any){
+  removeJob(time:any, id:any){
+    
     console.log(id);
-    this.service.removeJob(id).subscribe((data)=>{
-      console.log("success");
-      this.getJobList();
- });
+    console.log(time);
+    this.deleteProgress = Math.max(this.deleteProgress, time / 10);
+    if( this.deleteProgress > 100 && time == 0){
+      
+        this.deleteProgress = 0;
+
+        this.service.removeJob(id).subscribe((data)=>{
+        console.log("success");
+        this.getJobList();
+    });
+    }
+    
   }
+
   logout() {
     this.authService.logout();
   }

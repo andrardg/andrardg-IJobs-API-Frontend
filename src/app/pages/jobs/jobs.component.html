@@ -28,7 +28,7 @@
 
 <p></p>
 
-<table mat-table [dataSource]="JobList" class="mat-elevation-z8" style="width: 50%; margin-left: 25%; margin-top: 5%;">
+<table mat-table [dataSource]="JobList" class="mat-elevation-z8" style="width: 70%; margin-left: 15%; margin-top: 5%;">
 
   <ng-container matColumnDef="JobTitle">
     <mat-header-cell *matHeaderCellDef> JobTitle </mat-header-cell>
@@ -69,7 +69,9 @@
       <mat-header-cell *matHeaderCellDef> Options</mat-header-cell>
       <mat-cell *matCellDef="let row"> 
         <mat-icon style="cursor:pointer" (click)="getJobDetails(row.id)">edit</mat-icon> 
-        <mat-icon style="cursor:pointer" (click)="removeJob(row.id)">delete</mat-icon>
+        <!-- <mat-icon style="cursor:pointer" (click)="removeJob(row.id)">delete</mat-icon> -->
+        <button class="button" holdable (holdTime) ="removeJob($event,row.id)">Hold to Delete</button>
+        <progress [value]="deleteProgress" max="100"></progress>
       </mat-cell>
     </ng-container>
 

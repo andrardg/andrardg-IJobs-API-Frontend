@@ -31,10 +31,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
 
-    localStorage.clear();
-    // if(localStorage.getItem('Token')){
-    //   this.router.navigate(['/']);
-    // }
+    //sessionStorage.clear();
   }
 
   async doLogin(): Promise<void> {
@@ -49,21 +46,21 @@ export class LoginComponent implements OnInit {
       //var user = await lastValueFrom(data);
         console.log(data);
 
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('role', data.role);
+        sessionStorage.setItem('token', data.token);
+        sessionStorage.setItem('role', data.role);
 
         if(data.role == '0')
           {
-            localStorage.setItem('admin', data);
+            sessionStorage.setItem('admin', data);
             this.router.navigate(['/admin-dashboard']);
           }
         else if(data.role == '1' || data.role == '2')
           {
-            localStorage.setItem('user', data);
+            sessionStorage.setItem('user', data);
             this.router.navigate(['/dashboard']);
           }
-          console.log(localStorage.getItem('admin'));
-          console.log(localStorage.getItem('user'));
+          console.log(sessionStorage.getItem('admin'));
+          console.log(sessionStorage.getItem('user'));
         });
     }
     else {

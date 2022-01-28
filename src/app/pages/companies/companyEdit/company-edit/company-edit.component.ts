@@ -12,7 +12,7 @@ import { CompaniesService } from '../../companies.service';
 export class CompanyEditComponent implements OnInit {
 
   Company:any;
-  admin = localStorage.getItem('admin');
+  admin = sessionStorage.getItem('admin');
   public id: any; 
   public hide: boolean = true; //for the password
   public form: FormGroup = new FormGroup({

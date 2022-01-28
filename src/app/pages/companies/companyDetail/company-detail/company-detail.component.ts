@@ -14,7 +14,7 @@ export class CompanyDetailComponent implements OnInit {
 
   Company:any;
   public id: any;
-  admin = localStorage.getItem('admin');
+  admin = sessionStorage.getItem('admin');
 
   constructor(
     private activatedRoute:ActivatedRoute,

@@ -15,13 +15,13 @@ export class AdminAuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot) {
 
-      const admin = localStorage.getItem('admin');
+      const admin = sessionStorage.getItem('admin');
       if(admin){
         //admin logged in is true
       return true;
       }
       else{
-        localStorage.clear();
+        sessionStorage.clear();
         this.toastr.clear();
         this.toastr.info("Unauthorized");
         alert('UNAUTHORIZED');

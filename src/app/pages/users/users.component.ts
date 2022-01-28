@@ -16,7 +16,7 @@ export class UsersComponent implements OnInit {
   UserList:any=[];
   columnsToDisplay : string[] = ['FirstName', 'LastName', 'Email', 'PasswordHash', 'Role', 'Options'];
   dataSource = new MatTableDataSource<User>(this.UserList);
-  admin = localStorage.getItem('admin');
+  admin = sessionStorage.getItem('admin');
 
   
   constructor( 

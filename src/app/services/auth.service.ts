@@ -30,14 +30,14 @@ export class AuthService {
   }  
   logout() {
     // remove user from local storage to log user out
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('role');
+    sessionStorage.removeItem('user');
     this.router.navigate(['/login']);
   }
   logoutAdmin() {
     // remove user from local storage to log user out
-    localStorage.clear();
+    sessionStorage.clear();
     this.router.navigate(['/login']);
   }
   

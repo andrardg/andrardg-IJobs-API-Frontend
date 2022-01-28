@@ -35,10 +35,7 @@ export class RegisterComponent implements OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    localStorage.clear();
-    // if(localStorage.getItem('Token')){
-    //   this.router.navigate(['/']);
-    // }
+    //sessionStorage.clear();
   }
 
 

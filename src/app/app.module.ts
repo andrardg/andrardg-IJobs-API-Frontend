@@ -38,6 +38,10 @@ import { UsersService } from './pages/users/users.service';
 import { CompaniesService } from './pages/companies/companies.service';
 import { CompanyModule } from './modules/company.module';
 import { JobTitlePipe } from './pages/jobs/jobtitle.pipe';
+import { HoldableDirective } from './directives/holdable.directive';
+import { JobDetailsComponent } from './pages/jobs/job-details/job-details.component';
+import { JobEditComponent } from './pages/jobs/job-edit/job-edit.component';
+import { JobCreateComponent } from './pages/jobs/job-create/job-create.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +53,11 @@ import { JobTitlePipe } from './pages/jobs/jobtitle.pipe';
     UsersComponent,
     AdminDashboardComponent,
     JobsComponent,
-    JobTitlePipe
+    JobTitlePipe,
+    HoldableDirective,
+    JobDetailsComponent,
+    JobEditComponent,
+    JobCreateComponent
     // CompanyDetailComponent,
     // CompanyEditComponent,
     // CompaniesComponent
