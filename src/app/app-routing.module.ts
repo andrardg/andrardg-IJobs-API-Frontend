@@ -73,17 +73,14 @@ const routes: Routes = [
   {
     path:'parent1',
     component: Parent1Component,
-    canActivate: [AuthGuard],
   },
   {
     path:'child1',
     component: Child1Component,
-    canActivate: [AuthGuard],
   },
   {
     path:'child2',
     component: Child2Component,
-    canActivate: [AuthGuard],
   },
 ];
 
