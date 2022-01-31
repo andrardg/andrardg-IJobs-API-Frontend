@@ -3,6 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
+import { Child1Component } from './pages/communication/child1/child1.component';
+import { Child2Component } from './pages/communication/child2/child2.component';
+import { Parent1Component } from './pages/communication/parent1/parent1.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { JobCreateComponent } from './pages/jobs/job-create/job-create.component';
 import { JobDetailsComponent } from './pages/jobs/job-details/job-details.component';
@@ -38,6 +41,11 @@ const routes: Routes = [
     canActivate: [AdminAuthGuard],
   },
   {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AdminAuthGuard],
+  },
+  {
     path: 'users',
     component : UsersComponent,
     canActivate: [AdminAuthGuard],
@@ -62,7 +70,21 @@ const routes: Routes = [
     component: JobEditComponent,
     canActivate: [AuthGuard],
   },
-  
+  {
+    path:'parent1',
+    component: Parent1Component,
+    canActivate: [AuthGuard],
+  },
+  {
+    path:'child1',
+    component: Child1Component,
+    canActivate: [AuthGuard],
+  },
+  {
+    path:'child2',
+    component: Child2Component,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

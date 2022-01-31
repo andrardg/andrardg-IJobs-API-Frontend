@@ -42,6 +42,9 @@ import { HoldableDirective } from './directives/holdable.directive';
 import { JobDetailsComponent } from './pages/jobs/job-details/job-details.component';
 import { JobEditComponent } from './pages/jobs/job-edit/job-edit.component';
 import { JobCreateComponent } from './pages/jobs/job-create/job-create.component';
+import { Parent1Component } from './pages/communication/parent1/parent1.component';
+import { Child1Component } from './pages/communication/child1/child1.component';
+import { Child2Component } from './pages/communication/child2/child2.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +60,10 @@ import { JobCreateComponent } from './pages/jobs/job-create/job-create.component
     HoldableDirective,
     JobDetailsComponent,
     JobEditComponent,
-    JobCreateComponent
+    JobCreateComponent,
+    Parent1Component,
+    Child1Component,
+    Child2Component
     // CompanyDetailComponent,
     // CompanyEditComponent,
     // CompaniesComponent
