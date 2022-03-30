@@ -21,9 +21,10 @@ export class RegisterComponent implements OnInit {
   });
   public user: User = {
     Email: '',
-    PasswordHash: '',
+    Password: '',
     FirstName: '',
-    LastName: ''
+    LastName: '',
+    Role: '1'
   };
 
 
@@ -45,7 +46,7 @@ export class RegisterComponent implements OnInit {
       return;
     }
     this.user.Email = this.myForm.controls["email"].value;
-    this.user.PasswordHash = this.myForm.controls["password"].value;
+    this.user.Password = this.myForm.controls["password"].value;
     this.user.FirstName = this.myForm.controls["firstName"].value;
     this.user.LastName = this.myForm.controls["lastName"].value;
 

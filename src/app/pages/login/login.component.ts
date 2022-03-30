@@ -15,7 +15,8 @@ export class LoginComponent implements OnInit {
 
   public user: User = {
     Email: '',
-    PasswordHash: '',
+    Password: '',
+    Role: '1'
   };
   public formGroup = new FormGroup({
     email: new FormControl('', [Validators.required]),
@@ -38,7 +39,7 @@ export class LoginComponent implements OnInit {
     this.error = false;
 
     this.user.Email = this.formGroup.controls["email"].value;
-    this.user.PasswordHash = this.formGroup.controls["password"].value;
+    this.user.Password = this.formGroup.controls["password"].value;
 
     if (this.validateEmail(this.user.Email)) {  
     
@@ -48,7 +49,8 @@ export class LoginComponent implements OnInit {
 
         sessionStorage.setItem('token', data.token);
         sessionStorage.setItem('role', data.role);
-
+        console.log(data.role);
+        
         if(data.role == '0')
           {
             sessionStorage.setItem('admin', data);

@@ -45,6 +45,7 @@ import { JobCreateComponent } from './pages/jobs/job-create/job-create.component
 import { Parent1Component } from './pages/communication/parent1/parent1.component';
 import { Child1Component } from './pages/communication/child1/child1.component';
 import { Child2Component } from './pages/communication/child2/child2.component';
+import { RegisterCompanyComponent } from './pages/register-company/register-company.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { Child2Component } from './pages/communication/child2/child2.component';
     JobCreateComponent,
     Parent1Component,
     Child1Component,
-    Child2Component
+    Child2Component,
+    RegisterCompanyComponent
     // CompanyDetailComponent,
     // CompanyEditComponent,
     // CompaniesComponent
