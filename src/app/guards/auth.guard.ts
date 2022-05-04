@@ -16,7 +16,8 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot){
       
-      const currentUser = sessionStorage.getItem('user') || sessionStorage.getItem('admin');
+      const currentUser = sessionStorage.getItem('User') || sessionStorage.getItem('Admin');
+      console.log(currentUser);
       if(currentUser){
 
         //logged in so return true

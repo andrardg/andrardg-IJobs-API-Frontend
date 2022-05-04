@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
+import { ConnectableObservable } from 'rxjs';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -14,6 +15,7 @@ export class AdminDashboardComponent implements OnInit {
     private authService: AuthService) { }
 
   ngOnInit(): void {
+    console.log(sessionStorage.getItem('Admin'));
   }
   logout() {
     this.authService.logoutAdmin();

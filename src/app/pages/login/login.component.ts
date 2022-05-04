@@ -53,16 +53,16 @@ export class LoginComponent implements OnInit {
         
         if(data.role == '0')
           {
-            sessionStorage.setItem('admin', data);
+            sessionStorage.setItem('Admin', data);
             this.router.navigate(['/admin-dashboard']);
           }
         else if(data.role == '1' || data.role == '2')
           {
-            sessionStorage.setItem('user', data);
+            sessionStorage.setItem('User', data);
             this.router.navigate(['/dashboard']);
           }
-          console.log(sessionStorage.getItem('admin'));
-          console.log(sessionStorage.getItem('user'));
+          console.log(sessionStorage.getItem('Admin'));
+          console.log(sessionStorage.getItem('User'));
         });
     }
     else {
