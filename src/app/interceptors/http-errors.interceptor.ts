@@ -21,7 +21,8 @@ export class HttpErrorsInterceptor implements HttpInterceptor {
       //console.log(error.status, error.error.message)
 
       if(error.status == 500){
-        alert('EROARE 500');
+        console.log(error.message);
+        //alert('EROARE 500');
       }
 
       if(error.status == 400){
@@ -31,7 +32,10 @@ export class HttpErrorsInterceptor implements HttpInterceptor {
       if(error.status == 401){
         this.authService.logout();
       }
-
+      if(error.status == 403){
+        //window.location.reload();
+        alert('Nu aveti permisiuni');
+      }
       return throwError(error)
     }));
   }

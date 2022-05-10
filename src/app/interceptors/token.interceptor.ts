@@ -9,18 +9,18 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 @Injectable()
-export class NewInterceptor implements HttpInterceptor {
+export class TokenInterceptor implements HttpInterceptor {
 
   constructor(private authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     //Get Token data from local storage
-    let tokenInfo = JSON.parse(sessionStorage.getItem('token') || '{}');
-    
-    if (tokenInfo && tokenInfo.token) {
+    let tokenInfo = JSON.parse(JSON.stringify(sessionStorage.getItem('token')) || '{}');
+    console.log(tokenInfo)
+    if (tokenInfo) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${tokenInfo.token}`
+          Authorization: `Bearer ${tokenInfo}`
         }
       });
     }

@@ -1,47 +1,38 @@
 
-<div fxLayoutAlign="center center" fxFlexFill class="main-div">
+<div fxLayoutAlign="center center" class="main-div">
     
-    <mat-card fxFlex="30" style="background-color: rgb(255, 251, 247);">
-        <mat-toolbar fxLayout="row" style="background-color:darkslategray;">
+    <mat-card class="center-of-screen">
+        <mat-toolbar class="title center-of-screen">
             Register
-            <span fxFlex></span>
-            
         </mat-toolbar>
-        <form fxLayoutAlign="center center" fxLayout="column" class="login-form" [formGroup]="myForm" (ngSubmit)="doRegister()">
 
-            <mat-form-field>
-                <mat-label>Email</mat-label>
-                <input matInput placeholder="email" formControlName="email">
-            </mat-form-field>
-            <p>
-
-            <mat-form-field>
-                <mat-label>First Name</mat-label>
-                <input matInput formControlName = "firstName"
-                     [ngClass]= "myForm.controls['firstName'].dirty && myForm.controls['firstName'].errors ? 'is-invalid' : '' ">
-            </mat-form-field>
-
-            <p>
-
+        <form fxLayout="column" class="login-form center-of-screen" [formGroup]="myForm" (ngSubmit)="doRegister()">
+            
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput placeholder="email" formControlName="email">
+                </mat-form-field>
+            
+                <mat-form-field>
+                    <mat-label>First Name</mat-label>
+                    <input matInput placeholder="firstName" formControlName = "firstName">
+                </mat-form-field>
+                
                 <mat-form-field>
                     <mat-label>Last Name</mat-label>
-                    <input matInput formControlName = "lastName"
-                         [ngClass]= "myForm.controls['lastName'].dirty && myForm.controls['lastName'].errors ? 'is-invalid' : '' ">
+                    <input matInput placeholder="lastName" formControlName = "lastName">
                 </mat-form-field>
 
-            <p>
+                <mat-form-field>
+                    <mat-label>Password</mat-label>
+                    <input matInput type="password" placeholder="password" formControlName="password">
+                </mat-form-field>
+            
+                
+            
+            <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
 
-            <mat-form-field>
-                <mat-label>Password</mat-label>
-                <input matInput type="password" placeholder="password" formControlName="password">
-            </mat-form-field>
-
-            <p>
-            <p fxLayoutAlign="center center" fxFlexFill style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
-            <button mat-raised-button type="submit" style="background-color: brown;">Register</button>
-
-            <hr>
-            <span style="cursor:pointer" (click)="login()">Already have an account?</span>
+            <button mat-raised-button type="submit" class ="submit center-of-screen">Register</button>
 
           </form>
     </mat-card>

@@ -33,12 +33,13 @@ export class AuthService {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('role');
     sessionStorage.removeItem('User');
+    sessionStorage.removeItem('Admin');
     this.router.navigate(['/login']);
   }
   logoutAdmin() {
     // remove user from local storage to log user out
     sessionStorage.clear();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/dashboard']);
   }
   private isExpired(token: string) {
     const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
@@ -51,7 +52,8 @@ export class AuthService {
     if (token === null || token === '') {
       sessionStorage.removeItem('User');
       return false;
-    } else {
+    }
+    else {
       return !this.isExpired(token);
     }
   }

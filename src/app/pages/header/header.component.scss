@@ -1,0 +1,38 @@
+.up-container{
+  display: flex;
+  height: 4rem;
+  width: 100%;
+  justify-content: space-evenly;
+}
+.toolbar{
+  position: sticky;
+  background-color: rgb(14, 83, 212);
+  }
+.left-toolbar{
+  display: flex;
+}
+.button1{
+  font-size: xx-large;
+  background-color: rgb(33, 101, 227);
+  color : #fff;
+  font-family: "Times New Roman", Times, serif;
+}
+.button2{
+  font-size: x-large;
+  color : rgb(255, 251, 247);
+  margin: 0.5rem;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.middle-toolbar {
+    flex: 1 1 auto;
+}
+.button3{
+  background-color: rgb(255, 251, 247);
+  margin: 0.5rem;
+  font-family: "Times New Roman", Times, serif;
+  font-size: large;
+}
+.space {
+    margin-right: 4px;
+}

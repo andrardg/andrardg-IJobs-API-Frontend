@@ -29,7 +29,6 @@ export class UsersComponent implements OnInit {
   }
 
   getAllUsers(){
-    console.log(sessionStorage.getItem('role'));
     this.service.getUsers().subscribe(data=>{
       console.log(data);
       this.UserList = data;

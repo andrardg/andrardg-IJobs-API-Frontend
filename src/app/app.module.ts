@@ -29,8 +29,7 @@ import { UsersComponent } from './pages/users/users.component';
 import { AuthService } from './services/auth.service';
 import { PrivateService } from './services/private.service';
 import { AuthGuard } from './guards/auth.guard';
-import { NewInterceptor } from './interceptors/new.interceptor';
-import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 import { JobsComponent } from './pages/jobs/jobs.component';
 import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { JobsService } from './pages/jobs/jobs.service';
@@ -46,6 +45,8 @@ import { Parent1Component } from './pages/communication/parent1/parent1.componen
 import { Child1Component } from './pages/communication/child1/child1.component';
 import { Child2Component } from './pages/communication/child2/child2.component';
 import { RegisterCompanyComponent } from './pages/register-company/register-company.component';
+import { HeaderComponent } from './pages/header/header.component';
+import { FooterComponent } from './pages/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,6 @@ import { RegisterCompanyComponent } from './pages/register-company/register-comp
     DashboardComponent,
     ProfileComponent,
     UsersComponent,
-    AdminDashboardComponent,
     JobsComponent,
     JobTitlePipe,
     HoldableDirective,
@@ -65,7 +65,9 @@ import { RegisterCompanyComponent } from './pages/register-company/register-comp
     Parent1Component,
     Child1Component,
     Child2Component,
-    RegisterCompanyComponent
+    RegisterCompanyComponent,
+    HeaderComponent,
+    FooterComponent
     // CompanyDetailComponent,
     // CompanyEditComponent,
     // CompaniesComponent
@@ -91,11 +93,12 @@ import { RegisterCompanyComponent } from './pages/register-company/register-comp
     MatMenuModule,
     ToastrModule.forRoot(),
     MatSelectModule,
+    MatIconModule
     //DropDownsModule,
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS,useClass : HttpErrorsInterceptor, multi:true,},
-    {provide:HTTP_INTERCEPTORS,useClass : NewInterceptor, multi:true,},
+    {provide:HTTP_INTERCEPTORS,useClass : TokenInterceptor, multi:true,},
     AuthGuard,
     AdminAuthGuard,
     AuthService,
@@ -103,6 +106,10 @@ import { RegisterCompanyComponent } from './pages/register-company/register-comp
     CompaniesService,
     JobsService,
     UsersService,
+  ],
+  exports: [
+    HeaderComponent,
+    FooterComponent,
   ],
   bootstrap: [AppComponent],
 })

@@ -11,13 +11,9 @@ import { PrivateService } from 'app/services/private.service';
 export class DashboardComponent implements OnInit {
 
   constructor(
-    private router: Router,
-    private authService: AuthService) { 
+    private router: Router) { 
     }
   ngOnInit(): void {
   }
   
-  logout() {
-    this.authService.logout();
-  }
 }

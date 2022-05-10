@@ -10,12 +10,10 @@ const routes: Routes = [
    {
      path: 'companies',
      component: CompaniesComponent,
-     canActivate: [AuthGuard],
    },
    {
      path: 'companies/:id',
      component: CompanyDetailComponent,
-     canActivate: [AuthGuard],
    },
    {
      path: 'companies/edit/:id',

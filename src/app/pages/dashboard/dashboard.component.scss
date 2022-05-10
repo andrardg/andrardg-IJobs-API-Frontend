@@ -1,0 +1,38 @@
+.welcome{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 39rem;
+    text-align: center;   
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.dashboard-left{
+    width: 50%;
+    padding: 5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    text-shadow: 1px 1px 1px #000;
+    
+}
+.welcome h1{
+    padding-bottom: 3rem;
+    font-size: xx-large;
+    color: rgb(14, 83, 212);
+}
+.welcome .search{
+    color: rgb(14, 83, 212);
+    width: 70%;
+    margin-left: 15%;
+    margin-bottom: 1rem;
+}
+.dashboard-right{
+    background-image: url("../../../assets/images/dashboard-removebg.png");
+    width: 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
+}

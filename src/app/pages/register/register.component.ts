@@ -12,11 +12,11 @@ import { AuthService } from 'app/services/auth.service';
 })
 export class RegisterComponent implements OnInit {
 
-  error = ''
+  public error: boolean | string = false;
   public myForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
+    firstName: new FormControl('', [Validators.required]),
+    lastName: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required, Validators.minLength(5)]),
   });
   public user: User = {
@@ -43,8 +43,11 @@ export class RegisterComponent implements OnInit {
   doRegister(){
     if(this.myForm.invalid){
       console.log("Register error");
+      this.error = 'You cannot register empty fields.'
       return;
     }
+    
+    this.error = false;
     this.user.Email = this.myForm.controls["email"].value;
     this.user.Password = this.myForm.controls["password"].value;
     this.user.FirstName = this.myForm.controls["firstName"].value;
@@ -54,9 +57,14 @@ export class RegisterComponent implements OnInit {
     //this.router.navigate(['/login']);
      this.authService.register(this.user).subscribe((data)=>{
        console.log("success");
-     });
-     
-     this.router.navigate(['/login']);
+     },
+     error => {
+       this.error = error;
+     },);
+    if(this.error)
+      console.log(this.error);
+    else
+      this.router.navigate(['/login']);
 
   }
   

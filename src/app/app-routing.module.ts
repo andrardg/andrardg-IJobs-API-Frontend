@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { AuthGuard } from './guards/auth.guard';
-import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { Child1Component } from './pages/communication/child1/child1.component';
 import { Child2Component } from './pages/communication/child2/child2.component';
 import { Parent1Component } from './pages/communication/parent1/parent1.component';
@@ -19,7 +18,7 @@ import { UsersComponent } from './pages/users/users.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/login',
+    redirectTo: '/dashboard',
     pathMatch: 'full',
   },
   {
@@ -32,28 +31,20 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'admin-dashboard',
-    component: AdminDashboardComponent,
-    canActivate: [AdminAuthGuard],
+    component: DashboardComponent
   },
   {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [AdminAuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'users',
     component : UsersComponent,
-    canActivate: [AdminAuthGuard],
   },
   {
     path:'jobs',
     component: JobsComponent,
-    canActivate: [AuthGuard],
   },
   {
     path:'jobs/create',
@@ -63,7 +54,6 @@ const routes: Routes = [
   {
     path:'jobs/:id',
     component: JobDetailsComponent,
-    canActivate: [AuthGuard],
   },
   {
     path:'jobs/edit/:id',

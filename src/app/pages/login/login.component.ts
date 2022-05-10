@@ -46,27 +46,35 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.user).subscribe(async data => {
       //var user = await lastValueFrom(data);
         console.log(data);
+        console.log(data.token);
 
         sessionStorage.setItem('token', data.token);
         sessionStorage.setItem('role', data.role);
-        console.log(data.role);
         
         if(data.role == '0')
           {
             sessionStorage.setItem('Admin', data);
-            this.router.navigate(['/admin-dashboard']);
           }
-        else if(data.role == '1' || data.role == '2')
+        else if(data.role == '1')
           {
             sessionStorage.setItem('User', data);
-            this.router.navigate(['/dashboard']);
+          }
+        else if(data.role == '2')
+          {
+            sessionStorage.setItem('Company', data);
           }
           console.log(sessionStorage.getItem('Admin'));
           console.log(sessionStorage.getItem('User'));
-        });
+          console.log(sessionStorage.getItem('Company'));
+          this.router.navigate(['/dashboard']);
+        },
+        error => {
+          this.error = 'Incorrect email or password';
+        },);
     }
     else {
-        this.error = 'Wrong email format';
+        if(!this.error)
+          this.error = 'Incorrect email format';
         console.log(this.error);
       }
 }
