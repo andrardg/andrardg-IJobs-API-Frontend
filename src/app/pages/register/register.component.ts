@@ -32,8 +32,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService,
-    private toastr: ToastrService) { }
+    private authService: AuthService) { }
 
   ngOnInit(): void {
     //sessionStorage.clear();

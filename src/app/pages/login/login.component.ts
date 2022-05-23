@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
 import { User } from 'app/interfaces/user';
 import { AuthService } from 'app/services/auth.service';
+import { Company } from 'app/interfaces/company';
 
 @Component({
   selector: 'app-login',
@@ -12,12 +13,20 @@ import { AuthService } from 'app/services/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
   public user: User = {
     Email: '',
     Password: '',
     Role: '1'
   };
+  public company: Company ={
+    Name:'',
+    Email:'',
+    Password:'',
+    Address:'',
+    Role:'2',
+    verifiedAccount:false,
+  };
+  
   public formGroup = new FormGroup({
     email: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
@@ -27,8 +36,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService:AuthService, 
-    private router:Router,
-    private toastr: ToastrService) { }
+    private router:Router) { }
 
   ngOnInit(): void {
 
@@ -36,41 +44,46 @@ export class LoginComponent implements OnInit {
   }
 
   async doLogin(): Promise<void> {
-    this.error = false;
+    //this.error = false;
 
     this.user.Email = this.formGroup.controls["email"].value;
     this.user.Password = this.formGroup.controls["password"].value;
 
+    this.company.Email = this.formGroup.controls["email"].value;
+    this.company.Password = this.formGroup.controls["password"].value;
+
     if (this.validateEmail(this.user.Email)) {  
     
-    this.authService.login(this.user).subscribe(async data => {
-      //var user = await lastValueFrom(data);
-        console.log(data);
-        console.log(data.token);
 
-        sessionStorage.setItem('token', data.token);
-        sessionStorage.setItem('role', data.role);
-        
-        if(data.role == '0')
-          {
-            sessionStorage.setItem('Admin', data);
-          }
-        else if(data.role == '1')
-          {
-            sessionStorage.setItem('User', data);
-          }
-        else if(data.role == '2')
-          {
-            sessionStorage.setItem('Company', data);
-          }
-          console.log(sessionStorage.getItem('Admin'));
-          console.log(sessionStorage.getItem('User'));
-          console.log(sessionStorage.getItem('Company'));
+        this.authService.loginCompany(this.company).subscribe(async data => {
+          sessionStorage.setItem('token', data.token);
+          sessionStorage.setItem('role', data.role);
+          
+          sessionStorage.setItem('Company', data);
           this.router.navigate(['/dashboard']);
-        },
-        error => {
-          this.error = 'Incorrect email or password';
-        },);
+          },
+          error => {
+            this.error = 'Incorrect email or password';
+          },);
+        
+          this.authService.login(this.user).subscribe(async data => {
+            sessionStorage.setItem('token', data.token);
+            sessionStorage.setItem('role', data.role);
+            
+            if(data.role == '0')
+              {
+                sessionStorage.setItem('Admin', data);
+              }
+            else if(data.role == '1')
+              {
+                sessionStorage.setItem('User', data);
+              }
+              this.router.navigate(['/dashboard']);
+            },
+            error => {
+              this.error = 'Incorrect email or password';
+            },);
+    
     }
     else {
         if(!this.error)

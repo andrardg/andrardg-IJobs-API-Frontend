@@ -12,6 +12,7 @@ import { JobEditComponent } from './pages/jobs/job-edit/job-edit.component';
 import { JobsComponent } from './pages/jobs/jobs.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { RegisterCompanyComponent } from './pages/register-company/register-company.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { UsersComponent } from './pages/users/users.component';
 
@@ -59,6 +60,10 @@ const routes: Routes = [
     path:'jobs/edit/:id',
     component: JobEditComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path:'registerCompany',
+    component: RegisterCompanyComponent,
   },
   {
     path:'parent1',

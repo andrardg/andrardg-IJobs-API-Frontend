@@ -1,1 +1,40 @@
-<p>register-company works!</p>
+
+<div fxLayoutAlign="center center" class="main-div">
+    
+    <mat-card class="center-of-screen">
+        <mat-toolbar class="title center-of-screen">
+            Register as a company
+        </mat-toolbar>
+
+        <form fxLayout="column" class="login-form center-of-screen" [formGroup]="myForm" (ngSubmit)="doRegister()">
+            
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="name" formControlName = "name">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput placeholder="email" formControlName="email">
+                </mat-form-field>
+            
+                
+                <mat-form-field>
+                    <mat-label>Address</mat-label>
+                    <input matInput placeholder="address" formControlName = "address">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Password</mat-label>
+                    <input matInput type="password" placeholder="password" formControlName="password">
+                </mat-form-field>
+            
+                
+            
+            <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
+
+            <button mat-raised-button type="submit" class ="submit center-of-screen">Register</button>
+
+          </form>
+    </mat-card>
+</div>

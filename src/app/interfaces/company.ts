@@ -1,10 +1,10 @@
 export interface Company {
-    Name?:string;
+    Name:string;
     Email:string;
     Password:string;
     Address?:string;
     Description?:string;
-    Role?:string;
+    Role:string;
     verifiedAccount:boolean;
   }
   
