@@ -1,62 +1,29 @@
 <body>
-<h1 style="text-align:center; margin-top: 5%;">All the jobs</h1>
+<h1 style="text-align:center; margin-top: 5%; font-size: x-large">Find your next job!</h1>
 
-<hr>
-  <span style="cursor:pointer" (click)="create()">Create a new job</span>
-<hr>
+<span *ngIf="createRights"> 
+  <a mat-button class="button1" style="font-size: large" (click)="create()">Post a new job</a>
+</span>
 
-<p></p>
+<div *ngFor="let row of JobList">
+  <div class="job" (click)="getJobDetails(row.id)">
+    <div class="title">
+      <a>{{row.jobTitle}}</a>
+    </div>
+    <div class="row">
+      <div class="column">
+        <a>{{row.company.name}}</a>
+        <a>{{row.jobType}}</a>
+      </div>
 
-<table mat-table [dataSource]="JobList" class="mat-elevation-z8" style="width: 70%; margin-left: 15%; margin-top: 5%;">
-
-  <ng-container matColumnDef="JobTitle">
-    <mat-header-cell *matHeaderCellDef> JobTitle </mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.jobTitle | jobTitle:row.salary}} </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="Description">
-    <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.description}} </mat-cell>
-  </ng-container>
-
-    <ng-container matColumnDef="Salary">
-      <mat-header-cell *matHeaderCellDef> Salary </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.salary | currency: 'USD':true:'1.3-3'}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="JobType">
-      <mat-header-cell *matHeaderCellDef> JobType </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.jobType}} </mat-cell>
-    </ng-container>
-  
-    <ng-container matColumnDef="Experience">
-      <mat-header-cell *matHeaderCellDef> Experience </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.experience}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="Open">
-        <mat-header-cell *matHeaderCellDef> Open </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.open}} </mat-cell>
-      </ng-container>
+      <div class="column" style="color:rgb(110, 110, 110);">
+        <a>Location:  {{row.address}}</a>
+        <a>Salary:    {{row.salary | currency: 'EUR':true:'1.0-0'}} </a>
+      </div>
+    </div>
     
-      <!-- <ng-container matColumnDef="Company">
-        <mat-header-cell *matHeaderCellDef> Company </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.Company.name}} </mat-cell>
-      </ng-container> -->
 
-    <ng-container matColumnDef="Options">
-      <mat-header-cell *matHeaderCellDef> Options</mat-header-cell>
-      <mat-cell *matCellDef="let row"> 
-        <mat-icon style="cursor:pointer" (click)="getJobDetails(row.id)">edit</mat-icon> 
-        <!-- <mat-icon style="cursor:pointer" (click)="removeJob(row.id)">delete</mat-icon> -->
-        <button class="button" holdable (holdTime) ="removeJob($event,row.id)">Hold to Delete</button>
-        <progress [value]="deleteProgress" max="100"></progress>
-      </mat-cell>
-    </ng-container>
-
-
-  <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
-  
-</table>
+    
+  </div>
+</div>
 </body>

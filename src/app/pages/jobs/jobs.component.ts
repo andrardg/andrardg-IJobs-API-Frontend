@@ -13,17 +13,20 @@ import { JobsService } from './jobs.service';
 export class JobsComponent implements OnInit {
 
   JobList:any=[];
-  columnsToDisplay : string[] = ['JobTitle', 'Description', 'Salary', 'JobType', 'Experience', 'Open', 'Options'];
+  columnsToDisplay : string[] = ['JobTitle', 'Company.Name', 'Company.Address', 'Salary', 'JobType', 'Options'];
   dataSource = new MatTableDataSource<Job>(this.JobList);
-  admin = sessionStorage.getItem('admin');
+  createRights = sessionStorage.getItem('Admin') || (sessionStorage.getItem('Company') && sessionStorage.getItem('role') ==  '2');
+  
+
   deleteProgress = 0;
 
   constructor(
     private router:Router,
     private service: JobsService,
-    private authService: AuthService) { }
+    private authService: AuthService) {
+    }
   
-  ngOnInit(): void {
+  ngOnInit(): void {  
     this.getJobList();
   }
 

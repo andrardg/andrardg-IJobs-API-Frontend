@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminAuthGuard } from './guards/admin-auth.guard';
+import { AdminCompanyGuard } from './guards/admin-company.guard';
 import { AuthGuard } from './guards/auth.guard';
 import { Child1Component } from './pages/communication/child1/child1.component';
 import { Child2Component } from './pages/communication/child2/child2.component';
@@ -50,7 +51,7 @@ const routes: Routes = [
   {
     path:'jobs/create',
     component: JobCreateComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AdminCompanyGuard],
   },
   {
     path:'jobs/:id',
@@ -59,7 +60,7 @@ const routes: Routes = [
   {
     path:'jobs/edit/:id',
     component: JobEditComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AdminCompanyGuard],
   },
   {
     path:'registerCompany',

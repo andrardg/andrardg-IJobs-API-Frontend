@@ -8,4 +8,5 @@ export interface Job {
     Experience?:string;
     Open?:Boolean;
     CompanyId:string;
+    Company:any;
 }

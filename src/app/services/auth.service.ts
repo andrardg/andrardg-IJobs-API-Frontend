@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Account } from 'app/interfaces/account';
 import { Company } from 'app/interfaces/company';
 import { environment } from 'environments/environment';
 import { User } from '../interfaces/user';
@@ -22,10 +23,10 @@ export class AuthService {
     private router: Router,
     private http: HttpClient) { }
 
-  login(user: User) {
+  login(user: Account) {
     return this.http.post<any>(`${environment.baseUrl}api/Users/Login`, user, this.privateHeaders);
   }
-  loginCompany(company: Company) {
+  loginCompany(company: Account) {
     return this.http.post<any>(`${environment.baseUrl}api/Companies/Login`, company, this.privateHeaders);
   }
   register(user: User) {
@@ -40,6 +41,7 @@ export class AuthService {
     sessionStorage.removeItem('role');
     sessionStorage.removeItem('User');
     sessionStorage.removeItem('Admin');
+    sessionStorage.removeItem('Company');
     this.router.navigate(['/login']);
   }
   logoutAdmin() {

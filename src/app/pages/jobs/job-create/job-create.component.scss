@@ -1,0 +1,85 @@
+.main{
+    background-color: rgb(242, 244, 245);
+}
+.main h1{
+    text-align:center;
+    padding-top: 2rem;
+}
+.form{
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 5%;
+}
+.primary{
+    border-radius: 5px;
+    width:100%;
+    height: 25p;
+    font-family: "Times New Roman", Times, serif;
+    //border:1px solid black;
+    background-color: #fff;
+    margin-bottom: 15px;
+    padding-bottom: 1rem;
+}
+.primary h1{
+    padding-left: 2rem;
+    padding-top: 1rem;
+    text-align: left;
+    font-size: 20px;
+    width: 80%;
+}
+.primary label{
+    padding-left: 2rem;
+    padding-bottom:6px;
+    box-sizing: border-box;
+    font-size: 14px;
+    width: 90%;
+}
+.primary input{
+    margin-left: 2rem;
+    width: 70%;
+    max-width: 70%;
+    border-color: black;
+    padding: 15px 45px 15px 15px;
+    border-width: 2px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-size: medium;
+}
+.select-picker{
+    margin-left: 2rem;
+    width: 70%;
+    border-color: black;
+    padding: 15px 45px 15px 15px;
+    border-width: 2px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-size: medium;
+}
+.primary textarea{
+    margin-left: 2rem;
+    width: 70%;
+    max-width: 70%;
+    border-color: black;
+    padding: 15px 45px 15px 15px;
+    border-width: 2px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+.buttons{
+    width: 30%;
+    margin-left: 35%;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    text-align: center;
+}
+.button1{
+color: black;
+padding-right: 1rem;
+}
+.button2{
+    font-size: large;
+    color : rgb(255, 251, 247);
+    background-color: rgb(33, 101, 227);
+    margin: 0.5rem;
+    font-family: "Times New Roman", Times, serif;
+  }

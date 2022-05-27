@@ -6,6 +6,7 @@ import { lastValueFrom } from 'rxjs';
 import { User } from 'app/interfaces/user';
 import { AuthService } from 'app/services/auth.service';
 import { Company } from 'app/interfaces/company';
+import { Account } from 'app/interfaces/account';
 
 @Component({
   selector: 'app-login',
@@ -13,20 +14,7 @@ import { Company } from 'app/interfaces/company';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  public user: User = {
-    Email: '',
-    Password: '',
-    Role: '1'
-  };
-  public company: Company ={
-    Name:'',
-    Email:'',
-    Password:'',
-    Address:'',
-    Role:'2',
-    verifiedAccount:false,
-  };
-  
+  account: Account = {Email: '', Password: ''}
   public formGroup = new FormGroup({
     email: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
@@ -46,27 +34,26 @@ export class LoginComponent implements OnInit {
   async doLogin(): Promise<void> {
     //this.error = false;
 
-    this.user.Email = this.formGroup.controls["email"].value;
-    this.user.Password = this.formGroup.controls["password"].value;
+    this.account.Email = this.formGroup.controls["email"].value;
+    this.account.Password = this.formGroup.controls["password"].value;
 
-    this.company.Email = this.formGroup.controls["email"].value;
-    this.company.Password = this.formGroup.controls["password"].value;
-
-    if (this.validateEmail(this.user.Email)) {  
+    if (this.validateEmail(this.account.Email)) {  
     
 
-        this.authService.loginCompany(this.company).subscribe(async data => {
+        this.authService.loginCompany(this.account).subscribe(async data => {
           sessionStorage.setItem('token', data.token);
           sessionStorage.setItem('role', data.role);
+          sessionStorage.setItem('id', data.id);
           
-          sessionStorage.setItem('Company', data);
+          sessionStorage.setItem('Company', JSON.stringify(data));
+          console.log(JSON.parse(sessionStorage.getItem('Company') || ""))
           this.router.navigate(['/dashboard']);
           },
           error => {
             this.error = 'Incorrect email or password';
           },);
         
-          this.authService.login(this.user).subscribe(async data => {
+          this.authService.login(this.account).subscribe(async data => {
             sessionStorage.setItem('token', data.token);
             sessionStorage.setItem('role', data.role);
             

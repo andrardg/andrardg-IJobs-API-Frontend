@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Job } from 'app/interfaces/job';
+import { Company } from 'app/interfaces/company';
 import { CompaniesService } from 'app/pages/companies/companies.service';
 import { AuthService } from 'app/services/auth.service';
 import { JobsService } from '../jobs.service';
@@ -20,10 +21,13 @@ export class JobCreateComponent implements OnInit {
     JobType: '',
     Experience: '',
     Open: false,
-    CompanyId: ''
+    CompanyId: '',
+    Company: null//{Id:'', Name:'', Email:'', Password:'', Role:'2', verifiedAccount:true}
   };
   CompanyList:any=[];
-  admin = sessionStorage.getItem('admin');
+  JobTypes:any=["Full-Time", "Part-Time", "Internship", "Volunteering"];
+  Experience:any=["Entry Level", "Junior Level", "Mid-Senior Level", "Senior Level", "Associate", "Director"]
+  admin = sessionStorage.getItem('Admin');
   public form: FormGroup = new FormGroup({
                 jobTitle: new FormControl(''),
                 description: new FormControl(''),
@@ -38,6 +42,7 @@ export class JobCreateComponent implements OnInit {
     private activatedRoute:ActivatedRoute,
     private router:Router,
     private service: JobsService,
+    private companiesService: CompaniesService,
     private authService: AuthService,
     private companyService: CompaniesService) { }
 
@@ -60,13 +65,22 @@ export class JobCreateComponent implements OnInit {
     this.Job.JobType = this.form.controls['jobType'].value;
     this.Job.Experience = this.form.controls['experience'].value;
     this.Job.Open = ('true' == (this.form.controls['open'].value));
+    if (sessionStorage.getItem("Admin") != null)
     this.Job.CompanyId = this.form.controls['companyId'].value;
+    if (sessionStorage.getItem("Company") != null){
+      var company = JSON.parse(sessionStorage.getItem('Company') || "")
+      this.Job.CompanyId = company.id;
+    }
 
     console.log(this.Job);
     
     this.service.createJob(this.Job).subscribe((data)=>{
        console.log("Created successful");
-     });
+     },
+            error => {
+              console.log(error)
+            }
+     );
      this.router.navigate(['/jobs']);
   }
   logout() {

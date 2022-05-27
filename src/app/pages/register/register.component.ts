@@ -20,6 +20,7 @@ export class RegisterComponent implements OnInit {
     password: new FormControl('', [Validators.required, Validators.minLength(5)]),
   });
   public user: User = {
+    Id:'',
     Email: '',
     Password: '',
     FirstName: '',
