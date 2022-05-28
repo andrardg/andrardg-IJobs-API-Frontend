@@ -4,14 +4,16 @@
     position: relative;
   }
 .main-container{
-  min-height: 110%;
+  height:100%;
   width: 100%;
-  padding-bottom: 5rem;
-  margin-bottom: 100px;
 }
 .footer-container{
   width: 100%;
+  height: 2rem;
   text-align: center;
   position:absolute;
   bottom: 0;
+}
+.mat-divider{
+  border-style: none;
 }

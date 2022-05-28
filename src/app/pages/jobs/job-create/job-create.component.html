@@ -9,10 +9,10 @@
 <form [formGroup]="form" (ngSubmit)="createJob()" class="form">
     <div class = "primary">
         <h1>Give us more details!</h1>
-
+ 
         <div class="panel-body">
             <div class="form-group">
-                <label class="label" for="jobTitle">Add a job title</label>
+                <label class="label" for="jobTitle">Add a job title*</label>
                 <div class="input">
                     <input matInput formControlName="jobTitle">
                 </div>
@@ -21,7 +21,7 @@
 
         <div class="panel-body">
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="jobType">Job Type</label>
+                <label class="col-sm-2 control-label" for="jobType">Job Type*</label>
                 <div class="input">
                     <select id="jobType" name="jobType" formControlName= "jobType" class="select-picker">
                         <option *ngFor = "let item of JobTypes" [value]="item">
@@ -36,7 +36,7 @@
 
         <div class="panel-body">
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="experience">Experience</label>
+                <label class="col-sm-2 control-label" for="experience">Experience*</label>
                 <select id="experience" name="experience" formControlName= "experience" class="select-picker">
                     <option *ngFor = "let item of Experience" [value]="item">
                         {{item}}
@@ -47,9 +47,9 @@
 
         <div class="panel-body">
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="salary">Salary</label>
-                <div class="input">
-                    <input matInput formControlName="salary">
+                <label class="col-sm-2 control-label" for="salary">Salary*</label>
+                <div class="input" >
+                    <input matInput formControlName="salary" numbersOnly>
                 </div>
             </div>
         </div>
@@ -57,7 +57,7 @@
 
         <div *ngIf="admin" class="panel-body">
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="companyId">Company</label>
+                <label class="col-sm-2 control-label" for="companyId">Company*</label>
 
                     <select id="companyId" name="companyId" formControlName= "companyId" class="select-picker">
                         <option *ngFor = "let item of CompanyList" [value]="item.id">
@@ -71,7 +71,7 @@
     <div class = "primary">
         <div class="panel-body">
             <div class="form-group">
-                <h1>The Job Description</h1>
+                <h1>The Job Description*</h1>
                 <div class="input">
                     <textarea rows="10" placeholder="Try to add all the essential details." formControlName="description">
                     </textarea>
@@ -79,7 +79,7 @@
             </div>
         </div> 
     </div>
-
+    <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
     <div class="buttons">
         <button mat-button class="button1" (click)="cancel()">Cancel </button>
         <button mat-raised-button class="button2" type="submit"> Post Job</button>

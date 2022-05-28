@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Job } from 'app/interfaces/job';
 import { Company } from 'app/interfaces/company';
@@ -28,12 +28,13 @@ export class JobCreateComponent implements OnInit {
   JobTypes:any=["Full-Time", "Part-Time", "Internship", "Volunteering"];
   Experience:any=["Entry Level", "Junior Level", "Mid-Senior Level", "Senior Level", "Associate", "Director"]
   admin = sessionStorage.getItem('Admin');
+  public error: boolean | string = false;
   public form: FormGroup = new FormGroup({
-                jobTitle: new FormControl(''),
-                description: new FormControl(''),
-                salary: new FormControl(''),
-                jobType: new FormControl(''),
-                experience: new FormControl(''),
+                jobTitle: new FormControl('', [Validators.required]),
+                description: new FormControl('', [Validators.required]),
+                salary: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
+                jobType: new FormControl('', [Validators.required]),
+                experience: new FormControl('', [Validators.required]),
                 open: new FormControl('0'),
                 companyId: new FormControl(''),
               });
@@ -42,7 +43,6 @@ export class JobCreateComponent implements OnInit {
     private activatedRoute:ActivatedRoute,
     private router:Router,
     private service: JobsService,
-    private companiesService: CompaniesService,
     private authService: AuthService,
     private companyService: CompaniesService) { }
 
@@ -53,9 +53,16 @@ export class JobCreateComponent implements OnInit {
     this.router.navigate(['/jobs']);
   }
   createJob(){
+    const sal: number = Number(this.form.controls['salary'].value);
+    if(isNaN(sal))
+    {
+      this.error = "Salary has to be a number.";
+      return;
+    }
 
     if(this.form.invalid){
       console.log("Create Job error");
+      this.error = 'You cannot register empty fields. ';
       return;
     }
     
@@ -75,13 +82,16 @@ export class JobCreateComponent implements OnInit {
     console.log(this.Job);
     
     this.service.createJob(this.Job).subscribe((data)=>{
-       console.log("Created successful");
+       console.log("Created successfully");
      },
             error => {
-              console.log(error)
+              this.error=error;
             }
      );
-     this.router.navigate(['/jobs']);
+    if(this.error)
+      console.log(this.error);
+    else
+      this.router.navigate(['/jobs']);
   }
   logout() {
     this.authService.logout();

@@ -1,11 +1,13 @@
-<body>
-<h1 style="text-align:center; margin-top: 5%; font-size: x-large">Find your next job!</h1>
+<body class="main">
+<h1 class="pageTitle">Find your next job!</h1>
 
-<span *ngIf="createRights"> 
-  <a mat-button class="button1" style="font-size: large" (click)="create()">Post a new job</a>
-</span>
-
+<div class="space">
+  <span *ngIf="createRights"> 
+      <a mat-button class="button1" (click)="create()">Post a new job</a>
+  </span>
+</div>
 <div *ngFor="let row of JobList">
+  
   <div class="job" (click)="getJobDetails(row.id)">
     <div class="title">
       <a>{{row.jobTitle}}</a>

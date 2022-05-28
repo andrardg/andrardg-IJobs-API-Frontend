@@ -1,35 +1,60 @@
-<h1 style="text-align:center; margin-top: 5%;">Job Edit</h1>
+<link rel="stylesheet"
+          href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<hr>
+<main class="main">
+<h1>Change Job Details</h1>
 
 
 
-
-<form [formGroup]="form" (ngSubmit)="save()" style="width: 70%; margin-left: 30%; margin-top: 5%;">
-    <div class = "panel panel-primary">
+<form [formGroup]="form" (ngSubmit)="save()" class="form">
+    <div class = "primary">
+        <h1 class="label" for="open">Is the position still vacant?</h1>
 
         <div class="panel-body">
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="jobTitle">Job Title</label>
-                <div class="col-sm-8">
+                <div class="input">
+                    <select id="open" name="open" formControlName= "open" class="select-picker">
+                        <option *ngFor = "let item of Vacant" [value]="item">
+                            {{item}}
+                        </option>
+                    <i class='fa fa-angle-down'></i>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class = "primary">
+        <div class="panel-body">
+            <div class="form-group">
+                <h1 class="label" for="jobTitle">Job Title</h1>
+                <div class="input">
                     <input id="jobTitle" formControlName="jobTitle" type="text" class="form-control">
                 </div>
             </div>
         </div>
+    </div>
 
+    <div class = "primary">
         <div class="panel-body">
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="description">Description</label>
-                <div class="col-sm-8">
-                    <input id="description" formControlName="description" type="text" class="form-control">
+                <h1 class="label" for="description">The Job Description</h1>
+                <div class="input">
+                    <textarea rows="10" id="description" placeholder="Try to add all the essential details." formControlName="description">
+                    </textarea>
                 </div>
             </div>
-        </div>
+        </div> 
+    </div>
 
+
+    <div class = "primary">
         <div class="panel-body">
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="salary">Salary</label>
-                <div class="col-sm-8">
+                <h1 class="label">Details</h1>
+                <p class="label2" for="salary">Salary</p>
+                <div class="input">
                     <input id="salary" formControlName="salary" type="text" class="form-control">
                 </div>
             </div>
@@ -37,46 +62,47 @@
 
         <div class="panel-body">
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="jobType">Job Type</label>
-                <div class="col-sm-8">
-                    <input id="jobType" formControlName="jobType" type="text" class="form-control">
+                <p class="label2" for="jobType">Job Type</p>
+                <div class="input">
+                    <select id="jobType" name="jobType" formControlName= "jobType" class="select-picker">
+                        <option *ngFor = "let item of JobTypes" [value]="item">
+                            {{item}}
+                        </option>
+                    <i class='fa fa-angle-down'></i>
+                    </select>
                 </div>
             </div>
         </div>
 
         <div class="panel-body">
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="experience">Experience</label>
-                <div class="col-sm-8">
-                    <input id="experience" formControlName="experience" type="text" class="form-control">
-                </div>
-            </div>
-        </div>
-
-        <div class="panel-body">
-            <div class="form-group">
-                <label class="col-sm-2 control-label" for="open">Vacant Position</label>
-                <div class="col-sm-8">
-                      <input type="checkbox" name="checkbox" formControlName="open">
-                        <label for="open"> Open</label><br>
-                </div>
+                <p class="label2" for="experience">Experience</p>
+                <select id="experience" name="experience" formControlName= "experience" class="select-picker">
+                    <option *ngFor = "let item of Experience" [value]="item">
+                        {{item}}
+                    </option>
+                </select>
             </div>
         </div>
     </div>
 
+    <div *ngIf="admin" class="primary">
+        <div *ngIf="admin" class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="companyId">Company</label>
 
-        <button mat-button style=
-        "background-color:red; 
-        color:white"
-        (click)="cancel()">
-        Cancel 
-        </button>
-
-        <button mat-button style=
-        "background-color:green; 
-        color:white"
-        type="submit">
-        Save
-        </button>
+                    <select id="companyId" name="companyId" formControlName= "companyId" class="select-picker">
+                        <option *ngFor = "let item of CompanyList" [value]="item.id">
+                            {{item.name}}
+                        </option>
+                    </select>
+            </div>
+        </div>
+    </div>
+    <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
+    <div class="buttons">
+        <button mat-button class="button1" (click)="cancel()">Cancel </button>
+        <button mat-raised-button class="button2" type="submit"> Post Job</button>
+    </div>
 
 </form>

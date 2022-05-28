@@ -1,150 +1,80 @@
-<h1 style="text-align:center; margin-top: 5%;">Job Details</h1>
+<main class="main">
 
-<hr>
+<h1>{{Job.jobTitle}}</h1>
 
-<mat-card class="example-card">
-    <mat-card-header>
-        <mat-card-title>Job Title</mat-card-title>
-    </mat-card-header>
+<div class="space">
+    <div class="buttons" *ngIf="editDeleteRights">
+        <button mat-button class="button2" (click)="editJob(Job.id)">Edit</button>
+        <button mat-button class="button1" (click)="removeJob(Job.id)">Delete</button>
+    </div>
+</div>
 
-    <mat-card-content>
-        <div>
-            <p>
-            {{Job.jobTitle}}
-            </p>
-        </div>
-    </mat-card-content>
-</mat-card>
-
-
-
-<mat-card class="example-card">
-    <mat-card-header>
-        <mat-card-title>Job Description</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <div *ngIf="Job.description; else empty">
-            <p>
-            {{Job.description}}
-            </p>
-        </div>
-    </mat-card-content>
-</mat-card>
-
-
-
-<mat-card class="example-card">
-    <mat-card-header>
-        <mat-card-title>Job Salary</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <div>
-            <p>
-            {{Job.salary}}
-            </p>
-        </div>
-    </mat-card-content>
-</mat-card>
-
-
-
-<mat-card class="example-card">
-    <mat-card-header>
-        <mat-card-title>Job Type</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <div *ngIf="Job.type; else empty">
-            <p>
-            {{Job.type}}
-            </p>
-        </div>
-    </mat-card-content>
-</mat-card>
-
-
-
-<mat-card class="example-card">
-    <mat-card-header>
-        <mat-card-title>Job Experience</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <div *ngIf="Job.experience; else empty">
-            <p>
-            {{Job.experience}}
-            </p>
-        </div>
-    </mat-card-content>
-</mat-card>
-
-
-
-<mat-card class="example-card">
-    <mat-card-header>
-        <mat-card-title>Vacant Position</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <div *ngIf="Job.open; else notOpen">
-            <p>
-            True
-            </p>
-        </div>
-    </mat-card-content>
-
-
-
-
+<div class="primary" style="cursor: pointer;"  (click)="getCompanyDetails(Job.Company.id)">
     <mat-card class="example-card">
-        <mat-card-header>
-            <mat-card-title>Company</mat-card-title>
-        </mat-card-header>
+        <h2>Company</h2>
         <mat-card-content>
             <div>
-                <p>
                 {{Job.Company.name}}
-                </p>
+            </div>
+        </mat-card-content>
+        <mat-card-content>
+            <div>
+                {{Job.Company.address}}
             </div>
         </mat-card-content>
     </mat-card>
+</div>
 
+<div class="primary">
+    <mat-card class="example-card">
+        <h2>Job Description</h2>
+        <mat-card-content>
+            <div>
+                {{Job.description}}
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
 
+<div class="primary">
+    <mat-card class="example-card">
+        <h2>Details</h2>
+        <mat-card-header>
+            <mat-card-title>Job Type</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div>
+                {{Job.jobType}}
+            </div>
+        </mat-card-content>
+        <mat-card-header>
+            <mat-card-title>Job Experience</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div>
+                {{Job.experience}}
+            </div>
+        </mat-card-content>
+        <mat-card-header>
+            <mat-card-title>Job Salary</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div>
+                {{Job.salary}}
+            </div>
+        </mat-card-content>
+        <mat-card-header>
+            <mat-card-title>Vacant Position</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div *ngIf="Job.open; else notOpen">
+                Yes
+            </div>
+            <ng-template #notOpen>
+                  No
+              </ng-template>
+        </mat-card-content>
+    </mat-card>
+</div>
 
-
-    <ng-template #empty>
-        <p>
-          Empty Field
-        </p>
-      </ng-template>
-
-    <ng-template #notOpen>
-        <p>
-          False
-        </p>
-      </ng-template>
-
-</mat-card>
-
-
-<mat-card class="example-card">
-    <mat-card-actions>
-        <button mat-button style=
-                "background-color:blue; 
-                color:white"
-                (click)="editJob(Job.id)">
-            Edit 
-        </button>
-
-        <button mat-button style=
-                "background-color:red; 
-                color:white"
-                (click)="removeJob(Job.id)"> 
-            Delete 
-        </button>
-
-        <button mat-button style=
-                "background-color:green; 
-                color:white"
-                (click)="back()">
-            Back
-        </button>
-    </mat-card-actions>
-</mat-card>
+</main>
