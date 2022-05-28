@@ -3,9 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { AdminCompanyGuard } from './guards/admin-company.guard';
 import { AuthGuard } from './guards/auth.guard';
-import { Child1Component } from './pages/communication/child1/child1.component';
-import { Child2Component } from './pages/communication/child2/child2.component';
-import { Parent1Component } from './pages/communication/parent1/parent1.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { JobCreateComponent } from './pages/jobs/job-create/job-create.component';
 import { JobDetailsComponent } from './pages/jobs/job-details/job-details.component';
@@ -65,18 +62,6 @@ const routes: Routes = [
   {
     path:'registerCompany',
     component: RegisterCompanyComponent,
-  },
-  {
-    path:'parent1',
-    component: Parent1Component,
-  },
-  {
-    path:'child1',
-    component: Child1Component,
-  },
-  {
-    path:'child2',
-    component: Child2Component,
   },
 ];
 

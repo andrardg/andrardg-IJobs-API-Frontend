@@ -14,7 +14,8 @@ export class CompanyDetailComponent implements OnInit {
 
   Company:any;
   public id: any;
-  admin = sessionStorage.getItem('admin');
+  public aboutSection:boolean = true;
+  editDeleteRights : boolean = false;
 
   constructor(
     private activatedRoute:ActivatedRoute,
@@ -27,22 +28,24 @@ export class CompanyDetailComponent implements OnInit {
       this.id = params['id'];
       console.log(this.id);
     });
-
     this.getCompanyDetails(this.id);
   }
 
   getCompanyDetails(id:any){
     this.service.getCompanyDetails(id).subscribe(data=>{
       this.Company=data;
+      if (sessionStorage.getItem("Company") != null)
+      var company = JSON.parse(sessionStorage.getItem('Company') || "")
+
+    if(sessionStorage.getItem('Admin') || (company && company.id == this.Company.id))
+      this.editDeleteRights = true;
     });
   }
-  removeCompany(id:any){
+  getJobDetails(id: any){
     console.log(id);
-    this.service.removeCompany(id).subscribe((data)=>{
-      console.log("success");
- });
-    this.router.navigate(['/companies']);
+    this.router.navigate(['/jobs', id]);
   }
+
   editCompany(id:any){
     console.log(id);
     this.router.navigate(['/companies/edit', id]);
@@ -52,5 +55,13 @@ export class CompanyDetailComponent implements OnInit {
   }
   logout() {
     this.authService.logout();
+  }
+  aboutTrue(){
+    this.aboutSection = true;
+    console.log(this.aboutSection);
+  }
+  aboutFalse(){
+    this.aboutSection = false;
+    console.log(this.aboutSection);
   }
 }

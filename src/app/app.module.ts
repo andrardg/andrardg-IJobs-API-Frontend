@@ -41,12 +41,10 @@ import { HoldableDirective } from './directives/holdable.directive';
 import { JobDetailsComponent } from './pages/jobs/job-details/job-details.component';
 import { JobEditComponent } from './pages/jobs/job-edit/job-edit.component';
 import { JobCreateComponent } from './pages/jobs/job-create/job-create.component';
-import { Parent1Component } from './pages/communication/parent1/parent1.component';
-import { Child1Component } from './pages/communication/child1/child1.component';
-import { Child2Component } from './pages/communication/child2/child2.component';
 import { RegisterCompanyComponent } from './pages/register-company/register-company.component';
 import { HeaderComponent } from './pages/header/header.component';
 import { FooterComponent } from './pages/footer/footer.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -62,15 +60,9 @@ import { FooterComponent } from './pages/footer/footer.component';
     JobDetailsComponent,
     JobEditComponent,
     JobCreateComponent,
-    Parent1Component,
-    Child1Component,
-    Child2Component,
     RegisterCompanyComponent,
     HeaderComponent,
     FooterComponent
-    // CompanyDetailComponent,
-    // CompanyEditComponent,
-    // CompaniesComponent
   ],
   imports: [
     BrowserModule,
@@ -93,7 +85,8 @@ import { FooterComponent } from './pages/footer/footer.component';
     MatMenuModule,
     ToastrModule.forRoot(),
     MatSelectModule,
-    MatIconModule
+    MatIconModule,
+    MatCheckboxModule
     //DropDownsModule,
   ],
   providers: [

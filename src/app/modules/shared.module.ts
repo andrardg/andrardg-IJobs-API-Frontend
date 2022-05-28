@@ -10,7 +10,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import * as dayjs from 'dayjs';
 import { HttpClientModule } from '@angular/common/http';
@@ -61,6 +61,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatMenuModule,
     ToastrModule.forRoot(),
     MatSelectModule,
+    MatOptionModule,
+    MatCheckboxModule
   ],
   exports: [
     CommonModule,

@@ -1,133 +1,53 @@
-<h1 style="text-align:center; margin-top: 5%;">Company Details</h1>
-
-<hr>
-
-<mat-card class="example-card">
-    <mat-card-header>
-        <mat-card-title>Company Name</mat-card-title>
-    </mat-card-header>
-
-    <mat-card-content>
-        <div *ngIf="Company.name; else empty">
-            <p>
-            {{Company.name}}
-            </p>
+<main class="main">
+    <div class="page-left">
+        <div class="company">
+            <h1 class="title">{{Company.name}}</h1>
+            <div class="row">
+                <div class="column">
+                <a>{{Company.email}}</a>
+                </div>
+            
+                <div class="column" style="color:rgb(110, 110, 110);">
+                <a>Location:  {{Company.address}}</a>
+                </div>
+            </div>
         </div>
-    </mat-card-content>
-</mat-card>
-
-
-
-<mat-card class="example-card">
-    <mat-card-header>
-        <mat-card-title>Company Email</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <div >
-            <p>
-            {{Company.email}}
-            </p>
+        <button *ngIf="editDeleteRights" mat-stroked-button style="margin-left:20%;" (click)="editCompany(Company.id)">Manage Account</button>
+    </div>
+    <div class="page-right">
+        <div class="details">
+            <div class="tabs">
+                <button *ngIf="aboutSection" (click)="aboutTrue()" mat-raised-button>About Us</button>
+                <button *ngIf="!aboutSection" (click)="aboutTrue()" mat-button>About Us</button>
+                <button *ngIf="!aboutSection" (click)="aboutFalse()" mat-raised-button>Our Jobs</button>
+                <button *ngIf="aboutSection" (click)="aboutFalse()" mat-button>Our Jobs</button>
+            </div>
+            <div *ngIf="aboutSection">
+                <mat-card class="description">
+                    <mat-card-content>
+                        <div>
+                            {{Company.description}}
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div *ngIf="!aboutSection">
+                <div *ngIf="!this.Company.jobs.length">
+                    <h2 style="text-align:left;">No jobs to show yet.</h2>
+                </div>
+                <div *ngFor="let row of Company.jobs">
+                    <div class="job" (click)="getJobDetails(row.id)">
+                      <div class="title2">
+                        <a>{{row.jobTitle}}</a>
+                      </div>
+                      <div class="column2">
+                        <a>{{row.jobType}}</a>
+                        <a>Location:  {{row.address}}</a>
+                        <a>Salary:    {{row.salary | currency: 'EUR':true:'1.0-0'}} </a>
+                      </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </mat-card-content>
-</mat-card>
-
-
-
-<mat-card class="example-card">
-    <mat-card-header>
-        <mat-card-title>Company Password</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <div>
-            <p>
-            {{Company.passwordHash}}
-            </p>
-        </div>
-    </mat-card-content>
-</mat-card>
-
-
-
-<mat-card class="example-card">
-    <mat-card-header>
-        <mat-card-title>Company Address</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <div *ngIf="Company.address; else empty">
-            <p>
-            {{Company.address}}
-            </p>
-        </div>
-    </mat-card-content>
-</mat-card>
-
-
-
-<mat-card class="example-card">
-    <mat-card-header>
-        <mat-card-title>Company Description</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <div *ngIf="Company.description; else empty">
-            <p>
-            {{Company.description}}
-            </p>
-        </div>
-    </mat-card-content>
-</mat-card>
-
-
-
-<mat-card class="example-card">
-    <mat-card-header>
-        <mat-card-title>Account verified as a Company</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <div *ngIf="Company.verifiedAccount; else notVerified">
-            <p>
-            True
-            </p>
-        </div>
-    </mat-card-content>
-
-
-
-    <ng-template #empty>
-        <p>
-          Empty Field
-        </p>
-      </ng-template>
-
-    <ng-template #notVerified>
-        <p>
-          False
-        </p>
-      </ng-template>
-
-</mat-card>
-
-
-<mat-card class="example-card">
-    <mat-card-actions>
-        <button mat-button style=
-                "background-color:blue; 
-                color:white"
-                (click)="editCompany(Company.id)">
-            Edit 
-        </button>
-
-        <button mat-button style=
-                "background-color:red; 
-                color:white"
-                (click)="removeCompany(Company.id)"> 
-            Delete 
-        </button>
-
-        <button mat-button style=
-                "background-color:green; 
-                color:white"
-                (click)="back()">
-            Back
-        </button>
-    </mat-card-actions>
-</mat-card>
+    </div>
+</main>

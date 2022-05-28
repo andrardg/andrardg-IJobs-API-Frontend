@@ -1,0 +1,108 @@
+.main{
+height:100%;
+min-height: 100vh;
+width: 100%;
+background: rgb(242, 244, 245);
+padding-top: 5rem;
+display: flex;
+flex-direction: row;
+}
+.page-left{
+width: 50%;
+height:100%;
+padding-top:15rem;
+}
+.company{
+text-align: center;
+width:60%;
+height:10rem;
+margin-left:20%;
+padding: 16px;
+background-color: white;
+border-radius: 5px;
+margin-bottom:2rem;
+box-shadow: -0.2em 0 .4em grey;
+}
+.title{
+width:100%;
+border-bottom: 1px solid gray;
+padding: 15px 45px 15px 30px;
+font-size: x-large;
+}
+.row {
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+width: 100%;
+}
+.column {
+display: flex;
+flex-direction: column;
+flex-basis: 100%;
+flex: 1;
+width:50%;
+height: 3rem;
+}
+.column a{
+padding-left:30px;
+padding-top:15px;
+font-size: 14px;
+}
+.page-right{
+width:50%;
+height:100%;
+flex-direction: column;
+padding-top:11rem;
+}
+.details{
+text-align: center;
+width:90%;
+height:100%;
+margin-bottom:2rem;
+}
+.tabs{
+display: flex;
+flex-direction: row;
+height: 4rem;
+}
+.tabs button{
+margin-right: 1rem;
+height: 3rem;
+}
+.description{
+    width: 85%;
+    text-align: justify;
+}
+.job{
+width:85%;
+height:10rem;
+//margin-left:15%;
+padding: 16px;
+cursor: pointer;
+background-color: white;
+border-radius: 5px;
+margin-bottom:2rem;
+box-shadow: -0.2em 0 .4em grey;
+display: flex;
+flex-direction: row;
+}
+.title2{
+width:40%;
+text-align: center;
+border-right: 1px solid gray;
+padding: 50px 30px 30px 25px;
+font-size: large;
+}
+.column2 {
+display: flex;
+flex-direction: column;
+width:50%;
+align-items: left;
+height: 3rem;
+}
+.column2 a{
+text-align: left;
+padding-left: 2rem;
+padding-top:15px;
+font-size: 14px;
+}

@@ -16,7 +16,7 @@ import { Account } from 'app/interfaces/account';
 export class LoginComponent implements OnInit {
   account: Account = {Email: '', Password: ''}
   public formGroup = new FormGroup({
-    email: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
   });
   public error: boolean | string = false;
