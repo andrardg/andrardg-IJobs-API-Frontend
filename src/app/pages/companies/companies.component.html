@@ -1,48 +1,25 @@
-<h1 style="text-align:center; margin-top: 5%;">All the companies</h1>
+<body class="main">
+<div class="page-left">
+</div>
 
-<hr>
-
-
-<!-- <span style="cursor:pointer" (click)="register()">Add a new company</span> -->
-<p></p>
-
-<table mat-table [dataSource]="CompanyList" class="mat-elevation-z8" style="width: 50%; margin-left: 25%; margin-top: 5%;">
-
-  <ng-container matColumnDef="Name">
-    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="Email">
-    <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
-  </ng-container>
-
-    <ng-container matColumnDef="Address">
-      <mat-header-cell *matHeaderCellDef> Address </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.address}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="Role">
-      <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.role}} </mat-cell>
-    </ng-container>
-  
-    <ng-container matColumnDef="verifiedAccount">
-      <mat-header-cell *matHeaderCellDef> verifiedAccount </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.verifiedAccount}} </mat-cell>
-    </ng-container> -->
-
-    <ng-container matColumnDef="Options">
-      <mat-header-cell *matHeaderCellDef> Options</mat-header-cell>
-      <mat-cell *matCellDef="let row"> 
-        <mat-icon style="cursor:pointer" (click)="getCompanyDetails(row.id)">edit</mat-icon> 
-        <mat-icon style="cursor:pointer" (click)="removeCompany(row.id)">delete</mat-icon>
-      </mat-cell>
-    </ng-container>
+<div class="page-right">
+  <div *ngFor="let row of CompanyList">
+    <div class="company" (click)="getCompanyDetails(row.id)">
+      <div class="title">
+        <a>{{row.name}}</a>
+      </div>
+      <div class="row">
+        <div class="column">
+          <a>{{row.email}}</a>
+        </div>
+    
+        <div class="column" style="color:rgb(110, 110, 110);">
+          <a>Location:  {{row.address}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
-  <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
-  
-</table>
+</body>
