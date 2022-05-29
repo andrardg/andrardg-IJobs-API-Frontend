@@ -59,11 +59,11 @@ export class LoginComponent implements OnInit {
             
             if(data.role == '0')
               {
-                sessionStorage.setItem('Admin', data);
+                sessionStorage.setItem('Admin', JSON.stringify(data));
               }
             else if(data.role == '1')
               {
-                sessionStorage.setItem('User', data);
+                sessionStorage.setItem('User', JSON.stringify(data));
               }
               this.router.navigate(['/dashboard']);
             },

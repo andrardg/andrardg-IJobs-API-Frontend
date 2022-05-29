@@ -17,7 +17,6 @@ export class CompaniesComponent implements OnInit {
   columnsToDisplay : string[] = ['Name', 'Email', 'Address', 'Role', 'verifiedAccount', 'Options'];
   dataSource = new MatTableDataSource<Company>(this.CompanyList);
 
-  admin = sessionStorage.getItem('admin');
   constructor(
     private router:Router,
     private service: CompaniesService,

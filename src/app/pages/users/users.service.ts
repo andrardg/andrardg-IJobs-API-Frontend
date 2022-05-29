@@ -19,6 +19,12 @@ export class UsersService {
   getUsers(){
     return this.http.get<any>(`${environment.baseUrl}api/Users`, this.privateHeaders);
   }
+  getUserDetails(id:any){
+    return this.http.get<any>(`${environment.baseUrl}api/Users/${id}`, this.privateHeaders);
+  }
+  saveUser(User:any){
+    return this.http.put<any>(`${environment.baseUrl}api/Users/${User.id}`, User, this.privateHeaders);
+  }
   removeUser(id: any){
     //return this.http.delete<void>(this.baseUrl + 'api/Companies/:id');
     console.log(`${environment.baseUrl}api/Users/${id}`);

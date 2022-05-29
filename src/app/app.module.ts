@@ -45,6 +45,7 @@ import { RegisterCompanyComponent } from './pages/register-company/register-comp
 import { HeaderComponent } from './pages/header/header.component';
 import { FooterComponent } from './pages/footer/footer.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { UserEditComponent } from './pages/users/userEdit/user-edit.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     JobCreateComponent,
     RegisterCompanyComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    UserEditComponent
   ],
   imports: [
     BrowserModule,

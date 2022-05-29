@@ -55,19 +55,6 @@ export class CompanyEditComponent implements OnInit {
     this.service.getCompanyDetails(id).subscribe(data=>{
       this.Company=data;
       console.log(data);
-
-      this.form.patchValue({name: this.Company.name});
-      this.form.patchValue({email: this.Company.email});
-      this.oldpasswordHash = this.Company.passwordHash;
-      this.form.patchValue({oldpassword: ""});
-      this.form.patchValue({newpassword: ""});
-      this.form.patchValue({newpassword2: ""});
-      this.form.patchValue({address: this.Company.address});
-      this.form.patchValue({description: this.Company.description});
-      if(this.Company.verifiedAccount == true)
-        this.form.patchValue({verifiedAccount: "Yes"});
-        else
-        this.form.patchValue({verifiedAccount: "No"});
     });
   }
   password() {
@@ -95,6 +82,7 @@ export class CompanyEditComponent implements OnInit {
     
         
     if(this.section == 2){
+      
       if(this.newpassword && this.newpassword2 && this.oldpasswordTyped){
         if(this.newpassword == this.newpassword2)
           {if(bcrypt.compareSync(this.oldpasswordTyped, this.oldpasswordHash))
@@ -113,51 +101,56 @@ export class CompanyEditComponent implements OnInit {
     if(!this.error){
       this.service.saveCompany(this.Company).subscribe((data)=>{
       console.log("Update successful");
+      this.section = 0;
       },
         error => {
-          this.error=error;
+          this.error="Email already taken";
         }
       );
     }
-    
-    if(this.error)
-      console.log(this.error);
     else
-      this.section = 0;
+    console.log(this.error);
     }
     this.form.patchValue({oldpassword: ""});
-      this.form.patchValue({newpassword: ""});
-      this.form.patchValue({newpassword2: ""});
+    this.form.patchValue({newpassword: ""});
+    this.form.patchValue({newpassword2: ""});
     
   }
   logout() {
     this.authService.logout();
   }
   sectionOne(){
+    this.cancel();
     this.section = 1;
   }
   sectionTwo(){
+    this.cancel();
     this.section = 2;
   }
   sectionThree(){
+    this.cancel();
     this.section = 3;
   }
   sectionFour(){
+    this.cancel();
     this.section = 4;
   }
   cancel(){
+    this.getCompanyDetails(this.id);
     this.section = 0;
+    this.error = "";
     this.form.patchValue({name: this.Company.name});
-      this.form.patchValue({email: this.Company.email});
-      this.oldpasswordHash = this.Company.passwordHash;
-      this.form.patchValue({newpassword: ""});
-      this.form.patchValue({newpassword2: ""});
-      this.form.patchValue({address: this.Company.address});
-      this.form.patchValue({description: this.Company.description});
-      if(this.Company.verifiedAccount == true)
-        this.form.patchValue({verifiedAccount: "Yes"});
-        else
-        this.form.patchValue({verifiedAccount: "No"});
+    this.form.patchValue({email: this.Company.email});
+    this.form.patchValue({oldpassword: ""});
+    this.oldpasswordHash = this.Company.passwordHash;
+    this.form.patchValue({newpassword: ""});
+    this.form.patchValue({newpassword2: ""});
+    this.form.patchValue({address: this.Company.address});
+    this.form.patchValue({description: this.Company.description});
+    if(this.Company.verifiedAccount == true)
+      this.form.patchValue({verifiedAccount: "Yes"});
+    else
+      this.form.patchValue({verifiedAccount: "No"});
   }
   removeCompany(id:any){
     console.log(id);
@@ -170,6 +163,5 @@ export class CompanyEditComponent implements OnInit {
       // Do nothing!
       console.log('Not deleted');
     }
-    
     }
 }

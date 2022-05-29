@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { AdminCompanyGuard } from './guards/admin-company.guard';
+import { AdminUserGuard } from './guards/admin-user.guard';
 import { AuthGuard } from './guards/auth.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { JobCreateComponent } from './pages/jobs/job-create/job-create.component';
@@ -12,6 +13,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { RegisterCompanyComponent } from './pages/register-company/register-company.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { UserEditComponent } from './pages/users/userEdit/user-edit.component';
 import { UsersComponent } from './pages/users/users.component';
 
 const routes: Routes = [
@@ -40,6 +42,11 @@ const routes: Routes = [
   {
     path: 'users',
     component : UsersComponent,
+  },
+  {
+    path: 'users/edit/:id',
+    component : UserEditComponent,
+    canActivate: [AdminUserGuard],
   },
   {
     path:'jobs',

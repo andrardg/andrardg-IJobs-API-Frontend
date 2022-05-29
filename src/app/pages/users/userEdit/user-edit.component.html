@@ -1,0 +1,92 @@
+<link rel="stylesheet"
+          href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<main class="main">
+    <div class="page-left">
+        <div class="section" (click)="sectionOne()">
+            <div class="row">
+                <div class="column">
+                    <h1>About Me</h1>
+                    <h2>Name</h2>
+                </div>
+                <div class="column" style="text-align: right;">
+                    <i class='fa fa-angle-right' style='font-size:20px'></i>
+                </div>
+          
+              </div>
+        </div>
+
+        <div class="section" (click)="sectionTwo()">
+            <div class="row">
+                <div class="column">
+                    <h1>Account security</h1>
+                    <h2>Email and password</h2>
+                </div>
+                <div class="column" style="text-align: right;">
+                    <i class='fa fa-angle-right' style='font-size:20px'></i>
+                </div>
+          
+              </div>
+        </div>
+
+        <div class="section" (click)="removeUser(id)">
+            <button mat-button class="delete">Permanently delete account</button>
+        </div>
+
+
+
+    </div>
+    <div class="page-right">
+        <div class="edit">
+            <div *ngIf="section == 1">
+                <form fxLayout="column" class="form" [formGroup]="form" (ngSubmit)="save()">
+
+                    <mat-form-field>
+                        <mat-label>First name</mat-label>
+                        <input matInput placeholder="firstName" formControlName="firstName">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Last name</mat-label>
+                        <input matInput placeholder="lastName" formControlName="lastName">
+                    </mat-form-field>
+                    
+                    <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
+                    <div class="buttons">
+                        <button mat-raised-button (click)="cancel()" class ="button center-of-screen">Cancel</button>
+                        <button mat-raised-button type="submit" class ="submit center-of-screen">Update</button>
+                    </div>
+                  </form>
+            </div>
+
+            <div *ngIf="section == 2">
+                <form fxLayout="column" class="form" [formGroup]="form" (ngSubmit)="save()">
+
+                    <mat-form-field>
+                        <mat-label>Email</mat-label>
+                        <input matInput placeholder="email" formControlName="email">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Old Password</mat-label>
+                        <input matInput type="password" placeholder="oldpassword" formControlName="oldpassword">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>New Password</mat-label>
+                        <input matInput type="password" placeholder="newpassword" formControlName="newpassword">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Repeat New Password</mat-label>
+                        <input matInput type="password" placeholder="newpassword2" formControlName="newpassword2">
+                    </mat-form-field>
+        
+                    <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
+                    <div class="buttons">
+                        <button mat-raised-button (click)="cancel()" class ="button center-of-screen">Cancel</button>
+                        <button mat-raised-button type="submit" class ="submit center-of-screen">Update</button>
+                    </div>
+                  </form>
+            </div>
+        </div>
+    </div>
+</main>

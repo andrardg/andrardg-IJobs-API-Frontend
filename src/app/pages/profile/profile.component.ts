@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -9,19 +9,21 @@ import { ActivatedRoute } from '@angular/router';
 export class ProfileComponent implements OnInit {
 
   public id:number = 0;
-  constructor(private activatedRoute: ActivatedRoute) { }
+  constructor(private activatedRoute: ActivatedRoute,
+    private router:Router) { }
 
   ngOnInit(): void {
+    if(sessionStorage.getItem('Company') != null)
+      {var company = JSON.parse(sessionStorage.getItem('Company') || "")
+      this.router.navigate(['/companies', company.id]);}
 
-    this.activatedRoute.params.subscribe((params: any) =>{
-      console.log(params);
-      this.id = parseInt(params['id']);
-      console.log(this.id);
-    });
+    if(sessionStorage.getItem('User') != null)
+      {console.log(sessionStorage.getItem('User'));var user = JSON.parse(sessionStorage.getItem('User') || "")
+      this.router.navigate(['/users/edit', user.id]);}
 
-    this.activatedRoute.queryParams.subscribe((qParams: any) => {
-      console.log(qParams);
-    });
+    if(sessionStorage.getItem('Admin') != null)
+    {var admin = JSON.parse(sessionStorage.getItem('Admin') || "")
+    this.router.navigate(['/users/edit', admin.id]);}
   }
 
 }
