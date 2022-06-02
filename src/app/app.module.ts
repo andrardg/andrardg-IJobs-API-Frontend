@@ -46,6 +46,8 @@ import { HeaderComponent } from './pages/header/header.component';
 import { FooterComponent } from './pages/footer/footer.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UserEditComponent } from './pages/users/userEdit/user-edit.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 @NgModule({
   declarations: [
@@ -88,7 +90,9 @@ import { UserEditComponent } from './pages/users/userEdit/user-edit.component';
     ToastrModule.forRoot(),
     MatSelectModule,
     MatIconModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    PdfViewerModule,
+    NgxExtendedPdfViewerModule
     //DropDownsModule,
   ],
   providers: [

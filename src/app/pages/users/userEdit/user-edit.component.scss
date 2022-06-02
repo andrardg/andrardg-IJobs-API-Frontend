@@ -24,7 +24,13 @@
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
-    justify-content: end;
+    //justify-content: end;
+    }
+    .row2{    
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      width: 100%;
     }
     .column {
     display: flex;
@@ -34,6 +40,35 @@
     width:50%;
     height: 2rem;
     }
+    .column2{
+      display: flex;
+      flex-direction: column;
+      flex-basis: 100%;
+      justify-content: flex-end;
+      align-items:center;
+      flex: 1;
+      width:50%;
+      height: 100%;
+    }
+    .custom-file-upload {
+      border: 1px solid rgb(99, 99, 99);
+      background-color: rgb(241, 241, 241);
+      display: inline-block;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: 3px;
+      font-size: 18px;
+      width:70%;
+      height: 2rem;
+      
+  }
+  input[type="file"] {
+    display: none;
+}
+.column2 i{
+  width:10%;
+  margin-right: 5px;
+}
     .page-left h1{
       font-size: 24px;
     }
@@ -56,6 +91,7 @@
     }
     .edit mat-form-field{
       width: 100%;
+      height:100%;
       //padding-right: 30%;
     }
     .edit mat-label{
@@ -99,7 +135,6 @@
       margin-top: 2rem;
       font-family: "Times New Roman", Times, serif;
       font-size: large;
-      width: 50%;
     }
     .button{
       margin-right: 2rem;

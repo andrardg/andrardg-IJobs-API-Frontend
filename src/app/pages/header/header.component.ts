@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
 
 @Component({
@@ -8,7 +9,10 @@ import { AuthService } from 'app/services/auth.service';
 })
 export class HeaderComponent implements OnInit {
   public authenticated?: boolean;
-  constructor(private authService: AuthService) { }
+  search: string = '';
+  constructor(
+    private router:Router,
+    private authService: AuthService) { }
 
   ngOnInit(): void {
   }
@@ -18,5 +22,7 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.authService.logout();
   }
-
+  searchData(){
+    this.router.navigate(['/search', this.search]);
+  }
 }

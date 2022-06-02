@@ -14,6 +14,12 @@ export class UsersService {
       'content-type': 'application/json;charset=utf-8',
     }),
   };
+  private privateHeaders2 = {
+    headers: new HttpHeaders({
+      //'content-type': 'undefined ',
+      'Accept': '*/*',
+    }),
+  };
   
   constructor(private http: HttpClient) { }
   getUsers(){
@@ -22,8 +28,8 @@ export class UsersService {
   getUserDetails(id:any){
     return this.http.get<any>(`${environment.baseUrl}api/Users/${id}`, this.privateHeaders);
   }
-  saveUser(User:any){
-    return this.http.put<any>(`${environment.baseUrl}api/Users/${User.id}`, User, this.privateHeaders);
+  saveUser(id:any, form:any){
+    return this.http.put<any>(`${environment.baseUrl}api/Users/${id}`, form, this.privateHeaders2);
   }
   removeUser(id: any){
     //return this.http.delete<void>(this.baseUrl + 'api/Companies/:id');

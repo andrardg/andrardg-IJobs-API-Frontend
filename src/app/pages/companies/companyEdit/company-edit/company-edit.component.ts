@@ -157,6 +157,7 @@ export class CompanyEditComponent implements OnInit {
     if (confirm('Are you sure you want to delete this account?')) {
       this.service.removeCompany(id).subscribe((data)=>{
         console.log("success");
+        this.logout();
       });
       this.router.navigate(['/dashboard']);
     } else {

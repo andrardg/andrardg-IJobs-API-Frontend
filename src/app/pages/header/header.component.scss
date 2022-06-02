@@ -10,6 +10,7 @@
   }
 .left-toolbar{
   display: flex;
+  flex-direction: row;
 }
 .button1{
   font-size: xx-large;
@@ -23,7 +24,20 @@
   margin: 0.5rem;
   font-family: "Times New Roman", Times, serif;
 }
+.search{
+  display: flex;
+  flex-direction: row;
+}
+.searchbar{
+  padding-left: 10px;
+  font-size: 18px;
+  border: 1px solid grey;
+  width: 60%;
+  background: #f1f1f1;
+}
+.searchbar i{
 
+}
 .middle-toolbar {
     flex: 1 1 auto;
 }

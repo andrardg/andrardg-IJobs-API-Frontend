@@ -1,6 +1,7 @@
 <link rel="stylesheet"
           href=
 "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <main class="main">
     <div class="page-left">
@@ -18,6 +19,19 @@
         </div>
 
         <div class="section" (click)="sectionTwo()">
+            <div class="row">
+                <div class="column">
+                    <h1>Documents</h1>
+                    <h2>Profile Photo and CV</h2>
+                </div>
+                <div class="column" style="text-align: right;">
+                    <i class='fa fa-angle-right' style='font-size:20px'></i>
+                </div>
+          
+              </div>
+        </div>
+
+        <div class="section" (click)="sectionThree()">
             <div class="row">
                 <div class="column">
                     <h1>Account security</h1>
@@ -61,6 +75,51 @@
             </div>
 
             <div *ngIf="section == 2">
+                <form fxLayout="column" class="form" [formGroup]="form" (ngSubmit)="save()">
+                    <div class="row2" style="height: 30%">
+                        <div class="column2">
+                                <img src="{{form.controls['photo'].value}}" width="200" height="200" style="object-fit: cover;" />
+                        </div>
+                        <div class="column2">
+                            <iframe [src]="CVpreview" width="200px" height="200px"></iframe>
+                        </div>
+                    </div>
+
+                    <div class="row2" style="height: 30%">
+                        <div class="column2">
+                            <div class="row2">
+                                <i class="material-icons">add_a_photo</i>
+                                <label class="custom-file-upload">
+                                    <input type="file" accept=".jpg,.png,.jpeg" (change)="onPhotoChanged($event)"/>
+                                    Change Profile Picture 
+                                </label>
+                            </div>
+                            
+                        </div>
+                        <div class="column2">
+                            <div class="row2">
+                                <i class="fa fa-upload" style="font-size:24px"></i>
+                                <label class="custom-file-upload">
+                                    <input type="file" accept=".pdf" (change)="onCvChanged($event)"/>
+                                    Upload new CV
+                                </label>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="row2" style="margin-top:10%;  justify-content:center;">
+                        <div class="buttons center of screen">
+                            <button mat-raised-button (click)="cancel()" class ="button center-of-screen">Cancel</button>
+                            <button mat-raised-button type="submit" class ="submit center-of-screen">Update</button>
+                        </div>
+                    </div>
+                    
+                </form>
+                
+            </div>
+
+            <div *ngIf="section == 3">
                 <form fxLayout="column" class="form" [formGroup]="form" (ngSubmit)="save()">
 
                     <mat-form-field>
