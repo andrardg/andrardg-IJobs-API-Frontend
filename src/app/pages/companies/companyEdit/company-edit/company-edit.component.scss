@@ -24,15 +24,22 @@ display: flex;
 flex-direction: row;
 flex-wrap: wrap;
 width: 100%;
-justify-content: end;
 }
 .column {
-display: flex;
 flex-direction: column;
 flex-basis: 100%;
 flex: 1;
 width:50%;
-height: 2rem;
+}
+.column2{
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  justify-content: flex-end;
+  align-items:center;
+  flex: 1;
+  width:50%;
+  height: 100%;
 }
 .page-left h1{
   font-size: 24px;
@@ -53,6 +60,23 @@ margin-top:11rem;
 }
 .form{
   width: 70%;
+}
+input[type="file"] {
+  display: none;
+}
+.custom-file-upload {
+  border: 1px solid rgb(99, 99, 99);
+  background-color: rgb(241, 241, 241);
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 18px;
+  width:70%;
+  height: 2rem;
+}
+.row i{
+  width: 15%;
 }
 .edit mat-form-field{
   width: 100%;
@@ -77,6 +101,7 @@ textarea{
   padding: 15px 45px 15px 15px;
   border-width: 1px;
   margin-bottom: 15px;
+  text-align: justify;
   border-radius: 5px;
 }
 .select-picker{

@@ -28,6 +28,9 @@ export class UsersService {
   getUserDetails(id:any){
     return this.http.get<any>(`${environment.baseUrl}api/Users/${id}`, this.privateHeaders);
   }
+  getUsersByName(Name:string){
+    return this.http.get<any>(`${environment.baseUrl}api/Users/Search/${Name}`, this.privateHeaders);
+  }
   saveUser(id:any, form:any){
     return this.http.put<any>(`${environment.baseUrl}api/Users/${id}`, form, this.privateHeaders2);
   }

@@ -3,9 +3,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Job } from 'app/interfaces/job';
 import { Company } from 'app/interfaces/company';
-import { CompaniesService } from 'app/pages/companies/companies.service';
+import { CompaniesService } from 'app/services/companies.service';
 import { AuthService } from 'app/services/auth.service';
-import { JobsService } from '../jobs.service';
+import { JobsService } from '../../../services/jobs.service';
 
 @Component({
   selector: 'app-job-create',

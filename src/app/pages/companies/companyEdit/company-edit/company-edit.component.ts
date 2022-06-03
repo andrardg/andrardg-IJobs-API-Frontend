@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
-import { CompaniesService } from '../../companies.service';
+import { CompaniesService } from '../../../../services/companies.service';
 import * as bcrypt from 'bcryptjs'
 
 @Component({
@@ -19,6 +19,7 @@ export class CompanyEditComponent implements OnInit {
   public hide: boolean = true; //for the password
   public form: FormGroup = new FormGroup({
                 name: new FormControl('', [Validators.required]),
+                photo: new FormControl(''),
                 email: new FormControl('', [Validators.required, Validators.email]),
                 oldpassword: new FormControl(''),
                 newpassword: new FormControl(''),
@@ -28,13 +29,11 @@ export class CompanyEditComponent implements OnInit {
                 verifiedAccount: new FormControl(''),
               });
   public oldpasswordHash:string="";
-  public oldpasswordTyped:string="";
-  public newpassword:string="";
-  public newpassword2:string="";
-
   public section:any = 0;
   public error: boolean | string = false;
   Verified:any=["Yes", "No"];
+  public formData= new FormData();
+
   constructor(
     private activatedRoute:ActivatedRoute,
     private router:Router,
@@ -47,7 +46,6 @@ export class CompanyEditComponent implements OnInit {
       this.id = params['id'];
       console.log(this.id);
     });
-
     this.getCompanyDetails(this.id); 
   }
 
@@ -55,53 +53,70 @@ export class CompanyEditComponent implements OnInit {
     this.service.getCompanyDetails(id).subscribe(data=>{
       this.Company=data;
       console.log(data);
+      this.oldpasswordHash = data.passwordHash;
     });
   }
   password() {
     this.hide = !this.hide;
+  }
+  save2(event:any){
+    if (event.keyCode == 13)
+      {
+        this.save();
+    }
   }
   save(){
     if(this.form.invalid)
     this.error = "You have invalid fields."
     else{
       this.error = "";
-    this.Company.name = this.form.controls['name'].value;
-    this.Company.email = this.form.controls['email'].value;
-    this.Company.oldPasswordHash = this.oldpasswordHash;
-    this.oldpasswordTyped = this.form.controls['oldpassword'].value;
-    this.newpassword = this.form.controls['newpassword'].value;
-    this.newpassword2 = this.form.controls['newpassword2'].value;
-    this.Company.address = this.form.controls['address'].value;
-    this.Company.description = this.form.controls['description'].value;
+
+    //fetch back data
+    this.formData.append('Id', this.id);
+    this.formData.append('Name', this.form.controls['name'].value);
+    this.formData.append('Email', this.form.controls['email'].value);
+    this.formData.append('Description', this.form.controls['description'].value);
+    this.formData.append('Address', this.form.controls['address'].value);
+    this.formData.append('Email', this.form.controls['email'].value);
+    this.formData.append('OldPasswordHash', this.oldpasswordHash);
     if(this.form.controls['verifiedAccount'].value == "Yes")
-      {this.Company.verifiedAccount = true;
-        this.Company.role = 2;}
+      {this.formData.append('VerifiedAccount', "true");
+      this.formData.append('Role', "2");}
     else
-      {this.Company.verifiedAccount = false;
-        this.Company.role = 1;}
-    
+      {this.formData.append('VerifiedAccount', "false");
+      this.formData.append('Role', "1");}
+    if(this.form.controls['photo'].value != "../../../assets/images/companyProfilePhoto.png") //photo exists
+      {
+        this.formData.append('Photo', this.form.controls['photo'].value);
+      }
         
     if(this.section == 2){
       
-      if(this.newpassword && this.newpassword2 && this.oldpasswordTyped){
-        if(this.newpassword == this.newpassword2)
-          {if(bcrypt.compareSync(this.oldpasswordTyped, this.oldpasswordHash))
-            this.Company.password = this.newpassword;
+      if(this.form.controls['newpassword'].value && this.form.controls['newpassword2'].value && this.form.controls['oldpassword'].value)
+      {
+        if(this.form.controls['newpassword'].value == this.form.controls['newpassword2'].value)
+          {
+          if(bcrypt.compareSync(this.form.controls['oldpassword'].value, this.oldpasswordHash))
+            this.formData.append('password', this.form.controls['newpassword'].value);
           else{
             this.error = "Old password incorrect."}}
-          else
-            this.error = "The new password fields must match."
-      }else 
+        else
+          this.error = "The new password fields must match."
+      }
+      else 
         this.error = "All password fields must be filled."
     }
     else
-    this.Company.password = this.oldpasswordHash;
-    console.log(this.Company);
+    {
+      this.formData.append('Password', this.oldpasswordHash);
+      this.formData.append('OldPasswordHash', this.oldpasswordHash);
+    }
 
     if(!this.error){
-      this.service.saveCompany(this.Company).subscribe((data)=>{
+      this.service.saveCompany(this.id, this.formData).subscribe((data)=>{
       console.log("Update successful");
-      this.section = 0;
+      this.cancel();
+      alert("Update successul");
       },
         error => {
           this.error="Email already taken";
@@ -137,12 +152,12 @@ export class CompanyEditComponent implements OnInit {
   }
   cancel(){
     this.getCompanyDetails(this.id);
+    this.formData.delete;
     this.section = 0;
     this.error = "";
     this.form.patchValue({name: this.Company.name});
     this.form.patchValue({email: this.Company.email});
     this.form.patchValue({oldpassword: ""});
-    this.oldpasswordHash = this.Company.passwordHash;
     this.form.patchValue({newpassword: ""});
     this.form.patchValue({newpassword2: ""});
     this.form.patchValue({address: this.Company.address});
@@ -151,6 +166,11 @@ export class CompanyEditComponent implements OnInit {
       this.form.patchValue({verifiedAccount: "Yes"});
     else
       this.form.patchValue({verifiedAccount: "No"});
+    if(this.Company.photo){
+      this.form.patchValue({photo: this.Company.photo});
+    }
+    else
+      this.form.patchValue({photo: "../../../assets/images/companyProfilePhoto.png"});
   }
   removeCompany(id:any){
     console.log(id);
@@ -164,5 +184,15 @@ export class CompanyEditComponent implements OnInit {
       // Do nothing!
       console.log('Not deleted');
     }
+  }
+
+  onPhotoChanged(event:any){
+      var file: File;
+      file = <File>event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () =>{ 
+        this.form.patchValue({photo: reader.result});
     }
+  }
 }

@@ -1,3 +1,9 @@
+<link rel="stylesheet"
+          href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 <body class="main">
 <h1 class="pageTitle">Find your next job!</h1>
 
@@ -14,13 +20,13 @@
     </div>
     <div class="row">
       <div class="column">
-        <a>{{row.company.name}}</a>
-        <a>{{row.jobType}}</a>
+        <a><i class="fa fa-institution" style="min-width:50px;"></i>{{row.company.name}}</a>
+        <a><i class='fa fa-clock-o' style="min-width:50px;"></i>{{row.jobType}}</a>
       </div>
 
       <div class="column" style="color:rgb(110, 110, 110);">
-        <a>Location:  {{row.address}}</a>
-        <a>Salary:    {{row.salary | currency: 'EUR':true:'1.0-0'}} </a>
+        <a><i class="fa fa-map-marker" style="min-width:30px"></i>Location:  {{row.address}}</a>
+        <a><i class="fa fa-money" style="min-width:30px"></i>Salary:    {{row.salary | currency: 'EUR':true:'1.0-0'}} </a>
       </div>
     </div>
     

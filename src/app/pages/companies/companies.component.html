@@ -1,22 +1,39 @@
+<link rel="stylesheet"
+          href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 <body class="main">
 <div class="page-left">
 </div>
 
 <div class="page-right">
+  <div class="verify" *ngIf="admin">
+    <button mat-raised-button *ngIf="verify == false" (click)="verifyTrue()">Verify pending company accounts</button>
+    <button mat-raised-button *ngIf="verify == true" (click)="verifyFalse()">Done</button>
+  </div>
   <div *ngFor="let row of CompanyList">
-    <div class="company" (click)="getCompanyDetails(row.id)">
-      <div class="title">
-        <a>{{row.name}}</a>
-      </div>
+    <div class="company" *ngIf="(row.verifiedAccount == true && verify == false) || (row.verifiedAccount == false && verify == true)" (click)="getCompanyDetails(row.id)">
       <div class="row">
-        <div class="column">
-          <a>{{row.email}}</a>
+        <div class="column" style="flex-basis: 20%; cursor: pointer">
+          <div *ngIf="row.photo != null">
+              <img (click)="getCompanyDetails(row.id)" src="{{row.photo}}" width="150" height="150" style="object-fit: cover;" />
+          </div>
+          <div *ngIf="row.photo == null">
+              <img (click)="getCompanyDetails(row.id)" src="../../../assets/images/profilePhoto.png" width="150" height="150" style="object-fit: cover;" />
+          </div>
         </div>
-    
-        <div class="column" style="color:rgb(110, 110, 110);">
-          <a>Location:  {{row.address}}</a>
+
+
+        <div class="column" style="flex-basis: 70%;">
+          <div class="title">
+            <a>{{row.name}}</a>
+          </div>
+          <a><i class="fa fa-envelope" style="min-width:30px"></i>{{row.email}}</a>
+          <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.address}}</a>
         </div>
       </div>
+      
     </div>
   </div>
 </div>

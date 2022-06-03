@@ -3,8 +3,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Job } from 'app/interfaces/job';
 import { AuthService } from 'app/services/auth.service';
-import { CompaniesService } from '../companies/companies.service';
-import { JobsService } from './jobs.service';
+import { CompaniesService } from '../../services/companies.service';
+import { JobsService } from '../../services/jobs.service';
 @Component({
   selector: 'app-jobs',
   templateUrl: './jobs.component.html',

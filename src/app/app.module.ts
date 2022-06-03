@@ -32,9 +32,9 @@ import { AuthGuard } from './guards/auth.guard';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { JobsComponent } from './pages/jobs/jobs.component';
 import { AdminAuthGuard } from './guards/admin-auth.guard';
-import { JobsService } from './pages/jobs/jobs.service';
-import { UsersService } from './pages/users/users.service';
-import { CompaniesService } from './pages/companies/companies.service';
+import { JobsService } from './services/jobs.service';
+import { UsersService } from './services/users.service';
+import { CompaniesService } from './services/companies.service';
 import { CompanyModule } from './modules/company.module';
 import { JobTitlePipe } from './pages/jobs/jobtitle.pipe';
 import { HoldableDirective } from './directives/holdable.directive';
@@ -48,6 +48,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UserEditComponent } from './pages/users/userEdit/user-edit.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { SearchComponent } from './pages/search/search.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
     RegisterCompanyComponent,
     HeaderComponent,
     FooterComponent,
-    UserEditComponent
+    UserEditComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

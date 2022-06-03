@@ -58,12 +58,27 @@
 
                     <mat-form-field>
                         <mat-label>First name</mat-label>
-                        <input matInput placeholder="firstName" formControlName="firstName">
+                        <input matInput placeholder="First Name" formControlName="firstName">
                     </mat-form-field>
 
                     <mat-form-field>
                         <mat-label>Last name</mat-label>
-                        <input matInput placeholder="lastName" formControlName="lastName">
+                        <input matInput placeholder="Last Name" formControlName="lastName">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Occupation</mat-label>
+                        <input matInput placeholder="Occupation" formControlName="occupation">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Residence</mat-label>
+                        <input matInput placeholder="Place of residence" formControlName="residence">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Education</mat-label>
+                        <input matInput placeholder="Education" formControlName="studies">
                     </mat-form-field>
                     
                     <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
@@ -76,7 +91,7 @@
 
             <div *ngIf="section == 2">
                 <form fxLayout="column" class="form" [formGroup]="form" (ngSubmit)="save()">
-                    <div class="row2" style="height: 30%">
+                    <div class="row" style="height: 30%; padding-bottom:2rem">
                         <div class="column2">
                                 <img src="{{form.controls['photo'].value}}" width="200" height="200" style="object-fit: cover;" />
                         </div>
@@ -85,9 +100,9 @@
                         </div>
                     </div>
 
-                    <div class="row2" style="height: 30%">
+                    <div class="row" style="height: 30%">
                         <div class="column2">
-                            <div class="row2">
+                            <div class="row">
                                 <i class="material-icons">add_a_photo</i>
                                 <label class="custom-file-upload">
                                     <input type="file" accept=".jpg,.png,.jpeg" (change)="onPhotoChanged($event)"/>
@@ -97,7 +112,7 @@
                             
                         </div>
                         <div class="column2">
-                            <div class="row2">
+                            <div class="row">
                                 <i class="fa fa-upload" style="font-size:24px"></i>
                                 <label class="custom-file-upload">
                                     <input type="file" accept=".pdf" (change)="onCvChanged($event)"/>
@@ -108,7 +123,7 @@
                         </div>
                     </div>
                     
-                    <div class="row2" style="margin-top:10%;  justify-content:center;">
+                    <div class="row" style="margin-top:10%;  justify-content:center;">
                         <div class="buttons center of screen">
                             <button mat-raised-button (click)="cancel()" class ="button center-of-screen">Cancel</button>
                             <button mat-raised-button type="submit" class ="submit center-of-screen">Update</button>
@@ -124,19 +139,19 @@
 
                     <mat-form-field>
                         <mat-label>Email</mat-label>
-                        <input matInput placeholder="email" formControlName="email">
+                        <input matInput placeholder="Email" formControlName="email">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Old Password</mat-label>
-                        <input matInput type="password" placeholder="oldpassword" formControlName="oldpassword">
+                        <input matInput type="password" placeholder="Old Password" formControlName="oldpassword">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>New Password</mat-label>
-                        <input matInput type="password" placeholder="newpassword" formControlName="newpassword">
+                        <input matInput type="password" placeholder="New Password" formControlName="newpassword">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Repeat New Password</mat-label>
-                        <input matInput type="password" placeholder="newpassword2" formControlName="newpassword2">
+                        <input matInput type="password" placeholder="New Password" formControlName="newpassword2"(keydown)="save2($event)">
                     </mat-form-field>
         
                     <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>

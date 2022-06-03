@@ -1,16 +1,26 @@
 <main class="main">
     <div class="page-left">
         <div class="company">
-            <h1 class="title">{{Company.name}}</h1>
+
             <div class="row">
                 <div class="column">
-                <a>{{Company.email}}</a>
+                  <div *ngIf="Company.photo != null">
+                      <img (click)="getCompanyDetails(Company.id)" src="{{Company.photo}}" width="150" height="150" style="object-fit: cover;" />
+                  </div>
+                  <div *ngIf="Company.photo == null">
+                      <img (click)="getCompanyDetails(Company.id)" src="../../../assets/images/profilePhoto.png" width="150" height="150" style="object-fit: cover;" />
+                  </div>
                 </div>
-            
-                <div class="column" style="color:rgb(110, 110, 110);">
-                <a>Location:  {{Company.address}}</a>
+        
+        
+                <div class="column"style="flex-basis: 50%;">
+                  <div class="title">
+                    <a>{{Company.name}}</a>
+                  </div>
+                  <a><i class="fa fa-envelope" style="min-width:30px"></i>{{Company.email}}</a>
+                  <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{Company.address}}</a>
                 </div>
-            </div>
+              </div>
         </div>
         <button *ngIf="editDeleteRights" mat-stroked-button style="margin-left:20%;" (click)="editCompany(Company.id)">Manage Account</button>
     </div>

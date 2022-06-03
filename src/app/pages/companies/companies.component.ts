@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Company } from 'app/interfaces/company';
 import { AuthService } from 'app/services/auth.service';
 import { PrivateService } from 'app/services/private.service';
-import { CompaniesService } from './companies.service';
+import { CompaniesService } from '../../services/companies.service';
 
 @Component({
   selector: 'app-companies',
@@ -16,7 +16,8 @@ export class CompaniesComponent implements OnInit {
   CompanyList:any=[];
   columnsToDisplay : string[] = ['Name', 'Email', 'Address', 'Role', 'verifiedAccount', 'Options'];
   dataSource = new MatTableDataSource<Company>(this.CompanyList);
-
+  admin = sessionStorage.getItem('Admin');
+  verify:boolean = false;
   constructor(
     private router:Router,
     private service: CompaniesService,
@@ -47,5 +48,11 @@ export class CompaniesComponent implements OnInit {
   }
   logout() {
     this.authService.logout();
+  }
+  verifyTrue(){
+    this.verify = true;
+  }
+  verifyFalse(){
+    this.verify = false;
   }
 }

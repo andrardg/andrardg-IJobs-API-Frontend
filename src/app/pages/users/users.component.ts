@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { User } from 'app/interfaces/user';
 import { AuthService } from 'app/services/auth.service';
 import { PrivateService } from 'app/services/private.service';
-import { UsersService } from './users.service';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'app-users',

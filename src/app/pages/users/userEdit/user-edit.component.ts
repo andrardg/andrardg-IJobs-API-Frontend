@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AnyForUntypedForms, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
-import { UsersService } from '../users.service';
+import { UsersService } from '../../../services/users.service';
 import * as bcrypt from 'bcryptjs'
-import { FileService } from 'app/services/file.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, Subscriber } from 'rxjs';
 
@@ -24,20 +23,17 @@ export class UserEditComponent implements OnInit {
   form: FormGroup = new FormGroup({
                 firstName: new FormControl('', [Validators.required]),
                 lastName: new FormControl('', [Validators.required]),
+                occupation: new FormControl(''),
+                residence: new FormControl(''),
+                studies: new FormControl(''),
                 photo: new FormControl(''),
                 cv: new FormControl(''),
                 email: new FormControl('', [Validators.required, Validators.email]),
                 oldpassword: new FormControl(''),
                 newpassword: new FormControl(''),
                 newpassword2: new FormControl(''),
-                occupation: new FormControl(''),
-                residence: new FormControl(''),
-                studies: new FormControl('')
               });
   public oldpasswordHash:string="";
-  public oldpasswordTyped:string="";
-  public newpassword:string="";
-  public newpassword2:string="";
   public formData= new FormData();
   public section:any = 0;
   public error: boolean | string = false;
@@ -61,6 +57,7 @@ getUserDetails(id:any){
   this.service.getUserDetails(id).subscribe(data=>{
     console.log(data);
     this.User = data;
+    this.oldpasswordHash = data.passwordHash;
     /*if(data.photofile != null && data.photofile.length > 0){
       this.photoaux =this.sanitizer.bypassSecurityTrustUrl('data:image/jpeg;base64,'+data.photofile);
       console.log(this.photoaux);
@@ -108,6 +105,12 @@ getUserDetails(id:any){
 password() {
   this.hide = !this.hide;
 }
+save2(event:any){
+  if (event.keyCode == 13)
+    {
+      this.save();
+  }
+}
 save(){
   if(this.form.invalid)
   {this.error = "You have invalid fields."; console.log(this.form);
@@ -115,55 +118,51 @@ save(){
   else{
     this.error = "";
 
-  this.User.firstName = this.form.controls['firstName'].value;
-  this.User.lastName = this.form.controls['lastName'].value;
-  this.User.email = this.form.controls['email'].value;
-  this.User.oldPasswordHash = this.oldpasswordHash;
-  this.oldpasswordTyped = this.form.controls['oldpassword'].value;
-  this.newpassword = this.form.controls['newpassword'].value;
-  this.newpassword2 = this.form.controls['newpassword2'].value;
-  this.User.occupation = this.form.controls['occupation'].value;
-  this.User.residence = this.form.controls['residence'].value;
-  this.User.studies = this.form.controls['studies'].value;
-
-
+  //fetch data back
    this.formData.append('Id', this.id);
    this.formData.append('FirstName', this.form.controls['firstName'].value);
    this.formData.append('LastName', this.form.controls['lastName'].value);
+   this.formData.append('Occupation', this.form.controls['occupation'].value);
+   this.formData.append('Residence', this.form.controls['residence'].value);
+   this.formData.append('Studies', this.form.controls['studies'].value);
    this.formData.append('Email', this.form.controls['email'].value);
    this.formData.append('OldPasswordHash', this.oldpasswordHash);
-
    if(this.form.controls['photo'].value != "../../../assets/images/profilePhoto.png") //photo exists
-    {this.formData.append('Photo', this.form.controls['photo'].value);
-    this.User.photo = this.form.controls['photo'].value;};
-
+    {
+      this.formData.append('Photo', this.form.controls['photo'].value);
+    }
     if(this.form.controls['cv'].value !=null){
     this.formData.append('CV', this.form.controls['cv'].value);
-    this.User.cv = this.form.controls['cv'].value;
     }
   
   
   if(this.section == 3){
 
-    if(this.newpassword && this.newpassword2 && this.oldpasswordTyped){
-      if(this.newpassword == this.newpassword2)
-        {if(bcrypt.compareSync(this.oldpasswordTyped, this.oldpasswordHash))
-          {this.User.password = this.newpassword; this.formData.append('password', this.newpassword);}
-        else{
-          this.error = "Old password incorrect."}}
-        else
-          this.error = "The new password fields must match."
-    }else 
+    if(this.form.controls['newpassword'].value && this.form.controls['newpassword2'].value && this.form.controls['oldpassword'].value)
+    {
+      if(this.form.controls['newpassword'].value == this.form.controls['newpassword2'].value)
+        {
+          if(bcrypt.compareSync(this.form.controls['oldpassword'].value, this.oldpasswordHash))
+            this.formData.append('password', this.form.controls['newpassword'].value);
+          else{
+            this.error = "Old password incorrect."}}
+      else
+        this.error = "The new password fields must match."
+    }
+    else 
       this.error = "All password fields must be filled."
   }
   else
-  {this.User.password = this.oldpasswordHash;this.formData.append('Password', this.oldpasswordHash);this.formData.append('OldPasswordHash', this.oldpasswordHash);}
-  console.log(this.User);
+  {
+    this.formData.append('Password', this.oldpasswordHash);
+    this.formData.append('OldPasswordHash', this.oldpasswordHash);
+  }
 
   if(!this.error){
     this.service.saveUser(this.id, this.formData).subscribe((data)=>{
     console.log("Update successful");
-    this.section = 0;
+    this.cancel();
+    alert("Update successul");
     },
       error => {
         this.error="Email already taken";
@@ -214,7 +213,6 @@ cancel(){
   if(this.User.cv){
     var file = this.User.cv;//.split(',')[1];
     //file = "data:image/png;base64,".concat(file);
-    console.log(file);
     this.form.patchValue({cv: this.User.cv});
     this.CVpreview = this.sanitizer.bypassSecurityTrustResourceUrl(file);
   }

@@ -1,0 +1,214 @@
+<main class="main">
+    <div class="page-left">
+        <h1 style="font-style: italic;">Search results for "{{name}}"
+            <span id="search"></span>
+        </h1>
+        <script>
+            let name = "Andra"
+            document.getElementById("search").innerHTML = name;
+        </script>
+        <h2>Filters</h2>
+            
+        <button mat-button [ngClass]="{'selected': section == '1'}" (click)="sectionOne()"><i class="fa fa-globe" style="min-width:50px;"></i>All</button>
+
+        <button mat-button [ngClass]="{'selected': section == '2'}" (click)="sectionTwo()"> <i class="fa fa-institution" style="min-width:50px;"></i>Companies</button>
+
+        <button mat-button [ngClass]="{'selected': section == '3'}" (click)="sectionThree()"> <i class="fa fa-briefcase" style="min-width:50px;"></i>Jobs</button>
+
+        <button mat-button [ngClass]="{'selected': section == '4'}" (click)="sectionFour()"> <i class="fa fa-address-card-o" style="min-width:50px;"></i>People</button>
+    </div>
+    <div class="page-right">
+        <div *ngIf="section == 1">
+            <div class="container">
+                <h1>Companies</h1>
+                <div *ngIf="CompanyList.length > 0">
+                    <div *ngFor="let row of CompanyShortList">
+                        <div class="object">
+                        <div class="title">
+                            <a (click)="getCompanyDetails(row.id)">{{row.name}}</a>
+                        </div>
+                        <div class="row">
+                            <a><i class="fa fa-envelope" style="min-width:30px"></i>{{row.email}}</a>
+                        </div>
+                        <div class="row">
+                            <div *ngIf="row.address !=null">
+                                <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.address}} </a>
+                            </div>
+                            <div *ngIf="row.address ==null">
+                                <a><i class="fa fa-map-marker" style="min-width:30px"></i> - -</a>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div *ngIf="CompanyList.length > 3">
+                        <button mat-button class="button2" (click)="sectionTwo()">See all</button>
+                    </div>
+                </div>
+                <div *ngIf="CompanyList.length == 0">
+                    <h2> No companies to show.</h2>
+                </div>
+            </div>
+
+            <div class="container">
+                <h1>Jobs</h1>
+                <div *ngIf="JobList.length > 0">
+                    <div *ngFor="let row of JobShortList">
+                        <div class="object">
+                            <div class="title">
+                                <a (click)="getJobDetails(row.id)">{{row.jobTitle}}</a>
+                            </div>
+                            <div class="row">
+                                <div class="column">
+                                    <a><i class="fa fa-institution" style="min-width:50px;"></i>{{row.company.name}}</a>
+                                    <a><i class='fa fa-clock-o' style="min-width:50px;"></i>{{row.jobType}}</a>
+                                    <a><i class="fa fa-graduation-cap" style="min-width:50px"></i>{{row.experience}}</a>
+                                </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div *ngIf="JobList.length > 3">
+                        <button mat-button class="button2" (click)="sectionThree()">See all</button>
+                    </div>
+                </div>
+                <div *ngIf="JobList.length == 0">
+                    <h2> No jobs to show.</h2>
+                </div>
+            </div>
+
+
+            <div class="container">
+                <h1>People</h1>
+                <div *ngIf="UserList.length > 0">
+                    <div *ngFor="let row of UserShortList">
+                        <div class="object">
+                            <div class="row">
+                                <div class="column2" style="flex-basis: 20%; cursor: pointer">
+                                    <div *ngIf="row.photo != null">
+                                        <img (click)="getUserDetails(row.id)" src="{{row.photo}}" width="100" height="100" style="object-fit: cover;" />
+                                    </div>
+                                    <div *ngIf="row.photo == null">
+                                        <img (click)="getUserDetails(row.id)" src="../../../assets/images/profilePhoto.png" width="100" height="100" style="object-fit: cover;" />
+                                    </div>
+                                </div>
+                                <div class="column2" style="flex-basis: 70%;">
+                                    <div class="title">
+                                        <a (click)="getUserDetails(row.id)">{{row.firstName}} {{row.lastName}}</a>
+                                    </div>
+                                    <div *ngIf="row.occupation !=null">
+                                        <a style="width:100%;"><i class="fa fa-briefcase" style="min-width:30px"></i>{{row.occupation}}</a>
+                                    </div>
+                                    <div *ngIf="row.occupation ==null">
+                                        <a style="width:100%;"><i class="fa fa-briefcase" style="min-width:30px"></i> - -</a>
+                                    </div>
+                                    <div *ngIf="row.residence !=null">
+                                        <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.residence}} </a>
+                                    </div>
+                                    <div *ngIf="row.residence ==null">
+                                        <a><i class="fa fa-map-marker" style="min-width:30px"></i> - -</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="UserList.length > 3">
+                        <button mat-button class="button2" (click)="sectionFour()">See all</button>
+                    </div>
+                </div>
+                <div *ngIf="UserList.length == 0">
+                    <h2> No people to show.</h2>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="section == 2">
+            <div *ngIf="CompanyList.length > 0">
+                <div *ngFor="let row of CompanyList">
+                    <div class="object2">
+                        <div class="title2">
+                            <a (click)="getCompanyDetails(row.id)">{{row.name}}</a>
+                        </div>
+                        <div class="row">
+                            <a><i class="fa fa-envelope" style="min-width:30px"></i>{{row.email}}</a>
+                        </div>
+                        <div class="row">
+                            <div *ngIf="row.address !=null">
+                                <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.address}} </a>
+                            </div>
+                            <div *ngIf="row.address ==null">
+                                <a><i class="fa fa-map-marker" style="min-width:30px"></i> - -</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div *ngIf="CompanyList.length == 0">
+                    <h2 class="no"> No companies to show.</h2>
+                </div>
+        </div>
+
+
+        <div *ngIf="section == 3">
+            <div *ngIf="JobList.length > 0">
+                <div *ngFor="let row of JobList">
+                    <div class="object2">
+                        <div class="title">
+                            <a (click)="getJobDetails(row.id)">{{row.jobTitle}}</a>
+                        </div>
+                        <div class="row">
+                            <div class="column">
+                                <a><i class="fa fa-institution" style="min-width:50px;"></i>{{row.company.name}}</a>
+                                <a><i class='fa fa-clock-o' style="min-width:50px;"></i>{{row.jobType}}</a>
+                                <a><i class="fa fa-graduation-cap" style="min-width:50px"></i>{{row.experience}}</a>
+                            </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="JobList.length == 0">
+                <h2 class="no"> No jobs to show.</h2>
+            </div>
+        </div>
+
+
+        <div *ngIf="section == 4">
+            <div *ngIf="UserList.length > 0">
+                <div *ngFor="let row of UserList">
+                    <div class="object2">
+                        <div class="row">
+                            <div class="column2" style="flex-basis: 20%; cursor: pointer">
+                                <div *ngIf="row.photo != null">
+                                    <img (click)="getUserDetails(row.id)" src="{{row.photo}}" width="100" height="100" style="object-fit: cover;" />
+                                </div>
+                                <div *ngIf="row.photo == null">
+                                    <img (click)="getUserDetails(row.id)" src="../../../assets/images/profilePhoto.png" width="100" height="100" style="object-fit: cover;" />
+                                </div>
+                            </div>
+                            <div class="column2" style="flex-basis: 70%;">
+                                <div class="title">
+                                    <a (click)="getUserDetails(row.id)">{{row.firstName}} {{row.lastName}}</a>
+                                </div>
+                                <div *ngIf="row.occupation !=null">
+                                    <a style="width:100%;"><i class="fa fa-briefcase" style="min-width:30px"></i>{{row.occupation}}</a>
+                                </div>
+                                <div *ngIf="row.occupation ==null">
+                                    <a style="width:100%;"><i class="fa fa-briefcase" style="min-width:30px"></i> - -</a>
+                                </div>
+                                <div *ngIf="row.residence !=null">
+                                    <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.residence}} </a>
+                                </div>
+                                <div *ngIf="row.residence ==null">
+                                    <a><i class="fa fa-map-marker" style="min-width:30px"></i> - -</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="UserList.length == 0">
+                <h2 class="no"> No people to show.</h2>
+            </div>
+        </div>
+    </div>
+</main>

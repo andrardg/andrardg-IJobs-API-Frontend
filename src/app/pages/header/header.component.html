@@ -10,10 +10,8 @@
             <a mat-button class="button2" routerLink="/companies"> Companies </a>
             <a mat-button class="button2" routerLink="/jobs"> Jobs </a>
             <a mat-button class="button2" routerLink="/users"> People </a>
-            <div class="search">
-                <i class="fa fa-search"  aria-hidden="true"></i>
-                <input class="searchbar"  placeholder="Search.." name="search" type="text">
-            </div>
+            <i class="fa fa-search"></i>
+            <input class="searchbar"  placeholder="Search..." [(ngModel)]="search" type="text" (keydown)="searchData($event)">
                 
                 
         </span>
@@ -21,6 +19,7 @@
         <span class="middle-toolbar"></span>
 
         <span class="right-toolbar" [ngSwitch]="isAuthenticated()">
+            <h1 *ngSwitchCase="true" style="font-style: italic;">Hello, {{name}}!</h1>
             <button mat-raised-button class="button3" *ngSwitchCase="true" routerLink="/profile">Profile</button>
             <button mat-raised-button class="button3" *ngSwitchCase="true" (click)="logout()">Logout</button>
             <button mat-raised-button class="button3" *ngSwitchCase="false"  routerLink="/register">Join Now</button>

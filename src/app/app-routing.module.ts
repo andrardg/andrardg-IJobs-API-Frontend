@@ -13,6 +13,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { RegisterCompanyComponent } from './pages/register-company/register-company.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { SearchComponent } from './pages/search/search.component';
 import { UserEditComponent } from './pages/users/userEdit/user-edit.component';
 import { UsersComponent } from './pages/users/users.component';
 
@@ -38,6 +39,10 @@ const routes: Routes = [
     path: 'profile',
     component: ProfileComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'search/:search',
+    component: SearchComponent,
   },
   {
     path: 'users',

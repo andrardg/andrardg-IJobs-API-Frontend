@@ -6,9 +6,9 @@
     <div class="page-left">
         <div class="section" (click)="sectionOne()">
             <div class="row">
-                <div class="column">
-                    <h1>Title</h1>
-                    <h2>Company name</h2>
+                <div class="column" style="flex-basis: 90%;">
+                    <h1>About us</h1>
+                    <h2>Company name and profile photo</h2>
                 </div>
                 <div class="column" style="text-align: right;">
                     <i class='fa fa-angle-right' style='font-size:20px'></i>
@@ -19,7 +19,7 @@
 
         <div class="section" (click)="sectionTwo()">
             <div class="row">
-                <div class="column">
+                <div class="column" style="flex-basis: 90%;">
                     <h1>Account security</h1>
                     <h2>Email and password</h2>
                 </div>
@@ -32,7 +32,7 @@
 
         <div class="section" (click)="sectionThree()">
             <div class="row">
-                <div class="column">
+                <div class="column" style="flex-basis: 90%;">
                     <h1>Details</h1>
                     <h2>Description and address</h2>
                 </div>
@@ -45,7 +45,7 @@
 
         <div class="section" (click)="sectionFour()" *ngIf="admin">
             <div class="row">
-                <div class="column">
+                <div class="column" style="flex-basis: 90%;">
                     <h1>Access</h1>
                     <h2>Manage account validity</h2>
                 </div>
@@ -67,12 +67,26 @@
         <div class="edit">
             <div *ngIf="section == 1">
                 <form fxLayout="column" class="form" [formGroup]="form" (ngSubmit)="save()">
+                    <div class="column">
+                        <mat-form-field>
+                            <mat-label>Edit company name</mat-label>
+                            <input matInput placeholder="Name" formControlName="name">
+                        </mat-form-field>
 
-                    <mat-form-field>
-                        <mat-label>Edit company name</mat-label>
-                        <input matInput placeholder="name" formControlName="name">
-                    </mat-form-field>
-        
+                        <div class="row" style="height: 30%; padding-bottom:2rem">
+                            <div class="column2">
+                                <img src="{{form.controls['photo'].value}}" width="200" height="200" style="object-fit: cover;" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                                <i class="material-icons">add_a_photo</i>
+                                <label class="custom-file-upload">
+                                    <input type="file" accept=".jpg,.png,.jpeg" (change)="onPhotoChanged($event)"/>
+                                    Change Profile Picture 
+                                </label>
+                        </div>
+                    </div>
                     
                     <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
                     <div class="buttons">

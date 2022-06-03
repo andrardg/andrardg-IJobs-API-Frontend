@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CompaniesService } from 'app/pages/companies/companies.service';
+import { CompaniesService } from 'app/services/companies.service';
 import { AuthService } from 'app/services/auth.service';
-import { JobsService } from '../jobs.service';
+import { JobsService } from '../../../services/jobs.service';
 
 @Component({
   selector: 'app-job-details',
@@ -20,6 +20,7 @@ export class JobDetailsComponent implements OnInit {
     private activatedRoute:ActivatedRoute,
     private router:Router,
     private service: JobsService,
+    private companyService: CompaniesService,
     private authService: AuthService) { }
 
   ngOnInit(): void {
@@ -39,7 +40,7 @@ export class JobDetailsComponent implements OnInit {
       
     console.log(data);
       this.Job=data;
-      this.service.getCompany(data.companyId).subscribe(data2 =>{
+      this.companyService.getCompanyDetails(data.companyId).subscribe(data2 =>{
         this.Job.Company = data2;
       })
     });
