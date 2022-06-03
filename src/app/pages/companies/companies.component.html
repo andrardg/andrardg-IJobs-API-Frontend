@@ -4,14 +4,15 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 <body class="main">
-<div class="page-left">
+<div class="page-left">  
+  <div class="verify" *ngIf="admin">
+    <button mat-stroked-button *ngIf="verify == false" (click)="verifyTrue()">Verify pending company accounts</button>
+    <button mat-stroked-button *ngIf="verify == true" (click)="verifyFalse()">Done</button>
+  </div>
 </div>
 
 <div class="page-right">
-  <div class="verify" *ngIf="admin">
-    <button mat-raised-button *ngIf="verify == false" (click)="verifyTrue()">Verify pending company accounts</button>
-    <button mat-raised-button *ngIf="verify == true" (click)="verifyFalse()">Done</button>
-  </div>
+
   <div *ngFor="let row of CompanyList">
     <div class="company" *ngIf="(row.verifiedAccount == true && verify == false) || (row.verifiedAccount == false && verify == true)" (click)="getCompanyDetails(row.id)">
       <div class="row">

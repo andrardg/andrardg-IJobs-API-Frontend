@@ -4,6 +4,7 @@ import { CompaniesService } from '../../../../services/companies.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { AuthService } from 'app/services/auth.service';
+import { PreviousRouteService } from 'app/services/previous-route.service';
 
 @Component({
   selector: 'app-company-detail',
@@ -16,18 +17,22 @@ export class CompanyDetailComponent implements OnInit {
   public id: any;
   public aboutSection:boolean = true;
   editDeleteRights : boolean = false;
+  showPrevious: boolean = false;
 
   constructor(
     private activatedRoute:ActivatedRoute,
     private router:Router,
     private service: CompaniesService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private previousRouteService:PreviousRouteService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: any) => {
       this.id = params['id'];
       console.log(this.id);
     });
+    if(this.previousRouteService.getPreviousUrl() != '/companies' && sessionStorage.getItem('jobId')!=null)
+      this.showPrevious = true;
     this.getCompanyDetails(this.id);
   }
 
@@ -43,6 +48,7 @@ export class CompanyDetailComponent implements OnInit {
   }
   getJobDetails(id: any){
     console.log(id);
+    sessionStorage.setItem('companyId', this.id);
     this.router.navigate(['/jobs', id]);
   }
 
@@ -51,7 +57,14 @@ export class CompanyDetailComponent implements OnInit {
     this.router.navigate(['/companies/edit', id]);
   }
   back(){
-    this.router.navigate(['/companies']);
+    sessionStorage.removeItem('companyId');
+    this.router.navigate(['jobs/' + sessionStorage.getItem('jobId')]);
+    
+    //if(previous.indexOf('jobs') != -1 || (previous2.indexOf('companies')!= -1 && previous!.indexOf('edit')!= -1))
+      //this.previousRouteService.router.navigateByUrl(previous);
+      
+    //else
+    //  this.router.navigate(['companies']);
   }
   logout() {
     this.authService.logout();

@@ -7,6 +7,7 @@ import { CompaniesService } from '../../../../services/companies.service';
 import * as bcrypt from 'bcryptjs'
 import { JobsComponent } from 'app/pages/jobs/jobs.component';
 import { JobsService } from 'app/services/jobs.service';
+import { PreviousRouteService } from 'app/services/previous-route.service';
 
 @Component({
   selector: 'app-company-edit',
@@ -41,7 +42,8 @@ export class CompanyEditComponent implements OnInit {
     private router:Router,
     private service: CompaniesService,
     private authService: AuthService,
-    private jobsService: JobsService) { }
+    private jobsService: JobsService,
+    private previousRouteService: PreviousRouteService) { }
 
   ngOnInit(): void {
 
@@ -61,6 +63,13 @@ export class CompanyEditComponent implements OnInit {
       console.log(data);
       this.oldpasswordHash = data.passwordHash;
     });
+  }
+  goBack(id: any){
+    let previous = this.previousRouteService.getPreviousUrl();
+    console.log(previous);
+    if(previous)
+      //this.previousRouteService.router.navigateByUrl(previous);
+    this.router.navigate([previous]);
   }
   password() {
     this.hide = !this.hide;

@@ -23,6 +23,8 @@
               </div>
         </div>
         <button *ngIf="editDeleteRights" mat-stroked-button style="margin-left:20%;" (click)="editCompany(Company.id)">Manage Account</button>
+        <br> <br>
+        <button mat-stroked-button *ngIf="showPrevious" style="margin-left:20%;" (click)="back()">Back</button>
     </div>
     <div class="page-right">
         <div class="details">

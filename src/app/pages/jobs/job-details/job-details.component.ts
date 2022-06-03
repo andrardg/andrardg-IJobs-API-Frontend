@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CompaniesService } from 'app/services/companies.service';
 import { AuthService } from 'app/services/auth.service';
 import { JobsService } from '../../../services/jobs.service';
+import { PreviousRouteService } from 'app/services/previous-route.service';
 
 @Component({
   selector: 'app-job-details',
@@ -15,19 +16,23 @@ export class JobDetailsComponent implements OnInit {
   Company: any;
   public id: any;
   editDeleteRights : boolean = false;
+  showPrevious: boolean = false;
 
   constructor(
     private activatedRoute:ActivatedRoute,
     private router:Router,
     private service: JobsService,
     private companyService: CompaniesService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private previousRouteService:PreviousRouteService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: any) => {
       this.id = params['id'];
       console.log(this.id);
     });
+    if(this.previousRouteService.getPreviousUrl() != '/jobs'  && sessionStorage.getItem('companyId')!=null)
+      this.showPrevious = true;
     this.getJobDetails(this.id);
   }
 
@@ -47,6 +52,7 @@ export class JobDetailsComponent implements OnInit {
   }
   getCompanyDetails(id: any){
     console.log(id);
+    sessionStorage.setItem('jobId', this.id);
     this.router.navigate(['/companies', id]);
   }
   removeJob(id:any){
@@ -61,7 +67,8 @@ export class JobDetailsComponent implements OnInit {
     this.router.navigate(['/jobs/edit', id]);
   }
   back(){
-    this.router.navigate(['/jobs']);
+    sessionStorage.removeItem('jobId');
+    this.router.navigate(['companies/' + sessionStorage.getItem('companyId')]);
   }
   logout() {
     this.authService.logout();
