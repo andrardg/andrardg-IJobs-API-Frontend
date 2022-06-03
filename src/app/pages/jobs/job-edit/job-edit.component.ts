@@ -27,6 +27,7 @@ export class JobEditComponent implements OnInit {
                 salary: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
                 jobType: new FormControl('', [Validators.required]),
                 experience: new FormControl('', [Validators.required]),
+                address: new FormControl('', [Validators.required]),
                 open: new FormControl('', [Validators.required]),
                 companyId: new FormControl(''),
               });
@@ -55,9 +56,10 @@ export class JobEditComponent implements OnInit {
       
       this.form.patchValue({jobTitle: this.Job.jobTitle});
       this.form.patchValue({description: this.Job.description});
-      this.form.patchValue({salary: this.Job.salary});
       this.form.patchValue({jobType: this.Job.jobType});
+      this.form.patchValue({address: this.Job.address});
       this.form.patchValue({experience: this.Job.experience});
+      this.form.patchValue({salary: this.Job.salary});
       if(this.Job.open == true)
         this.form.patchValue({open: "Yes"});
         else
@@ -81,19 +83,22 @@ export class JobEditComponent implements OnInit {
       this.error = 'You cannot register empty fields. ';
       return;
     }
-    this.Job.jobTitle = this.form.controls['jobTitle'].value;
-    this.Job.description = this.form.controls['description'].value;
-    this.Job.salary = this.form.controls['salary'].value;
-    this.Job.jobType = this.form.controls['jobType'].value;
-    this.Job.experience = this.form.controls['experience'].value;
+    this.Job.JobTitle = this.form.controls['jobTitle'].value.charAt(0).toUpperCase() + this.form.controls['jobTitle'].value.slice(1);
+    this.Job.Description = this.form.controls['description'].value.charAt(0).toUpperCase() + this.form.controls['description'].value.slice(1);
+    this.Job.Salary = this.form.controls['salary'].value;
+    this.Job.JobType = this.form.controls['jobType'].value;
+    this.Job.Experience = this.form.controls['experience'].value;
+    this.Job.Address = this.form.controls['address'].value.charAt(0).toUpperCase() + this.form.controls['address'].value.slice(1);
     if(this.form.controls['open'].value == "Yes")
       this.Job.open = true;
     else
       this.Job.open = false;
-    this.Job.companyId = this.form.controls['companyId'].value;
+    if(this.admin)
+      this.Job.companyId = this.form.controls['companyId'].value;
     console.log(this.Job);
     this.service.saveJob(this.Job).subscribe((data)=>{
       console.log("Update successful");
+      alert('Updated successfully');
     },
     error => {
       this.error=error;

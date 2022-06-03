@@ -29,20 +29,20 @@ export class JobDetailsComponent implements OnInit {
       console.log(this.id);
     });
     this.getJobDetails(this.id);
-    if (sessionStorage.getItem("Company") != null)
-      var company = JSON.parse(sessionStorage.getItem('Company') || "")
-    if(sessionStorage.getItem('Admin') || (company && company.id == this.Company.id))
-      this.editDeleteRights = true;
   }
 
   getJobDetails(id:any){
     this.service.getJobDetails(id).subscribe(data=>{
       
     console.log(data);
-      this.Job=data;
-      this.companyService.getCompanyDetails(data.companyId).subscribe(data2 =>{
-        this.Job.Company = data2;
+    this.Job=data;
+    this.companyService.getCompanyDetails(data.companyId).subscribe(data2 =>{
+      this.Job.Company = data2;
       })
+    if (sessionStorage.getItem("Company") != null)
+      var company = JSON.parse(sessionStorage.getItem('Company') || "")
+    if(sessionStorage.getItem('Admin') || (company!=null && company.id == data.companyId))
+      this.editDeleteRights = true;
     });
   }
   getCompanyDetails(id: any){

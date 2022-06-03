@@ -50,13 +50,16 @@ export class RegisterComponent implements OnInit {
     this.error = false;
     this.user.Email = this.myForm.controls["email"].value;
     this.user.Password = this.myForm.controls["password"].value;
-    this.user.FirstName = this.myForm.controls["firstName"].value;
-    this.user.LastName = this.myForm.controls["lastName"].value;
+    var firstName = this.myForm.controls["firstName"].value;
+    this.user.FirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+    var lastName = this.myForm.controls["lastName"].value;
+    this.user.LastName = lastName.charAt(0).toUpperCase() + lastName.slice(1);
 
     console.log(this.user);
     //this.router.navigate(['/login']);
      this.authService.register(this.user).subscribe((data)=>{
        console.log("success");
+       alert('Registered successfully');
      },
      error => {
        this.error = error;

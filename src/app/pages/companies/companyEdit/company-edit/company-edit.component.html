@@ -4,6 +4,9 @@
 
 <main class="main">
     <div class="page-left">
+        <div style="height:3rem">
+            <h3 *ngIf="Company.verifiedAccount == false">Your account has not been verified yet!</h3>
+        </div>
         <div class="section" (click)="sectionOne()">
             <div class="row">
                 <div class="column" style="flex-basis: 90%;">
@@ -43,7 +46,19 @@
               </div>
         </div>
 
-        <div class="section" (click)="sectionFour()" *ngIf="admin">
+        <div class="section" (click)="sectionFour()">
+            <div class="row">
+                <div class="column" style="flex-basis: 90%;">
+                    <h1>Jobs</h1>
+                    <h2>Manage posted jobs</h2>
+                </div>
+                <div class="column" style="text-align: right;">
+                    <i class='fa fa-angle-right' style='font-size:20px'></i>
+                </div>
+          
+              </div>
+        </div>
+        <div class="section" (click)="sectionFive()" *ngIf="admin">
             <div class="row">
                 <div class="column" style="flex-basis: 90%;">
                     <h1>Access</h1>
@@ -70,7 +85,7 @@
                     <div class="column">
                         <mat-form-field>
                             <mat-label>Edit company name</mat-label>
-                            <input matInput placeholder="Name" formControlName="name">
+                            <input matInput placeholder="Name" style="text-transform: capitalize;" formControlName="name">
                         </mat-form-field>
 
                         <div class="row" style="height: 30%; padding-bottom:2rem">
@@ -82,13 +97,16 @@
                         <div class="row">
                                 <i class="material-icons">add_a_photo</i>
                                 <label class="custom-file-upload">
-                                    <input type="file" accept=".jpg,.png,.jpeg" (change)="onPhotoChanged($event)"/>
+                                    <input type="file" accept=".jpg,.png,.jpeg,.gif" (change)="onPhotoChanged($event)"/>
                                     Change Profile Picture 
                                 </label>
                         </div>
                     </div>
                     
-                    <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
+                    <div style="height:3rem; padding-top:1rem;">
+                        <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
+                    </div>
+                    
                     <div class="buttons">
                         <button mat-raised-button (click)="cancel()" class ="button center-of-screen">Cancel</button>
                         <button mat-raised-button type="submit" class ="submit center-of-screen">Update</button>
@@ -103,7 +121,7 @@
                         <mat-label>Email</mat-label>
                         <input matInput placeholder="email" formControlName="email">
                     </mat-form-field>
-                    <mat-form-field>
+                    <mat-form-field *ngIf="!admin">
                         <mat-label>Old Password</mat-label>
                         <input matInput type="password" placeholder="oldpassword" formControlName="oldpassword">
                     </mat-form-field>
@@ -111,7 +129,7 @@
                         <mat-label>New Password</mat-label>
                         <input matInput type="password" placeholder="newpassword" formControlName="newpassword">
                     </mat-form-field>
-                    <mat-form-field>
+                    <mat-form-field *ngIf="!admin">
                         <mat-label>Repeat New Password</mat-label>
                         <input matInput type="password" placeholder="newpassword2" formControlName="newpassword2">
                     </mat-form-field>
@@ -129,12 +147,12 @@
 
                     <mat-form-field>
                         <mat-label>Description</mat-label>
-                            <textarea matInput rows="10" id="description" placeholder="Try to add all the essential details." formControlName="description">
+                            <textarea matInput rows="10" id="description" style="text-transform: capitalize;" placeholder="Try to add all the essential details." formControlName="description">
                             </textarea>
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Address</mat-label>
-                        <input matInput placeholder="address" formControlName="address">
+                        <input matInput placeholder="address" style="text-transform: capitalize;" formControlName="address">
                     </mat-form-field>
         
                     <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
@@ -146,6 +164,40 @@
             </div>
 
             <div *ngIf="section == 4">
+                <div style="height:3rem;">
+                    <div *ngIf="Company.verifiedAccount == true">
+                        <a mat-button class="button1" (click)="create()">Post a new job</a>
+                    </div>
+                </div>
+                <div *ngIf="!Company.jobs.length">
+                    <h2 style="text-align:left;">No jobs to show yet.</h2>
+                </div>
+                <div *ngFor="let row of Company.jobs">
+                    <div class="job" (click)="getJobDetails(row.id)">
+                        <div class="row">
+                            <div class="column" style="padding-top:0.5rem">
+                                <div *ngIf="Company.photo != null">
+                                    <img src="{{Company.photo}}" width="120" height="120" style="object-fit: cover;" />
+                                </div>
+                                <div *ngIf="Company.photo == null">
+                                    <img src="../../../assets/images/companyProfilePhoto.png" width="120" height="120" style="object-fit: cover;" />
+                                </div>
+                            </div>
+                            <div class="column"style="flex-basis: 70%; margin-botttom:15px">
+                                <div class="title2">
+                                  <a>{{row.jobTitle}}</a>
+                                </div>
+                                <a><i class="fa fa-clock-o" style="min-width:30px"></i>{{row.jobType}}</a>
+                                <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.address}}</a>
+                                <a *ngIf="row.open == true"><i class="fa fa-bullhorn" style="min-width:30px"></i>Recruiting</a>
+                                <a *ngIf="row.open == false"><i class="fa fa-check-square-o" style="min-width:30px"></i>Position filled</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="section == 5">
                 <form fxLayout="column" class="form" [formGroup]="form" (ngSubmit)="save()">
                     <mat-label>Is this account a valid company account?</mat-label>
                     <div class="input" matInput>

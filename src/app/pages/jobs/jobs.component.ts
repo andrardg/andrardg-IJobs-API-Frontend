@@ -13,10 +13,10 @@ import { JobsService } from '../../services/jobs.service';
 export class JobsComponent implements OnInit {
 
   JobList:any=[];
-  columnsToDisplay : string[] = ['JobTitle', 'Company.Name', 'Company.Address', 'Salary', 'JobType', 'Options'];
+  //columnsToDisplay : string[] = ['JobTitle', 'Company.Name', 'Company.Address', 'Salary', 'JobType', 'Options'];
   dataSource = new MatTableDataSource<Job>(this.JobList);
   createRights = sessionStorage.getItem('Admin') || (sessionStorage.getItem('Company') && sessionStorage.getItem('role') ==  '2');
-  
+  admin = sessionStorage.getItem('Admin');
 
   deleteProgress = 0;
 

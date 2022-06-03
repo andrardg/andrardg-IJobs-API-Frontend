@@ -9,7 +9,7 @@
 
 <form [formGroup]="form" (ngSubmit)="save()" class="form">
     <div class = "primary">
-        <h1 class="label" for="open">Is the position still vacant?</h1>
+        <h1 class="label" for="open">Are you still recruiting for this position?</h1>
 
         <div class="panel-body">
             <div class="form-group">
@@ -30,7 +30,7 @@
             <div class="form-group">
                 <h1 class="label" for="jobTitle">Job Title</h1>
                 <div class="input">
-                    <input id="jobTitle" formControlName="jobTitle" type="text" class="form-control">
+                    <input id="jobTitle" style="text-transform: capitalize;" formControlName="jobTitle" type="text" class="form-control">
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@
             <div class="form-group">
                 <h1 class="label" for="description">The Job Description</h1>
                 <div class="input">
-                    <textarea rows="10" id="description" placeholder="Try to add all the essential details." formControlName="description">
+                    <textarea rows="10" id="description" style="text-transform: capitalize;" placeholder="Try to add all the essential details." formControlName="description">
                     </textarea>
                 </div>
             </div>
@@ -50,15 +50,7 @@
 
 
     <div class = "primary">
-        <div class="panel-body">
-            <div class="form-group">
-                <h1 class="label">Details</h1>
-                <p class="label2" for="salary">Salary</p>
-                <div class="input">
-                    <input id="salary" formControlName="salary" type="text" class="form-control">
-                </div>
-            </div>
-        </div>
+        <h1 class="label">Details</h1>
 
         <div class="panel-body">
             <div class="form-group">
@@ -76,12 +68,30 @@
 
         <div class="panel-body">
             <div class="form-group">
-                <p class="label2" for="experience">Experience</p>
+                <p class="label2" for="address">Office Address</p>
+                <div class="input">
+                    <input id="address" style="text-transform: capitalize;" formControlName="address" type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <p class="label2" for="experience">Experience Level</p>
                 <select id="experience" name="experience" formControlName= "experience" class="select-picker">
                     <option *ngFor = "let item of Experience" [value]="item">
                         {{item}}
                     </option>
                 </select>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <p class="label2" for="salary">Salary</p>
+                <div class="input">
+                    <input id="salary" formControlName="salary" type="text" class="form-control" numbersOnly>
+                </div>
             </div>
         </div>
     </div>

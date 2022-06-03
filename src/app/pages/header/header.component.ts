@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
 
@@ -8,21 +8,20 @@ import { AuthService } from 'app/services/auth.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  public authenticated?: boolean;
   search: string = '';
-  name: string = '';
+  name:any;
   constructor(
     private router:Router,
-    private authService: AuthService) { }
+    private authService: AuthService) { 
+    }
 
   ngOnInit(): void {
-    if(sessionStorage.getItem('Admin'))
-      this.name = JSON.parse(sessionStorage.getItem('Admin') || "").firstName;
-    if (sessionStorage.getItem("Company") != null)
-    this.name = JSON.parse(sessionStorage.getItem('Company') || "").name;
-    if (sessionStorage.getItem("User") != null)
-    this.name = JSON.parse(sessionStorage.getItem('User') || "").firstName;
-
+    let name = sessionStorage.getItem('name');
+    if(name != null)
+      this.name = name;
+    this.authService.name.subscribe(data =>{
+        this.name = data;
+      })
   }
   public isAuthenticated(): boolean {
     return this.authService.isAuthenticated();

@@ -20,6 +20,7 @@ export class JobCreateComponent implements OnInit {
     Salary: 0,
     JobType: '',
     Experience: '',
+    Address: '',
     Open: false,
     CompanyId: '',
     Company: null//{Id:'', Name:'', Email:'', Password:'', Role:'2', verifiedAccount:true}
@@ -35,7 +36,7 @@ export class JobCreateComponent implements OnInit {
                 salary: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
                 jobType: new FormControl('', [Validators.required]),
                 experience: new FormControl('', [Validators.required]),
-                open: new FormControl('0'),
+                address: new FormControl('', [Validators.required]),
                 companyId: new FormControl(''),
               });
               
@@ -66,12 +67,13 @@ export class JobCreateComponent implements OnInit {
       return;
     }
     
-    this.Job.JobTitle = this.form.controls['jobTitle'].value;
-    this.Job.Description = this.form.controls['description'].value;
+    this.Job.JobTitle = this.form.controls['jobTitle'].value.charAt(0).toUpperCase() + this.form.controls['jobTitle'].value.slice(1);
+    this.Job.Description = this.form.controls['description'].value.charAt(0).toUpperCase() + this.form.controls['description'].value.slice(1);
     this.Job.Salary = this.form.controls['salary'].value;
     this.Job.JobType = this.form.controls['jobType'].value;
     this.Job.Experience = this.form.controls['experience'].value;
-    this.Job.Open = ('true' == (this.form.controls['open'].value));
+    this.Job.Address = this.form.controls['address'].value.charAt(0).toUpperCase() + this.form.controls['address'].value.slice(1);
+    this.Job.Open = true;
     if (sessionStorage.getItem("Admin") != null)
     this.Job.CompanyId = this.form.controls['companyId'].value;
     if (sessionStorage.getItem("Company") != null){
@@ -83,6 +85,7 @@ export class JobCreateComponent implements OnInit {
     
     this.service.createJob(this.Job).subscribe((data)=>{
        console.log("Created successfully");
+       alert("Created successfully");
      },
             error => {
               this.error=error;

@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { lastValueFrom } from 'rxjs';
-import { User } from 'app/interfaces/user';
 import { AuthService } from 'app/services/auth.service';
-import { Company } from 'app/interfaces/company';
 import { Account } from 'app/interfaces/account';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-login',
@@ -39,13 +36,14 @@ export class LoginComponent implements OnInit {
 
     if (this.validateEmail(this.account.Email)) {  
     
-
         this.authService.loginCompany(this.account).subscribe(async data => {
           sessionStorage.setItem('token', data.token);
           sessionStorage.setItem('role', data.role);
           sessionStorage.setItem('id', data.id);
           
           sessionStorage.setItem('Company', JSON.stringify(data));
+          this.authService.name.next(data.name);
+          sessionStorage.setItem('name', data.name);
           console.log(JSON.parse(sessionStorage.getItem('Company') || ""))
           this.router.navigate(['/dashboard']);
           },
@@ -53,23 +51,26 @@ export class LoginComponent implements OnInit {
             this.error = 'Incorrect email or password';
           },);
         
-          this.authService.login(this.account).subscribe(async data => {
-            sessionStorage.setItem('token', data.token);
-            sessionStorage.setItem('role', data.role);
-            
-            if(data.role == '0')
-              {
-                sessionStorage.setItem('Admin', JSON.stringify(data));
-              }
-            else if(data.role == '1')
-              {
-                sessionStorage.setItem('User', JSON.stringify(data));
-              }
-              this.router.navigate(['/dashboard']);
-            },
-            error => {
-              this.error = 'Incorrect email or password';
-            },);
+        this.authService.login(this.account).subscribe(async data => {
+          sessionStorage.setItem('token', data.token);
+          sessionStorage.setItem('role', data.role);
+          
+          if(data.role == '0')
+            {
+              sessionStorage.setItem('Admin', JSON.stringify(data));
+            }
+          else if(data.role == '1')
+            {
+              sessionStorage.setItem('User', JSON.stringify(data));
+            }
+            this.authService.name.next(data.firstName);
+            sessionStorage.setItem('name', data.firstName);
+            console.log(data.firstName);
+            this.router.navigate(['/dashboard']);
+          },
+          error => {
+            this.error = 'Incorrect email or password';
+          },);
     
     }
     else {

@@ -1,8 +1,12 @@
 export interface User {
-  //Id:string;
   FirstName?:string;
   LastName?:string;
   Email:string;
   Password:string;
-  Role:string;
+  Role?:string;
+  Residence?:string;
+  Occupation?:string;
+  Studies?:string;
+  CV?:string;
+  Photo?:string;
 }

@@ -44,15 +44,18 @@ export class RegisterCompanyComponent implements OnInit {
     }
     
     this.error = false;
-    this.company.Name = this.myForm.controls["name"].value;
+    var name = this.myForm.controls["name"].value;
+    this.company.Name = name.charAt(0).toUpperCase() + name.slice(1);
     this.company.Email = this.myForm.controls["email"].value;
-    this.company.Address = this.myForm.controls["address"].value;
+    var address = this.myForm.controls["address"].value;
+    this.company.Address = address.charAt(0).toUpperCase() + address.slice(1);
     this.company.Password = this.myForm.controls["password"].value;
 
     console.log(this.company);
     //this.router.navigate(['/login']);
      this.authService.registerCompany(this.company).subscribe((data)=>{
        console.log("success");
+       alert('Registered successfully');
      },
      error => {
        this.error = error;

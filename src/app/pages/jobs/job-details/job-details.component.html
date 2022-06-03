@@ -12,16 +12,25 @@
 <div class="primary" style="cursor: pointer;"  (click)="getCompanyDetails(Job.companyId)">
     <mat-card class="example-card">
         <h2>Company</h2>
-        <mat-card-content>
-            <div>
-                {{Job.Company.name}}
+        <div class="row" style="padding-left:2rem;">
+            <div class="column">
+              <div *ngIf="Job.Company.photo != null">
+                  <img (click)="getCompanyDetails(Company.id)" src="{{Job.Company.photo}}" width="150" height="150" style="object-fit: cover;" />
+              </div>
+              <div *ngIf="Job.Company.photo == null">
+                  <img (click)="getCompanyDetails(Company.id)" src="../../../assets/images/companyProfilePhoto.png" width="150" height="150" style="object-fit: cover;" />
+              </div>
             </div>
-        </mat-card-content>
-        <mat-card-content>
-            <div>
-                {{Job.Company.address}}
+    
+    
+            <div class="column"style="flex-basis: 50%;">
+              <div class="title">
+                <a>{{Job.Company.name}}</a>
+              </div>
+              <a><i class="fa fa-envelope" style="min-width:30px"></i>{{Job.Company.email}}</a>
+              <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{Job.Company.address}}</a>
             </div>
-        </mat-card-content>
+          </div>
     </mat-card>
 </div>
 
@@ -30,7 +39,7 @@
         <h2>Job Description</h2>
         <mat-card-content>
             <div>
-                {{Job.description}}
+                <a>{{Job.description}}</a>
             </div>
         </mat-card-content>
     </mat-card>
@@ -44,35 +53,43 @@
         </mat-card-header>
         <mat-card-content>
             <div>
-                {{Job.jobType}}
+                <a><i class="fa fa-clock-o" style="min-width:30px"></i>{{Job.jobType}}</a>
             </div>
         </mat-card-content>
         <mat-card-header>
-            <mat-card-title>Job Experience</mat-card-title>
+            <mat-card-title>Office Address</mat-card-title>
         </mat-card-header>
         <mat-card-content>
             <div>
-                {{Job.experience}}
+                <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{Job.address}}</a>
             </div>
         </mat-card-content>
         <mat-card-header>
-            <mat-card-title>Job Salary</mat-card-title>
+            <mat-card-title>Experience Level</mat-card-title>
         </mat-card-header>
         <mat-card-content>
             <div>
-                {{Job.salary}}
+                <a><i class="fa fa-graduation-cap" style="min-width:30px"></i>{{Job.experience}}</a>
             </div>
         </mat-card-content>
         <mat-card-header>
-            <mat-card-title>Vacant Position</mat-card-title>
+            <mat-card-title>Salary</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-            <div *ngIf="Job.open; else notOpen">
-                Yes
+            <div>
+                <a><i class="fa fa-money" style="min-width:30px"></i>{{Job.salary | currency: 'EUR':true:'1.0-0'}}</a>
             </div>
-            <ng-template #notOpen>
-                  No
-              </ng-template>
+        </mat-card-content>
+        <mat-card-header>
+            <mat-card-title>Availability</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div *ngIf="Job.open == true">
+                <a><i class="fa fa-bullhorn" style="min-width:30px"></i>Recruiting</a>
+            </div>
+            <div *ngIf="Job.open == false">
+                <a><i class="fa fa-check-square-o" style="min-width:30px"></i>Position filled</a>
+            </div>
         </mat-card-content>
     </mat-card>
 </div>

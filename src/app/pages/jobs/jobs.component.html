@@ -14,21 +14,37 @@
 </div>
 <div *ngFor="let row of JobList">
   
-  <div class="job" (click)="getJobDetails(row.id)">
-    <div class="title">
-      <a>{{row.jobTitle}}</a>
-    </div>
+  <div class="job" *ngIf="(row.company.verifiedAccount == true && row.open == true && !admin) || admin" (click)="getJobDetails(row.id)">
     <div class="row">
-      <div class="column">
-        <a><i class="fa fa-institution" style="min-width:50px;"></i>{{row.company.name}}</a>
-        <a><i class='fa fa-clock-o' style="min-width:50px;"></i>{{row.jobType}}</a>
+      <div class="column" style="flex-basis: 20%;">
+        <div *ngIf="row.company.photo != null">
+          <img src="{{row.photo}}" width="150" height="150" style="object-fit: cover;" />
+        </div>
+        <div *ngIf="row.company.photo == null">
+            <img src="../../../assets/images/companyProfilePhoto.png" width="150" height="150" style="object-fit: cover;" />
+        </div>
       </div>
 
-      <div class="column" style="color:rgb(110, 110, 110);">
-        <a><i class="fa fa-map-marker" style="min-width:30px"></i>Location:  {{row.address}}</a>
-        <a><i class="fa fa-money" style="min-width:30px"></i>Salary:    {{row.salary | currency: 'EUR':true:'1.0-0'}} </a>
+      <div class="column" style="flex-basis: 70%;">
+        <div class="title">
+          <a>{{row.jobTitle}}</a>
+        </div>
+        <div class="row">
+          <div class="column">
+            <a><i class="fa fa-institution" style="min-width:50px;"></i>{{row.company.name}}</a>
+            <a><i class='fa fa-clock-o' style="min-width:50px;"></i>{{row.jobType}}</a>
+          </div>
+    
+          <div class="column" style="color:rgb(110, 110, 110);">
+            <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.address}}</a>
+            <a><i class="fa fa-graduation-cap" style="min-width:30px"></i>{{row.experience}} </a>
+          </div>
+        </div>
       </div>
     </div>
+
+    
+
     
 
     

@@ -14,7 +14,7 @@ import { Observable, Subscriber } from 'rxjs';
 })
 export class UserEditComponent implements OnInit {
   User:any;
-  admin = sessionStorage.getItem('Admin');
+  admin = JSON.parse(sessionStorage.getItem('Admin') || "")
   noCV: boolean = false;
   public id: any; 
   CVpreview :any;
@@ -112,7 +112,7 @@ save2(event:any){
   }
 }
 save(){
-  if(this.form.invalid)
+  if(this.form.invalid || this.error)
   {this.error = "You have invalid fields."; console.log(this.form);
   console.log(this.error);}
   else{
@@ -120,11 +120,11 @@ save(){
 
   //fetch data back
    this.formData.append('Id', this.id);
-   this.formData.append('FirstName', this.form.controls['firstName'].value);
-   this.formData.append('LastName', this.form.controls['lastName'].value);
-   this.formData.append('Occupation', this.form.controls['occupation'].value);
-   this.formData.append('Residence', this.form.controls['residence'].value);
-   this.formData.append('Studies', this.form.controls['studies'].value);
+   this.formData.append('FirstName', this.form.controls['firstName'].value.charAt(0).toUpperCase() + this.form.controls['firstName'].value.slice(1));
+   this.formData.append('LastName', this.form.controls['lastName'].value.charAt(0).toUpperCase() + this.form.controls['lastName'].value.slice(1));
+   this.formData.append('Occupation', this.form.controls['occupation'].value.charAt(0).toUpperCase() + this.form.controls['occupation'].value.slice(1));
+   this.formData.append('Residence', this.form.controls['residence'].value.charAt(0).toUpperCase() + this.form.controls['residence'].value.slice(1));
+   this.formData.append('Studies', this.form.controls['studies'].value.charAt(0).toUpperCase() + this.form.controls['studies'].value.slice(1));
    this.formData.append('Email', this.form.controls['email'].value);
    this.formData.append('OldPasswordHash', this.oldpasswordHash);
    if(this.form.controls['photo'].value != "../../../assets/images/profilePhoto.png") //photo exists
@@ -137,8 +137,8 @@ save(){
   
   
   if(this.section == 3){
-
-    if(this.form.controls['newpassword'].value && this.form.controls['newpassword2'].value && this.form.controls['oldpassword'].value)
+    if(!this.admin || this.User.id == this.admin.id){
+      if(this.form.controls['newpassword'].value && this.form.controls['newpassword2'].value && this.form.controls['oldpassword'].value)
     {
       if(this.form.controls['newpassword'].value == this.form.controls['newpassword2'].value)
         {
@@ -151,6 +151,14 @@ save(){
     }
     else 
       this.error = "All password fields must be filled."
+    }
+    else if(this.admin){
+      if(this.form.controls['newpassword'].value)
+        this.formData.append('password', this.form.controls['newpassword'].value);
+      else
+      this.error = "All fields must be filled."
+    }
+    
   }
   else
   {
@@ -160,9 +168,9 @@ save(){
 
   if(!this.error){
     this.service.saveUser(this.id, this.formData).subscribe((data)=>{
-    console.log("Update successful");
+    console.log("Updated successfully");
     this.cancel();
-    alert("Update successul");
+    alert("Updated successully");
     },
       error => {
         this.error="Email already taken";
@@ -241,25 +249,36 @@ removeUser(id:any){
   onPhotoChanged(event:any){
   var file: File;
   file = <File>event.target.files[0];
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = () =>{ 
-    this.form.patchValue({photo: reader.result});
+  console.log(file);
+  if(file.type != 'image/jpg' && file.type != 'image/jpeg' &&file.type != 'image/png' &&file.type != 'image/gif')
+    this.error = 'You can only upload .jpg, .jpeg, .png and .gif files for your profile photo.';
+  else
+    {
+      this.error = '';
+      console.log(file);
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () =>{ 
+      this.form.patchValue({photo: reader.result});
+    }
   }
 }
 onCvChanged(event:any){
 
   var file: File;
   file = <File>event.target.files[0];
+  if(file.type != 'application/pdf')
+    this.error = 'You can only upload .pdf files for your CV.';
   //this.formData.append('CV', file, file.name);
   //this.User.cv =  file;
   //console.log(file)
-
-const reader = new FileReader();
+else{
+  const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onload = () =>{
     this.form.patchValue({cv: reader.result});
     this.CVpreview = this.sanitizer.bypassSecurityTrustResourceUrl(this.form.controls['cv'].value)
   }
+}
 }
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
-import { PrivateService } from 'app/services/private.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,8 +9,7 @@ import { PrivateService } from 'app/services/private.service';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(
-    private router: Router) { 
+  constructor() { 
     }
   ngOnInit(): void {
   }

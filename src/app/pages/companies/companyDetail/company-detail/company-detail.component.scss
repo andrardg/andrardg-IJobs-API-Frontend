@@ -28,6 +28,13 @@ border-bottom: 1px solid gray;
 padding: 15px 45px 15px 30px;
 font-size: x-large;
 }
+.title2{
+width:100%;
+text-align: center;
+border-bottom: 1px solid gray;
+padding:5px 0px 5px 0px;
+font-size: large;
+}
 .row {
 display: flex;
 flex-direction: row;
@@ -51,7 +58,7 @@ font-size: 14px;
 width:50%;
 height:100%;
 flex-direction: column;
-padding-top:11rem;
+padding-top:6rem;
 }
 .details{
 text-align: center;
@@ -74,7 +81,7 @@ height: 3rem;
 }
 .job{
 width:85%;
-height:10rem;
+height:11rem;
 //margin-left:15%;
 padding: 16px;
 cursor: pointer;
@@ -84,13 +91,6 @@ margin-bottom:2rem;
 box-shadow: -0.2em 0 .4em grey;
 display: flex;
 flex-direction: row;
-}
-.title2{
-width:40%;
-text-align: center;
-border-right: 1px solid gray;
-padding: 50px 30px 30px 25px;
-font-size: large;
 }
 .column2 {
 display: flex;
@@ -104,4 +104,6 @@ text-align: left;
 padding-left: 2rem;
 padding-top:15px;
 font-size: 14px;
+text-decoration: none;
+color: inherit;
 }

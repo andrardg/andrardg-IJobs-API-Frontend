@@ -58,27 +58,27 @@
 
                     <mat-form-field>
                         <mat-label>First name</mat-label>
-                        <input matInput placeholder="First Name" formControlName="firstName">
+                        <input matInput placeholder="First Name" style="text-transform: capitalize;" formControlName="firstName">
                     </mat-form-field>
 
                     <mat-form-field>
                         <mat-label>Last name</mat-label>
-                        <input matInput placeholder="Last Name" formControlName="lastName">
+                        <input matInput placeholder="Last Name" style="text-transform: capitalize;" formControlName="lastName">
                     </mat-form-field>
 
                     <mat-form-field>
                         <mat-label>Occupation</mat-label>
-                        <input matInput placeholder="Occupation" formControlName="occupation">
+                        <input matInput placeholder="Occupation" style="text-transform: capitalize;" formControlName="occupation">
                     </mat-form-field>
 
                     <mat-form-field>
                         <mat-label>Residence</mat-label>
-                        <input matInput placeholder="Place of residence" formControlName="residence">
+                        <input matInput placeholder="Place of residence" style="text-transform: capitalize;" formControlName="residence">
                     </mat-form-field>
 
                     <mat-form-field>
                         <mat-label>Education</mat-label>
-                        <input matInput placeholder="Education" formControlName="studies">
+                        <input matInput placeholder="Education" style="text-transform: capitalize;" formControlName="studies">
                     </mat-form-field>
                     
                     <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
@@ -105,7 +105,7 @@
                             <div class="row">
                                 <i class="material-icons">add_a_photo</i>
                                 <label class="custom-file-upload">
-                                    <input type="file" accept=".jpg,.png,.jpeg" (change)="onPhotoChanged($event)"/>
+                                    <input type="file" accept=".jpg,.png,.jpeg,.gif" (change)="onPhotoChanged($event)"/>
                                     Change Profile Picture 
                                 </label>
                             </div>
@@ -121,6 +121,9 @@
                             </div>
                             
                         </div>
+                    </div>
+                    <div style="height:2rem; padding-top:1rem;">
+                        <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
                     </div>
                     
                     <div class="row" style="margin-top:10%;  justify-content:center;">
@@ -141,7 +144,7 @@
                         <mat-label>Email</mat-label>
                         <input matInput placeholder="Email" formControlName="email">
                     </mat-form-field>
-                    <mat-form-field>
+                    <mat-form-field *ngIf="!admin || User.id == admin.id">
                         <mat-label>Old Password</mat-label>
                         <input matInput type="password" placeholder="Old Password" formControlName="oldpassword">
                     </mat-form-field>
@@ -149,7 +152,7 @@
                         <mat-label>New Password</mat-label>
                         <input matInput type="password" placeholder="New Password" formControlName="newpassword">
                     </mat-form-field>
-                    <mat-form-field>
+                    <mat-form-field *ngIf="!admin || User.id == admin.id">
                         <mat-label>Repeat New Password</mat-label>
                         <input matInput type="password" placeholder="New Password" formControlName="newpassword2"(keydown)="save2($event)">
                     </mat-form-field>

@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
 import { CompaniesService } from '../../../../services/companies.service';
 import * as bcrypt from 'bcryptjs'
+import { JobsComponent } from 'app/pages/jobs/jobs.component';
+import { JobsService } from 'app/services/jobs.service';
 
 @Component({
   selector: 'app-company-edit',
@@ -38,7 +40,8 @@ export class CompanyEditComponent implements OnInit {
     private activatedRoute:ActivatedRoute,
     private router:Router,
     private service: CompaniesService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private jobsService: JobsService) { }
 
   ngOnInit(): void {
 
@@ -48,7 +51,10 @@ export class CompanyEditComponent implements OnInit {
     });
     this.getCompanyDetails(this.id); 
   }
-
+  getJobDetails(id: any){
+    console.log(id);
+    this.router.navigate(['/jobs', id]);
+  }
   getCompanyDetails(id:any){
     this.service.getCompanyDetails(id).subscribe(data=>{
       this.Company=data;
@@ -66,17 +72,17 @@ export class CompanyEditComponent implements OnInit {
     }
   }
   save(){
-    if(this.form.invalid)
+    if(this.form.invalid || this.error)
     this.error = "You have invalid fields."
     else{
       this.error = "";
 
     //fetch back data
     this.formData.append('Id', this.id);
-    this.formData.append('Name', this.form.controls['name'].value);
+    this.formData.append('Name', this.form.controls['name'].value.charAt(0).toUpperCase() + this.form.controls['name'].value.slice(1));
     this.formData.append('Email', this.form.controls['email'].value);
-    this.formData.append('Description', this.form.controls['description'].value);
-    this.formData.append('Address', this.form.controls['address'].value);
+    this.formData.append('Description', this.form.controls['description'].value.charAt(0).toUpperCase() + this.form.controls['description'].value.slice(1));
+    this.formData.append('Address', this.form.controls['address'].value.charAt(0).toUpperCase() + this.form.controls['address'].value.slice(1));
     this.formData.append('Email', this.form.controls['email'].value);
     this.formData.append('OldPasswordHash', this.oldpasswordHash);
     if(this.form.controls['verifiedAccount'].value == "Yes")
@@ -91,20 +97,27 @@ export class CompanyEditComponent implements OnInit {
       }
         
     if(this.section == 2){
-      
-      if(this.form.controls['newpassword'].value && this.form.controls['newpassword2'].value && this.form.controls['oldpassword'].value)
-      {
-        if(this.form.controls['newpassword'].value == this.form.controls['newpassword2'].value)
+      if(!this.admin){
+        if(this.form.controls['newpassword'].value && this.form.controls['newpassword2'].value && this.form.controls['oldpassword'].value)
           {
-          if(bcrypt.compareSync(this.form.controls['oldpassword'].value, this.oldpasswordHash))
-            this.formData.append('password', this.form.controls['newpassword'].value);
-          else{
-            this.error = "Old password incorrect."}}
+            if(this.form.controls['newpassword'].value == this.form.controls['newpassword2'].value)
+              {
+              if(bcrypt.compareSync(this.form.controls['oldpassword'].value, this.oldpasswordHash))
+                this.formData.append('password', this.form.controls['newpassword'].value);
+              else{
+                this.error = "Old password incorrect."}}
+            else
+              this.error = "The new password fields must match."
+          }
+          else 
+            this.error = "All password fields must be filled."
+          }
+      else{
+        if(this.form.controls['newpassword'].value)
+          this.formData.append('password', this.form.controls['newpassword'].value);
         else
-          this.error = "The new password fields must match."
+        this.error = "All fields must be filled."
       }
-      else 
-        this.error = "All password fields must be filled."
     }
     else
     {
@@ -114,9 +127,9 @@ export class CompanyEditComponent implements OnInit {
 
     if(!this.error){
       this.service.saveCompany(this.id, this.formData).subscribe((data)=>{
-      console.log("Update successful");
+      console.log("Updated successfully");
       this.cancel();
-      alert("Update successul");
+      alert("Updated successully");
       },
         error => {
           this.error="Email already taken";
@@ -149,6 +162,13 @@ export class CompanyEditComponent implements OnInit {
   sectionFour(){
     this.cancel();
     this.section = 4;
+  }
+  sectionFive(){
+    this.cancel();
+    this.section = 5;
+  }
+  create() {
+    this.router.navigate(['/jobs/create']);
   }
   cancel(){
     this.getCompanyDetails(this.id);
@@ -185,14 +205,21 @@ export class CompanyEditComponent implements OnInit {
       console.log('Not deleted');
     }
   }
-
   onPhotoChanged(event:any){
-      var file: File;
-      file = <File>event.target.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () =>{ 
+    var file: File;
+    file = <File>event.target.files[0];
+    console.log(file);
+    if(file.type != 'image/jpg' && file.type != 'image/jpeg' &&file.type != 'image/png' &&file.type != 'image/gif')
+      this.error = 'You can only upload .jpg, .jpeg, .png and .gif files for your profile photo.';
+    else
+      {
+        this.error = '';
+        console.log(file);
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () =>{ 
         this.form.patchValue({photo: reader.result});
+      }
     }
   }
 }

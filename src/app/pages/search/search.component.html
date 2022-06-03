@@ -24,20 +24,33 @@
                 <div *ngIf="CompanyList.length > 0">
                     <div *ngFor="let row of CompanyShortList">
                         <div class="object">
-                        <div class="title">
-                            <a (click)="getCompanyDetails(row.id)">{{row.name}}</a>
-                        </div>
-                        <div class="row">
-                            <a><i class="fa fa-envelope" style="min-width:30px"></i>{{row.email}}</a>
-                        </div>
-                        <div class="row">
-                            <div *ngIf="row.address !=null">
-                                <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.address}} </a>
+                            <div class="row">
+                                <div class="column" style="cursor:pointer">
+                                    <div *ngIf="row.photo != null">
+                                        <img (click)="getCompanyDetails(row.id)" src="{{row.photo}}" width="100" height="100" style="object-fit: cover;" />
+                                    </div>
+                                    <div *ngIf="row.photo == null">
+                                        <img (click)="getCompanyDetails(row.id)" src="../../../assets/images/companyProfilePhoto.png" width="100" height="100" style="object-fit: cover;" />
+                                    </div>
+                                </div>
+                                <div class="column" style="flex-basis: 70%;">
+                                    <div class="title">
+                                        <a (click)="getCompanyDetails(row.id)">{{row.name}}</a>
+                                    </div>
+                                    <div class="row">
+                                        <a><i class="fa fa-envelope" style="min-width:30px"></i>{{row.email}}</a>
+                                    </div>
+                                    <div class="row">
+                                        <div *ngIf="row.address !=null">
+                                            <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.address}} </a>
+                                        </div>
+                                        <div *ngIf="row.address ==null">
+                                            <a><i class="fa fa-map-marker" style="min-width:30px"></i> - -</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div *ngIf="row.address ==null">
-                                <a><i class="fa fa-map-marker" style="min-width:30px"></i> - -</a>
-                            </div>
-                        </div>
+
                         </div>
                     </div>
                     <div *ngIf="CompanyList.length > 3">
@@ -54,16 +67,29 @@
                 <div *ngIf="JobList.length > 0">
                     <div *ngFor="let row of JobShortList">
                         <div class="object">
-                            <div class="title">
-                                <a (click)="getJobDetails(row.id)">{{row.jobTitle}}</a>
-                            </div>
                             <div class="row">
-                                <div class="column">
-                                    <a><i class="fa fa-institution" style="min-width:50px;"></i>{{row.company.name}}</a>
-                                    <a><i class='fa fa-clock-o' style="min-width:50px;"></i>{{row.jobType}}</a>
-                                    <a><i class="fa fa-graduation-cap" style="min-width:50px"></i>{{row.experience}}</a>
+                                <div class="column" style="cursor: pointer">
+                                    <div *ngIf="row.company.photo != null">
+                                        <img (click)="getJobDetails(row.id)" src="{{row.company.photo}}" width="100" height="100" style="object-fit: cover;" />
+                                    </div>
+                                    <div *ngIf="row.company.photo == null">
+                                        <img (click)="getJobDetails(row.id)" src="../../../assets/images/companyProfilePhoto.png" width="100" height="100" style="object-fit: cover;" />
+                                    </div>
                                 </div>
-                        </div>
+                                <div class="column" style="flex-basis: 70%;">
+                                    <div class="title">
+                                        <a (click)="getJobDetails(row.id)">{{row.jobTitle}}</a>
+                                    </div>
+                                    <div class="row">
+                                        <div class="column">
+                                            <a><i class="fa fa-institution" style="min-width:50px;"></i>{{row.company.name}}</a>
+                                            <a><i class='fa fa-clock-o' style="min-width:50px;"></i>{{row.jobType}}</a>
+                                            <a><i class="fa fa-graduation-cap" style="min-width:50px"></i>{{row.experience}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                     <div *ngIf="JobList.length > 3">
@@ -82,7 +108,7 @@
                     <div *ngFor="let row of UserShortList">
                         <div class="object">
                             <div class="row">
-                                <div class="column2" style="flex-basis: 20%; cursor: pointer">
+                                <div class="column" style="cursor: pointer">
                                     <div *ngIf="row.photo != null">
                                         <img (click)="getUserDetails(row.id)" src="{{row.photo}}" width="100" height="100" style="object-fit: cover;" />
                                     </div>
@@ -90,7 +116,7 @@
                                         <img (click)="getUserDetails(row.id)" src="../../../assets/images/profilePhoto.png" width="100" height="100" style="object-fit: cover;" />
                                     </div>
                                 </div>
-                                <div class="column2" style="flex-basis: 70%;">
+                                <div class="column" style="flex-basis: 70%;">
                                     <div class="title">
                                         <a (click)="getUserDetails(row.id)">{{row.firstName}} {{row.lastName}}</a>
                                     </div>
@@ -125,18 +151,30 @@
             <div *ngIf="CompanyList.length > 0">
                 <div *ngFor="let row of CompanyList">
                     <div class="object2">
-                        <div class="title2">
-                            <a (click)="getCompanyDetails(row.id)">{{row.name}}</a>
-                        </div>
                         <div class="row">
-                            <a><i class="fa fa-envelope" style="min-width:30px"></i>{{row.email}}</a>
-                        </div>
-                        <div class="row">
-                            <div *ngIf="row.address !=null">
-                                <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.address}} </a>
+                            <div class="column" style="cursor:pointer">
+                                <div *ngIf="row.photo != null">
+                                    <img (click)="getCompanyDetails(row.id)" src="{{row.photo}}" width="100" height="100" style="object-fit: cover;" />
+                                </div>
+                                <div *ngIf="row.photo == null">
+                                    <img (click)="getCompanyDetails(row.id)" src="../../../assets/images/companyProfilePhoto.png" width="100" height="100" style="object-fit: cover;" />
+                                </div>
                             </div>
-                            <div *ngIf="row.address ==null">
-                                <a><i class="fa fa-map-marker" style="min-width:30px"></i> - -</a>
+                            <div class="column" style="flex-basis: 70%;">
+                                <div class="title">
+                                    <a (click)="getCompanyDetails(row.id)">{{row.name}}</a>
+                                </div>
+                                <div class="row">
+                                    <a><i class="fa fa-envelope" style="min-width:30px"></i>{{row.email}}</a>
+                                </div>
+                                <div class="row">
+                                    <div *ngIf="row.address !=null">
+                                        <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.address}} </a>
+                                    </div>
+                                    <div *ngIf="row.address ==null">
+                                        <a><i class="fa fa-map-marker" style="min-width:30px"></i> - -</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -152,16 +190,28 @@
             <div *ngIf="JobList.length > 0">
                 <div *ngFor="let row of JobList">
                     <div class="object2">
-                        <div class="title">
-                            <a (click)="getJobDetails(row.id)">{{row.jobTitle}}</a>
-                        </div>
                         <div class="row">
-                            <div class="column">
-                                <a><i class="fa fa-institution" style="min-width:50px;"></i>{{row.company.name}}</a>
-                                <a><i class='fa fa-clock-o' style="min-width:50px;"></i>{{row.jobType}}</a>
-                                <a><i class="fa fa-graduation-cap" style="min-width:50px"></i>{{row.experience}}</a>
+                            <div class="column" style="cursor: pointer">
+                                <div *ngIf="row.company.photo != null">
+                                    <img (click)="getJobDetails(row.id)" src="{{row.company.photo}}" width="100" height="100" style="object-fit: cover;" />
+                                </div>
+                                <div *ngIf="row.company.photo == null">
+                                    <img (click)="getJobDetails(row.id)" src="../../../assets/images/companyProfilePhoto.png" width="100" height="100" style="object-fit: cover;" />
+                                </div>
                             </div>
-                    </div>
+                            <div class="column" style="flex-basis: 70%;">
+                                <div class="title">
+                                    <a (click)="getJobDetails(row.id)">{{row.jobTitle}}</a>
+                                </div>
+                                <div class="row">
+                                    <div class="column">
+                                        <a><i class="fa fa-institution" style="min-width:50px;"></i>{{row.company.name}}</a>
+                                        <a><i class='fa fa-clock-o' style="min-width:50px;"></i>{{row.jobType}}</a>
+                                        <a><i class="fa fa-graduation-cap" style="min-width:50px"></i>{{row.experience}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

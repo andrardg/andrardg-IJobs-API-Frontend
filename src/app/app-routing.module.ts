@@ -4,6 +4,7 @@ import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { AdminCompanyGuard } from './guards/admin-company.guard';
 import { AdminUserGuard } from './guards/admin-user.guard';
 import { AuthGuard } from './guards/auth.guard';
+import { SessionGuard } from './guards/session.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { JobCreateComponent } from './pages/jobs/job-create/job-create.component';
 import { JobDetailsComponent } from './pages/jobs/job-details/job-details.component';
@@ -38,7 +39,7 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, SessionGuard],
   },
   {
     path: 'search/:search',
@@ -51,7 +52,7 @@ const routes: Routes = [
   {
     path: 'users/edit/:id',
     component : UserEditComponent,
-    canActivate: [AdminUserGuard],
+    canActivate: [AdminUserGuard, SessionGuard],
   },
   {
     path:'jobs',
@@ -60,7 +61,7 @@ const routes: Routes = [
   {
     path:'jobs/create',
     component: JobCreateComponent,
-    canActivate: [AdminCompanyGuard],
+    canActivate: [AdminCompanyGuard, SessionGuard],
   },
   {
     path:'jobs/:id',
@@ -69,7 +70,7 @@ const routes: Routes = [
   {
     path:'jobs/edit/:id',
     component: JobEditComponent,
-    canActivate: [AdminCompanyGuard],
+    canActivate: [AdminCompanyGuard, SessionGuard],
   },
   {
     path:'registerCompany',

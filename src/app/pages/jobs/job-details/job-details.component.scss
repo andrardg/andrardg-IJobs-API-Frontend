@@ -32,6 +32,7 @@
 .mat-card-title{
     padding-left: 4rem;
     font-size: medium;
+    margin-top: 1rem;
 }
 .mat-card-content{
     padding-left: 5rem;
@@ -56,4 +57,22 @@ background-color: rgb(33, 101, 227);
 margin: 0.5rem;
 font-size: large;
 font-family: "Times New Roman", Times, serif;
+}
+.row {
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+width: 100%;
+}
+.column {
+display: flex;
+flex-direction: column;
+flex-basis: 100%;
+flex: 1;
+width:50%;
+}
+a{
+//padding-left:30px;
+padding-top:15px;
+font-size: 20px;
 }

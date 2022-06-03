@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Account } from 'app/interfaces/account';
 import { Company } from 'app/interfaces/company';
 import { environment } from 'environments/environment';
+import { Subject } from 'rxjs';
 import { User } from '../interfaces/user';
 
 @Injectable({
@@ -12,7 +13,7 @@ import { User } from '../interfaces/user';
 export class AuthService {
 
   private baseUrl = environment.baseUrl;
-
+  public name = new Subject();
   private privateHeaders = {
     headers: new HttpHeaders({
       'content-type': 'application/json;charset=utf-8',
@@ -21,7 +22,9 @@ export class AuthService {
   
   constructor(
     private router: Router,
-    private http: HttpClient) { }
+    private http: HttpClient) {
+      
+     }
 
   login(user: Account) {
     return this.http.post<any>(`${environment.baseUrl}api/Users/Login`, user, this.privateHeaders);
@@ -42,6 +45,8 @@ export class AuthService {
     sessionStorage.removeItem('User');
     sessionStorage.removeItem('Admin');
     sessionStorage.removeItem('Company');
+    sessionStorage.removeItem('reloadedBefore');
+    sessionStorage.removeItem('name');
     this.router.navigate(['/login']);
   }
   logoutAdmin() {

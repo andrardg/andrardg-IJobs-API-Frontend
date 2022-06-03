@@ -15,7 +15,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     if(sessionStorage.getItem('Company') != null)
       {var company = JSON.parse(sessionStorage.getItem('Company') || "")
-      this.router.navigate(['/companies', company.id]);}
+      this.router.navigate(['/companies/edit', company.id]);}
 
     if(sessionStorage.getItem('User') != null)
       {console.log(sessionStorage.getItem('User'));var user = JSON.parse(sessionStorage.getItem('User') || "")
