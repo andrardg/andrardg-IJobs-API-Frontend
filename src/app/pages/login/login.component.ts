@@ -27,47 +27,36 @@ export class LoginComponent implements OnInit {
   }
 
   async doLogin(): Promise<void> {
-    this.account.Email = this.formGroup.controls["email"].value;
-    this.account.Password = this.formGroup.controls["password"].value;
+    this.account.email = this.formGroup.controls["email"].value;
+    this.account.password = this.formGroup.controls["password"].value;
+    console.log(this.account);
+    if (this.validateEmail(this.account.email)) { 
+      this.authService.login(this.account).subscribe(async data =>{
+        sessionStorage.setItem('token', data.token);
+        sessionStorage.setItem('role', data.role);
+        //sessionStorage.setItem('id', data.id);
 
-    if (this.validateEmail(this.account.Email)) {  
-    
-        this.authService.loginCompany(this.account).subscribe(async data => {
-          sessionStorage.setItem('token', data.token);
-          sessionStorage.setItem('role', data.role);
-          sessionStorage.setItem('id', data.id);
-          
+        if(data.type =='company')
+        {
           sessionStorage.setItem('Company', JSON.stringify(data));
           this.authService.name.next(data.name);
           sessionStorage.setItem('name', data.name);
-          console.log(JSON.parse(sessionStorage.getItem('Company') || ""))
-          this.router.navigate(['/dashboard']);
-          },
-          error => {
-            this.error = 'Incorrect email or password';
-          },);
-        
-        this.authService.login(this.account).subscribe(async data => {
-          sessionStorage.setItem('token', data.token);
-          sessionStorage.setItem('role', data.role);
-          
-          if(data.role == '0')
-            {
-              sessionStorage.setItem('Admin', JSON.stringify(data));
-            }
-          else if(data.role == '1')
-            {
-              sessionStorage.setItem('User', JSON.stringify(data));
-            }
-            this.authService.name.next(data.firstName);
-            sessionStorage.setItem('name', data.firstName);
-            console.log(data.firstName);
-            this.router.navigate(['/dashboard']);
-          },
-          error => {
-            this.error = 'Incorrect email or password';
-          },);
-    
+        }
+        else if(data.type == 'user')
+        {
+          if(data.role == '1')
+            sessionStorage.setItem('User', JSON.stringify(data));
+          else if(data.role == '0')
+            sessionStorage.setItem('Admin', JSON.stringify(data));
+
+          this.authService.name.next(data.firstName);
+          sessionStorage.setItem('name', data.firstName);
+        }
+        this.router.navigate(['/dashboard']);
+      },
+      error => {
+        this.error = 'Incorrect email or password';
+      },);
     }
     else {
         if(!this.error)

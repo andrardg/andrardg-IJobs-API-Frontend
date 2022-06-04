@@ -7,7 +7,9 @@
         <div style="height:2rem">
             <h3 *ngIf="Company.verifiedAccount == false && comp">Your account has not been verified yet!</h3>
         </div>
-        <button mat-stroked-button style="margin-left:10rem; margin-bottom:2rem;" (click)="goBack(id)">Back</button>
+        <div *ngIf="showPrevious">
+            <button mat-stroked-button style="margin-left:10rem; margin-bottom:2rem;" (click)="goBack(id)">Back</button>
+        </div>
         <div class="section" (click)="sectionOne()">
             <div class="row">
                 <div class="column" style="flex-basis: 90%;">

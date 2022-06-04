@@ -1,9 +1,18 @@
 export class Account {
-    Email:string;
-    Password:string;
+    id?:string;
+    email:string;
+    password:string;
+    firstName?:string;
+    lastName?:string;
+    address?:string;
+    type?:string;
+    name?:string;
+    role?:string;
     constructor(){
-      this.Email = '';
-      this.Password = '';
+      this.email = '';
+      this.password = '';
+      this.type = '';
+      this.role = '1';
     }
   }
   

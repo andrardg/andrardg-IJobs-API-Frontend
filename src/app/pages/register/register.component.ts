@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'app/classes/user';
 import { AuthService } from 'app/services/auth.service';
+import { Account } from 'app/classes/account';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,7 @@ export class RegisterComponent implements OnInit {
     lastName: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required, Validators.minLength(5)]),
   });
-  public user = new User();
+  public user = new Account();
 
   constructor(
     private router: Router,
@@ -40,18 +41,19 @@ export class RegisterComponent implements OnInit {
     this.user.firstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
     var lastName = this.myForm.controls["lastName"].value;
     this.user.lastName = lastName.charAt(0).toUpperCase() + lastName.slice(1);
+    this.user.type = 'user';
 
+    console.log(this.user)
      this.authService.register(this.user).subscribe((data)=>{
        console.log("success");
        alert('Registered successfully');
+      this.router.navigate(['/login']);
      },
      error => {
        this.error = error;
      },);
     if(this.error)
       console.log(this.error);
-    else
-      this.router.navigate(['/login']);
   }
   login() {
     this.router.navigate(['/login']);

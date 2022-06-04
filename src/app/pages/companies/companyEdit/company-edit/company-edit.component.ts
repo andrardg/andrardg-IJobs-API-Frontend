@@ -38,6 +38,7 @@ export class CompanyEditComponent implements OnInit {
   public error: boolean | string = false;
   Verified:any=["Yes", "No"];
   public formData= new FormData();
+  showPrevious: boolean = false;
 
   constructor(
     private activatedRoute:ActivatedRoute,
@@ -53,6 +54,8 @@ export class CompanyEditComponent implements OnInit {
       this.id = params['id'];
       console.log(this.id);
     });
+    if(this.previousRouteService.getPreviousUrl() != '/profile')
+      this.showPrevious = true;
     this.getCompanyDetails(this.id); 
   }
   getJobDetails(id: any){

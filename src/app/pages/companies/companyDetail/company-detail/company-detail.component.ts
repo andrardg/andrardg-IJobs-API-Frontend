@@ -32,7 +32,7 @@ export class CompanyDetailComponent implements OnInit {
       this.id = params['id'];
       console.log(this.id);
     });
-    if(this.previousRouteService.getPreviousUrl() != '/companies' && sessionStorage.getItem('jobId')!=null)
+    if(this.previousRouteService.getPreviousUrl() != '/companies' && this.previousRouteService.getPreviousUrl() != '/profile' && sessionStorage.getItem('jobId')!=null)
       this.showPrevious = true;
     this.getCompanyDetails(this.id);
   }
