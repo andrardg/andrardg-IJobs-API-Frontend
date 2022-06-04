@@ -34,12 +34,9 @@ export class UsersComponent implements OnInit {
       this.UserList = data;
     });
   }
-  removeUser(id:any){
+  getUserDetails(id:any){
     console.log(id);
-    this.service.removeUser(id).subscribe((data)=>{
-      console.log("success");
-      this.getAllUsers();
- });
+    this.router.navigate(['/users', id]);
   }
   logout() {
     this.authService.logout();

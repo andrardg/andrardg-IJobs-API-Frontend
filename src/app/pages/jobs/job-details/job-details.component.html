@@ -1,5 +1,5 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
 <main class="main">
-
 <h1>{{Job.jobTitle}}</h1>
 
 <button *ngIf="showPrevious" style="margin-left:25%;" mat-stroked-button (click)="back()">Back</button>
@@ -29,7 +29,7 @@
                 <a>{{Job.Company.name}}</a>
               </div>
               <a><i class="fa fa-envelope" style="min-width:30px"></i>{{Job.Company.email}}</a>
-              <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{Job.Company.address}}</a>
+              <a><i class="fa fa-map-marker-alt" style="min-width:30px"></i>{{Job.Company.address}}</a>
             </div>
           </div>
     </mat-card>
@@ -62,7 +62,7 @@
         </mat-card-header>
         <mat-card-content>
             <div>
-                <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{Job.address}}</a>
+                <a><i class="fa fa-map-marker-alt" style="min-width:30px"></i>{{Job.address}}</a>
             </div>
         </mat-card-content>
         <mat-card-header>
@@ -70,7 +70,7 @@
         </mat-card-header>
         <mat-card-content>
             <div>
-                <a><i class="fa fa-graduation-cap" style="min-width:30px"></i>{{Job.experience}}</a>
+                <a><i class="far fa-lightbulb" style="min-width:30px"></i>{{Job.experience}}</a>
             </div>
         </mat-card-content>
         <mat-card-header>
@@ -78,7 +78,7 @@
         </mat-card-header>
         <mat-card-content>
             <div>
-                <a><i class="fa fa-money" style="min-width:30px"></i>{{Job.salary | currency: 'EUR':true:'1.0-0'}}</a>
+                <a><i class="far fa-money-bill-alt" style="min-width:30px"></i>{{Job.salary | currency: 'EUR':true:'1.0-0'}}</a>
             </div>
         </mat-card-content>
         <mat-card-header>

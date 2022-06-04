@@ -49,6 +49,8 @@ import { UserEditComponent } from './pages/users/userEdit/user-edit.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { SearchComponent } from './pages/search/search.component';
+import { UserDetailComponent } from './pages/users/user-detail/user-detail.component';
+import { PreviousRouteService } from './services/previous-route.service';
 
 @NgModule({
   declarations: [
@@ -68,7 +70,8 @@ import { SearchComponent } from './pages/search/search.component';
     HeaderComponent,
     FooterComponent,
     UserEditComponent,
-    SearchComponent
+    SearchComponent,
+    UserDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -107,6 +110,7 @@ import { SearchComponent } from './pages/search/search.component';
     CompaniesService,
     JobsService,
     UsersService,
+    PreviousRouteService
   ],
   exports: [
     HeaderComponent,

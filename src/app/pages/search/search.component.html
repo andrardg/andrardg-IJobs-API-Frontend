@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+
+Font Awesome Icon brain Icon | fas fa brain | HTML, CSS
 <main class="main">
     <div class="page-left">
         <h1 style="font-style: italic;">Search results for "{{name}}"
@@ -15,7 +18,7 @@
 
         <button mat-button [ngClass]="{'selected': section == '3'}" (click)="sectionThree()"> <i class="fa fa-briefcase" style="min-width:50px;"></i>Jobs</button>
 
-        <button mat-button [ngClass]="{'selected': section == '4'}" (click)="sectionFour()"> <i class="fa fa-address-card-o" style="min-width:50px;"></i>People</button>
+        <button mat-button [ngClass]="{'selected': section == '4'}" (click)="sectionFour()"> <i class="fas fa-user-circle" style="min-width:50px;"></i>People</button>
     </div>
     <div class="page-right">
         <div *ngIf="section == 1">
@@ -42,10 +45,10 @@
                                     </div>
                                     <div class="row">
                                         <div *ngIf="row.address !=null">
-                                            <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.address}} </a>
+                                            <a><i class="fas fa-map-marker-alt" style="min-width:30px"></i>{{row.address}} </a>
                                         </div>
                                         <div *ngIf="row.address ==null">
-                                            <a><i class="fa fa-map-marker" style="min-width:30px"></i> - -</a>
+                                            <a><i class="fas fa-map-marker-alt" style="min-width:30px"></i> - -</a>
                                         </div>
                                     </div>
                                 </div>
@@ -84,7 +87,7 @@
                                         <div class="column">
                                             <a><i class="fa fa-institution" style="min-width:50px;"></i>{{row.company.name}}</a>
                                             <a><i class='fa fa-clock-o' style="min-width:50px;"></i>{{row.jobType}}</a>
-                                            <a><i class="fa fa-graduation-cap" style="min-width:50px"></i>{{row.experience}}</a>
+                                            <a><i class="far fa-lightbulb" style="min-width:50px"></i>{{row.experience}}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -127,12 +130,17 @@
                                         <a style="width:100%;"><i class="fa fa-briefcase" style="min-width:30px"></i> - -</a>
                                     </div>
                                     <div *ngIf="row.residence !=null">
-                                        <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.residence}} </a>
+                                        <a><i class="fas fa-map-marker-alt" style="min-width:30px"></i>{{row.residence}} </a>
                                     </div>
                                     <div *ngIf="row.residence ==null">
-                                        <a><i class="fa fa-map-marker" style="min-width:30px"></i> - -</a>
+                                        <a><i class="fas fa-map-marker-alt" style="min-width:30px"></i> - -</a>
                                     </div>
-
+                                    <div *ngIf="row.studies !=null">
+                                        <a><i class="fas fa-graduation-cap" style="min-width:30px"></i>{{row.studies}} </a>
+                                    </div>
+                                    <div *ngIf="row.studies ==null">
+                                        <a><i class="fas fa-graduation-cap" style="min-width:30px"></i> - -</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -169,10 +177,10 @@
                                 </div>
                                 <div class="row">
                                     <div *ngIf="row.address !=null">
-                                        <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.address}} </a>
+                                        <a><i class="fa fa-map-marker-alt" style="min-width:30px"></i>{{row.address}} </a>
                                     </div>
                                     <div *ngIf="row.address ==null">
-                                        <a><i class="fa fa-map-marker" style="min-width:30px"></i> - -</a>
+                                        <a><i class="fa fa-map-marker-alt" style="min-width:30px"></i> - -</a>
                                     </div>
                                 </div>
                             </div>
@@ -207,7 +215,7 @@
                                     <div class="column">
                                         <a><i class="fa fa-institution" style="min-width:50px;"></i>{{row.company.name}}</a>
                                         <a><i class='fa fa-clock-o' style="min-width:50px;"></i>{{row.jobType}}</a>
-                                        <a><i class="fa fa-graduation-cap" style="min-width:50px"></i>{{row.experience}}</a>
+                                        <a><i class="far fa-lightbulb" style="min-width:50px"></i>{{row.experience}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -245,12 +253,17 @@
                                     <a style="width:100%;"><i class="fa fa-briefcase" style="min-width:30px"></i> - -</a>
                                 </div>
                                 <div *ngIf="row.residence !=null">
-                                    <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.residence}} </a>
+                                    <a><i class="fa fa-map-marker-alt" style="min-width:30px"></i>{{row.residence}} </a>
                                 </div>
                                 <div *ngIf="row.residence ==null">
-                                    <a><i class="fa fa-map-marker" style="min-width:30px"></i> - -</a>
+                                    <a><i class="fa fa-map-marker-alt" style="min-width:30px"></i> - -</a>
                                 </div>
-
+                                <div *ngIf="row.studies !=null">
+                                    <a><i class="fas fa-graduation-cap" style="min-width:30px"></i>{{row.studies}} </a>
+                                </div>
+                                <div *ngIf="row.studies ==null">
+                                    <a><i class="fas fa-graduation-cap" style="min-width:30px"></i> - -</a>
+                                </div>
                             </div>
                         </div>
                     </div>

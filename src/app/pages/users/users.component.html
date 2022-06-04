@@ -1,49 +1,51 @@
-<body>
-<h1 style="text-align:center; margin-top: 5%;">All the users</h1>
-
-<hr>
-
-
-<!-- <span style="cursor:pointer" (click)="register()">Add a new company</span> -->
-<p></p>
-
-<table mat-table [dataSource]="UserList" class="mat-elevation-z8" style="width: 50%; margin-left: 25%; margin-top: 5%;">
-
-  <ng-container matColumnDef="FirstName">
-    <mat-header-cell *matHeaderCellDef> FirstName </mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.firstName}} </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="LastName">
-    <mat-header-cell *matHeaderCellDef> LastName </mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.lastName}} </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="Email">
-    <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
-  </ng-container>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<link rel="stylesheet" href='https://kit.fontawesome.com/a076d05399.js'>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<main class="main">
   
-    <ng-container matColumnDef="PasswordHash">
-      <mat-header-cell *matHeaderCellDef> PasswordHash </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.passwordHash}} </mat-cell>
-    </ng-container> -->
+<h1 style="text-align:center; margin-top: 5%;">Our community</h1>
+  <div *ngIf="UserList.length > 0">
+    <div *ngFor="let row of UserList">
+        <div class="object" *ngIf="row.role == '1'">
+            <div class="row">
+                <div class="column" style="flex-basis: 20%; cursor: pointer">
+                    <div *ngIf="row.photo != null">
+                        <img (click)="getUserDetails(row.id)" src="{{row.photo}}" width="100" height="100" style="object-fit: cover;" />
+                    </div>
+                    <div *ngIf="row.photo == null">
+                        <img (click)="getUserDetails(row.id)" src="../../../assets/images/profilePhoto.png" width="100" height="100" style="object-fit: cover;" />
+                    </div>
+                </div>
+                <div class="column" style="flex-basis: 70%;">
+                    <div class="title">
+                        <a (click)="getUserDetails(row.id)">{{row.firstName}} {{row.lastName}}</a>
+                    </div>
+                    <div *ngIf="row.occupation !=null">
+                        <a style="width:100%;"><i class="fa fa-briefcase" style="min-width:30px"></i>{{row.occupation}}</a>
+                    </div>
+                    <div *ngIf="row.occupation ==null">
+                        <a style="width:100%;"><i class="fa fa-briefcase" style="min-width:30px"></i> - -</a>
+                    </div>
+                    <div *ngIf="row.residence !=null">
+                        <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.residence}} </a>
+                    </div>
+                    <div *ngIf="row.residence ==null">
+                        <a><i class="fa fa-map-marker" style="min-width:30px"></i> - -</a>
+                    </div>
+                    <div *ngIf="row.studies !=null">
+                      <a><i class="fas fa-graduation-cap" style="min-width:30px"></i>{{row.studies}} </a>
+                    </div>
+                    <div *ngIf="row.studies ==null">
+                        <a><i class="fas fa-graduation-cap" style="min-width:30px"></i> - -</a>
+                    </div>
 
-    <ng-container matColumnDef="Role">
-      <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.role}} </mat-cell>
-    </ng-container> -->
-
-    <ng-container matColumnDef="Options">
-      <mat-header-cell *matHeaderCellDef> Options</mat-header-cell>
-      <mat-cell *matCellDef="let row"> 
-        <mat-icon style="cursor:pointer" (click)="removeUser(row.id)">delete</mat-icon>
-      </mat-cell>
-    </ng-container>
-
-
-  <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
-  
-</table>
-</body>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="UserList.length == 0">
+    <h2 class="no"> No people to show.</h2>
+</div>
+</main>

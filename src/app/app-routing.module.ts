@@ -15,6 +15,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { RegisterCompanyComponent } from './pages/register-company/register-company.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { SearchComponent } from './pages/search/search.component';
+import { UserDetailComponent } from './pages/users/user-detail/user-detail.component';
 import { UserEditComponent } from './pages/users/userEdit/user-edit.component';
 import { UsersComponent } from './pages/users/users.component';
 
@@ -48,6 +49,10 @@ const routes: Routes = [
   {
     path: 'users',
     component : UsersComponent,
+  },
+  {
+    path: 'users/:id',
+    component : UserDetailComponent,
   },
   {
     path: 'users/edit/:id',

@@ -1,0 +1,75 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+<main class="main">
+    <div class="column">
+        <div *ngIf="admin">
+            <button style="margin-left:30%" mat-raised-button (click)="editUser()">Edit profile</button>
+        </div>
+
+        <div class="container">
+            <div class="column" style="width:100%;">
+                <div class="row" style="flex-basis: 45%; align-items:flex-end; text-align: center;">
+                    
+                        <div *ngIf="User.photo != null">
+                            <img src="{{User.photo}}" width="200" height="200" style="object-fit: cover;" />
+                        </div>
+                        <div *ngIf="User.photo == null">
+                            <img src="../../../../assets/images/profilePhoto.png" width="200" height="200" style="object-fit: cover;" />
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="name">{{User.firstName}} {{User.lastName}}</div>
+                </div>
+                <div class="row customise">
+                    <div style="width:100%; height:max-content;background-color:white; border-radius:5px">
+                        <div class="column">
+                            <div class="row customise2">
+                                <div class="tabs">
+                                    <button *ngIf="aboutSection" (click)="aboutTrue()" mat-raised-button>About Me</button>
+                                    <button *ngIf="!aboutSection" (click)="aboutTrue()" mat-button>About Me</button>
+                                    <button *ngIf="!aboutSection" (click)="aboutFalse()" mat-raised-button>My CV</button>
+                                    <button *ngIf="aboutSection" (click)="aboutFalse()" mat-button>My CV</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div *ngIf="aboutSection">
+                                    <div class="column">
+                                        <div *ngIf="User.occupation !=null">
+                                            <div class="text"><i class="fa fa-briefcase" style="min-width:30px"></i>{{User.occupation}}</div>
+                                        </div>
+                                        <div *ngIf="User.occupation ==null">
+                                            <div class="text"><i class="fa fa-briefcase" style="min-width:30px"></i> - -</div>
+                                        </div>
+                                        <div *ngIf="User.residence !=null">
+                                            <div class="text"><i class="fa fa-map-marker-alt" style="min-width:30px"></i>{{User.residence}} </div>
+                                        </div>
+                                        <div *ngIf="User.residence ==null">
+                                            <div class="text"><i class="fa fa-map-marker-alt" style="min-width:30px"></i> - -</div>
+                                        </div>
+                                        <div *ngIf="User.studies !=null">
+                                            <div class="text"><i class="fas fa-graduation-cap" style="min-width:30px"></i>{{User.studies}} </div>
+                                        </div>
+                                        <div *ngIf="User.studies ==null">
+                                            <div class="text"><i class="fas fa-graduation-cap" style="min-width:30px"></i> - -</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="!aboutSection" style="height:10rem; text-align:center">
+                                    <div *ngIf="User.cv" style="height:100%; margin-top:10px">
+                                        <iframe [src]="cv" width="200px" height="200px"></iframe>
+                                    </div>
+                                    <div *ngIf="!User.cv">
+                                        <div class="text">{{cv}}</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+
+
+</main>
