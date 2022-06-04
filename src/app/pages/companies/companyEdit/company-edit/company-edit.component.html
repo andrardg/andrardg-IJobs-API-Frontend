@@ -4,8 +4,8 @@
 
 <main class="main">
     <div class="page-left">
-        <div style="height:3rem">
-            <h3 *ngIf="Company.verifiedAccount == false">Your account has not been verified yet!</h3>
+        <div style="height:2rem">
+            <h3 *ngIf="Company.verifiedAccount == false && comp">Your account has not been verified yet!</h3>
         </div>
         <button mat-stroked-button style="margin-left:10rem; margin-bottom:2rem;" (click)="goBack(id)">Back</button>
         <div class="section" (click)="sectionOne()">
@@ -166,11 +166,11 @@
 
             <div *ngIf="section == 4">
                 <div style="height:3rem;">
-                    <div *ngIf="Company.verifiedAccount == true">
+                    <div *ngIf="Company.verifiedAccount == true && !admin">
                         <a mat-button class="button1" (click)="create()">Post a new job</a>
                     </div>
                 </div>
-                <div *ngIf="!Company.jobs.length">
+                <div *ngIf="!Company.jobs || !this.Company.jobs.length">
                     <h2 style="text-align:left;">No jobs to show yet.</h2>
                 </div>
                 <div *ngFor="let row of Company.jobs">

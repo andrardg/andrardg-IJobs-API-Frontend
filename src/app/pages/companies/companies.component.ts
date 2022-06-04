@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { Company } from 'app/interfaces/company';
+import { Company } from 'app/classes/company';
 import { AuthService } from 'app/services/auth.service';
 import { PrivateService } from 'app/services/private.service';
 import { CompaniesService } from '../../services/companies.service';
@@ -13,26 +13,25 @@ import { CompaniesService } from '../../services/companies.service';
 })
 export class CompaniesComponent implements OnInit {
 
-  CompanyList:any=[];
-  columnsToDisplay : string[] = ['Name', 'Email', 'Address', 'Role', 'verifiedAccount', 'Options'];
-  dataSource = new MatTableDataSource<Company>(this.CompanyList);
+  CompanyList:Array<Company> = [];
   admin = sessionStorage.getItem('Admin');
   verify:boolean = false;
+  addressFilter:string = '';
+  Companies:Array<Company> = [];
   constructor(
     private router:Router,
     private service: CompaniesService,
     private authService: AuthService) { }
     
-  
   ngOnInit(): void {
-    //this.getAllCompanies();
-    this.refreshCompanyList();
+    this.getCompanies();
   }
 
-  refreshCompanyList(){
+  getCompanies(){
     this.service.getCompanies().subscribe(data=>{
       console.log(data);
-      this.CompanyList=data;
+      this.CompanyList = data;
+      this.Companies = data;
     });
   }
   getCompanyDetails(id: any){
@@ -43,7 +42,7 @@ export class CompaniesComponent implements OnInit {
     console.log(id);
     this.service.removeCompany(id).subscribe((data)=>{
       console.log("success");
-      this.refreshCompanyList();
+      this.getCompanies();
  });
   }
   logout() {
@@ -54,5 +53,10 @@ export class CompaniesComponent implements OnInit {
   }
   verifyFalse(){
     this.verify = false;
+  }
+  doneCompany(){
+    this.Companies = this.CompanyList.filter(elem => (
+      this.addressFilter == '' || (elem.address !=null && elem.address?.toLowerCase().indexOf((this.addressFilter).toLowerCase()) != -1)
+    ));
   }
 }

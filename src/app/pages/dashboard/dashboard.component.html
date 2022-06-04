@@ -2,20 +2,29 @@
           href=
 "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<main class="welcome">
-    <div class="dashboard-left">
-        <h1>Welcome to our community!</h1>
-        <button mat-raised-button class="search" routerLink="/jobs">Search for a job
-            <i class='fa fa-angle-right' style='font-size:20px'></i></button>
-
-        <button mat-raised-button class="search" routerLink="/companies">Look through our companies
-            <i class='fa fa-angle-right' style='font-size:20px'></i></button>
-        
-        <button mat-raised-button class="search" routerLink="/users">Our community
-            <i class='fa fa-angle-right' style='font-size:20px'></i></button>
-
-    </div>
-    <div class="dashboard-right">
-        <img class="image" src="../../../assets/images/lupa-removebg-preview.png" />
+<main class="main">
+    <div class="dashboard">
+        <div class="row">
+            <h1>Start your journey!</h1>
+        </div>
+        <div class="row">
+            <div class="column">
+                <img class="image" src="../../../assets/images/companyMain.png" width="300" height="300"/>
+                <button mat-button class="search" routerLink="/companies">Look through our companies
+                    <i class='fa fa-angle-right' style='font-size:20px'></i></button>
+            </div>
+            
+            <div class="column">
+                <img class="image" src="../../../assets/images/jobsMain.jpg" width="300" height="300"/>
+                <button mat-button class="search" routerLink="/jobs">Search for a job
+                    <i class='fa fa-angle-right' style='font-size:20px'></i></button>
+            </div>
+            
+            <div class="column">
+                <img class="image" src="../../../assets/images/peopleMain.jpg" width="300" height="300"/>
+                <button mat-button class="search" routerLink="/users">Our community
+                    <i class='fa fa-angle-right' style='font-size:20px'></i></button>
+            </div>
+        </div>
     </div>
 </main>

@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { AuthService } from 'app/services/auth.service';
 import { PreviousRouteService } from 'app/services/previous-route.service';
+import { Company } from 'app/classes/company';
 
 @Component({
   selector: 'app-company-detail',
@@ -13,7 +14,7 @@ import { PreviousRouteService } from 'app/services/previous-route.service';
 })
 export class CompanyDetailComponent implements OnInit {
 
-  Company:any;
+  Company = new Company();
   public id: any;
   public aboutSection:boolean = true;
   editDeleteRights : boolean = false;
@@ -59,22 +60,14 @@ export class CompanyDetailComponent implements OnInit {
   back(){
     sessionStorage.removeItem('companyId');
     this.router.navigate(['jobs/' + sessionStorage.getItem('jobId')]);
-    
-    //if(previous.indexOf('jobs') != -1 || (previous2.indexOf('companies')!= -1 && previous!.indexOf('edit')!= -1))
-      //this.previousRouteService.router.navigateByUrl(previous);
-      
-    //else
-    //  this.router.navigate(['companies']);
   }
   logout() {
     this.authService.logout();
   }
   aboutTrue(){
     this.aboutSection = true;
-    console.log(this.aboutSection);
   }
   aboutFalse(){
     this.aboutSection = false;
-    console.log(this.aboutSection);
   }
 }

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Job } from 'app/interfaces/job';
-import { Company } from 'app/interfaces/company';
+import { Job } from 'app/classes/job';
+import { Company } from 'app/classes/company';
 import { CompaniesService } from 'app/services/companies.service';
 import { AuthService } from 'app/services/auth.service';
 import { JobsService } from '../../../services/jobs.service';
@@ -14,18 +14,8 @@ import { JobsService } from '../../../services/jobs.service';
 })
 export class JobCreateComponent implements OnInit {
 
-  public Job: Job = {
-    JobTitle: '',
-    Description: '',
-    Salary: 0,
-    JobType: '',
-    Experience: '',
-    Address: '',
-    Open: false,
-    CompanyId: '',
-    Company: null//{Id:'', Name:'', Email:'', Password:'', Role:'2', verifiedAccount:true}
-  };
-  CompanyList:any=[];
+  public Job = new Job();
+  CompanyList:Array<Company> = [];
   JobTypes:any=["Full-Time", "Part-Time", "Internship", "Volunteering"];
   Experience:any=["Entry Level", "Junior Level", "Mid-Senior Level", "Senior Level", "Associate", "Director"]
   admin = sessionStorage.getItem('Admin');
@@ -67,18 +57,18 @@ export class JobCreateComponent implements OnInit {
       return;
     }
     
-    this.Job.JobTitle = this.form.controls['jobTitle'].value.charAt(0).toUpperCase() + this.form.controls['jobTitle'].value.slice(1);
-    this.Job.Description = this.form.controls['description'].value.charAt(0).toUpperCase() + this.form.controls['description'].value.slice(1);
-    this.Job.Salary = this.form.controls['salary'].value;
-    this.Job.JobType = this.form.controls['jobType'].value;
-    this.Job.Experience = this.form.controls['experience'].value;
-    this.Job.Address = this.form.controls['address'].value.charAt(0).toUpperCase() + this.form.controls['address'].value.slice(1);
-    this.Job.Open = true;
+    this.Job.jobTitle = this.form.controls['jobTitle'].value.charAt(0).toUpperCase() + this.form.controls['jobTitle'].value.slice(1);
+    this.Job.description = this.form.controls['description'].value.charAt(0).toUpperCase() + this.form.controls['description'].value.slice(1);
+    this.Job.salary = this.form.controls['salary'].value;
+    this.Job.jobType = this.form.controls['jobType'].value;
+    this.Job.experience = this.form.controls['experience'].value;
+    this.Job.address = this.form.controls['address'].value.charAt(0).toUpperCase() + this.form.controls['address'].value.slice(1);
+    this.Job.open = true;
     if (sessionStorage.getItem("Admin") != null)
-    this.Job.CompanyId = this.form.controls['companyId'].value;
+    this.Job.companyId = this.form.controls['companyId'].value;
     if (sessionStorage.getItem("Company") != null){
       var company = JSON.parse(sessionStorage.getItem('Company') || "")
-      this.Job.CompanyId = company.id;
+      this.Job.companyId = company.id;
     }
 
     console.log(this.Job);

@@ -51,6 +51,7 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { SearchComponent } from './pages/search/search.component';
 import { UserDetailComponent } from './pages/users/user-detail/user-detail.component';
 import { PreviousRouteService } from './services/previous-route.service';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [

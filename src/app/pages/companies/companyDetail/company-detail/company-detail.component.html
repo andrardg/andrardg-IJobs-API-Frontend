@@ -44,7 +44,7 @@
                 </mat-card>
             </div>
             <div *ngIf="!aboutSection">
-                <div *ngIf="!this.Company.jobs.length">
+                <div *ngIf="!this.Company.jobs || !this.Company.jobs.length">
                     <h2 style="text-align:left;">No jobs to show yet.</h2>
                 </div>
                 <div *ngFor="let row of Company.jobs">

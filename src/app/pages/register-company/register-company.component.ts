@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Company } from 'app/interfaces/company';
+import { Company } from 'app/classes/company';
 import { AuthService } from 'app/services/auth.service';
 
 @Component({
@@ -19,14 +19,7 @@ export class RegisterCompanyComponent implements OnInit {
     address: new FormControl(''),
     password: new FormControl('', [Validators.required, Validators.minLength(5)]),
   });
-  public company: Company ={
-    Name:'',
-    Email:'',
-    Password:'',
-    Address:'',
-    Role:'2',
-    verifiedAccount:false,
-  };
+  public company = new Company();
   
   constructor(
     private formBuilder: FormBuilder,
@@ -45,11 +38,11 @@ export class RegisterCompanyComponent implements OnInit {
     
     this.error = false;
     var name = this.myForm.controls["name"].value;
-    this.company.Name = name.charAt(0).toUpperCase() + name.slice(1);
-    this.company.Email = this.myForm.controls["email"].value;
+    this.company.name = name.charAt(0).toUpperCase() + name.slice(1);
+    this.company.email = this.myForm.controls["email"].value;
     var address = this.myForm.controls["address"].value;
-    this.company.Address = address.charAt(0).toUpperCase() + address.slice(1);
-    this.company.Password = this.myForm.controls["password"].value;
+    this.company.address = address.charAt(0).toUpperCase() + address.slice(1);
+    this.company.password = this.myForm.controls["password"].value;
 
     console.log(this.company);
     //this.router.navigate(['/login']);

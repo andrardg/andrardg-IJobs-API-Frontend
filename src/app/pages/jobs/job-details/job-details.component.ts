@@ -4,6 +4,8 @@ import { CompaniesService } from 'app/services/companies.service';
 import { AuthService } from 'app/services/auth.service';
 import { JobsService } from '../../../services/jobs.service';
 import { PreviousRouteService } from 'app/services/previous-route.service';
+import { Job } from 'app/classes/job';
+import { Company } from 'app/classes/company';
 
 @Component({
   selector: 'app-job-details',
@@ -12,8 +14,8 @@ import { PreviousRouteService } from 'app/services/previous-route.service';
 })
 export class JobDetailsComponent implements OnInit {
 
-  Job:any;
-  Company: any;
+  Job = new Job();
+  Company = new Company();
   public id: any;
   editDeleteRights : boolean = false;
   showPrevious: boolean = false;
@@ -42,7 +44,7 @@ export class JobDetailsComponent implements OnInit {
     console.log(data);
     this.Job=data;
     this.companyService.getCompanyDetails(data.companyId).subscribe(data2 =>{
-      this.Job.Company = data2;
+      this.Job.company = data2;
       })
     if (sessionStorage.getItem("Company") != null)
       var company = JSON.parse(sessionStorage.getItem('Company') || "")
@@ -57,10 +59,15 @@ export class JobDetailsComponent implements OnInit {
   }
   removeJob(id:any){
     console.log(id);
-    this.service.removeJob(id).subscribe(data=>{
-          console.log("success");
-    });
-    this.router.navigate(['/jobs']);
+    if (confirm('Are you sure you want to delete this account?')) {
+      this.service.removeJob(id).subscribe((data)=>{
+        console.log("success");
+        this.logout();
+      });
+      this.router.navigate(['/jobs']);
+    } else {
+      console.log('Not deleted');
+    }
   }
   editJob(id:any){
     console.log(id);

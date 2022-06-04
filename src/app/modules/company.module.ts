@@ -19,6 +19,7 @@ import { CompanyRoutingModule } from './company-routing.module';
     SharedModule,
     CompanyRoutingModule,
     ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class CompanyModule { }

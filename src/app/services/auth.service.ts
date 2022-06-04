@@ -1,11 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Account } from 'app/interfaces/account';
-import { Company } from 'app/interfaces/company';
+import { Account } from 'app/classes/account';
+import { Company } from 'app/classes/company';
 import { environment } from 'environments/environment';
 import { Subject } from 'rxjs';
-import { User } from '../interfaces/user';
+import { User } from '../classes/user';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +47,8 @@ export class AuthService {
     sessionStorage.removeItem('Company');
     sessionStorage.removeItem('reloadedBefore');
     sessionStorage.removeItem('name');
+    sessionStorage.removeItem('companyId');
+    sessionStorage.removeItem('jobId');
     this.router.navigate(['/login']);
   }
   logoutAdmin() {

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
-import { Account } from 'app/interfaces/account';
+import { Account } from 'app/classes/account';
 import { HeaderComponent } from '../header/header.component';
 
 @Component({
@@ -11,7 +11,7 @@ import { HeaderComponent } from '../header/header.component';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  account: Account = {Email: '', Password: ''}
+  account = new Account();
   public formGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
@@ -24,13 +24,9 @@ export class LoginComponent implements OnInit {
     private router:Router) { }
 
   ngOnInit(): void {
-
-    //sessionStorage.clear();
   }
 
   async doLogin(): Promise<void> {
-    //this.error = false;
-
     this.account.Email = this.formGroup.controls["email"].value;
     this.account.Password = this.formGroup.controls["password"].value;
 

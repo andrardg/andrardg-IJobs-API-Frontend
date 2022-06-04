@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
 import { UsersService } from 'app/services/users.service';
+import { User } from 'app/classes/user';
 
 @Component({
   selector: 'app-user-detail',
@@ -12,7 +13,7 @@ import { UsersService } from 'app/services/users.service';
 export class UserDetailComponent implements OnInit {
 
   public id: any;
-  User: any;
+  User = new User();
   aboutSection:boolean = true;
   cv:any = 'No CV to show.';
   admin = sessionStorage.getItem('Admin');

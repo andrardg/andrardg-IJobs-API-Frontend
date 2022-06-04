@@ -4,15 +4,33 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 <body class="main">
-<div class="page-left">  
-  <div class="verify" *ngIf="admin">
-    <button mat-stroked-button *ngIf="verify == false" (click)="verifyTrue()">Verify pending company accounts</button>
-    <button mat-stroked-button *ngIf="verify == true" (click)="verifyFalse()">Done</button>
+<div class="page-left" style="position:fixed">  
+  <div class="row">
+    <h1 style="margin-bottom:3rem; padding-left: 20px">Filters</h1>
   </div>
+  <div class="column">
+    <div class="row">
+        <h2>Address</h2>
+        <input class="inputtext" placeholder="Address" style="text-transform: capitalize;" [(ngModel)]="addressFilter">
+    </div>
+    <div class="row" style="margin-top:1rem; margin-bottom:2rem">
+        <button mat-raised-button class="buttonDone" (click)="doneCompany()">Done</button>
+    </div>
+    <div class="row">
+      <img src="../../../assets/images/company-removebg-preview.png">
+    </div>
+    <div class="row" style="padding-top:10px">
+      <div class="verify" *ngIf="admin">
+        <button mat-stroked-button *ngIf="verify == false" (click)="verifyTrue()">Verify pending company accounts</button>
+        <button mat-stroked-button *ngIf="verify == true" (click)="verifyFalse()">Done</button>
+      </div>
+    </div>
+  </div>
+  
 </div>
 
 <div class="page-right">
-
+  <div style="height:10rem"></div>
   <div *ngFor="let row of CompanyList">
     <div class="company" *ngIf="(row.verifiedAccount == true && verify == false) || (row.verifiedAccount == false && verify == true)" (click)="getCompanyDetails(row.id)">
       <div class="row">

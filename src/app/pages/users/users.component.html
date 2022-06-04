@@ -3,49 +3,92 @@
 <link rel="stylesheet" href='https://kit.fontawesome.com/a076d05399.js'>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 <main class="main">
-  
-<h1 style="text-align:center; margin-top: 5%;">Our community</h1>
-  <div *ngIf="UserList.length > 0">
-    <div *ngFor="let row of UserList">
-        <div class="object" *ngIf="row.role == '1'">
-            <div class="row">
-                <div class="column" style="flex-basis: 20%; cursor: pointer">
-                    <div *ngIf="row.photo != null">
-                        <img (click)="getUserDetails(row.id)" src="{{row.photo}}" width="100" height="100" style="object-fit: cover;" />
-                    </div>
-                    <div *ngIf="row.photo == null">
-                        <img (click)="getUserDetails(row.id)" src="../../../assets/images/profilePhoto.png" width="100" height="100" style="object-fit: cover;" />
-                    </div>
-                </div>
-                <div class="column" style="flex-basis: 70%;">
-                    <div class="title">
-                        <a (click)="getUserDetails(row.id)">{{row.firstName}} {{row.lastName}}</a>
-                    </div>
-                    <div *ngIf="row.occupation !=null">
-                        <a style="width:100%;"><i class="fa fa-briefcase" style="min-width:30px"></i>{{row.occupation}}</a>
-                    </div>
-                    <div *ngIf="row.occupation ==null">
-                        <a style="width:100%;"><i class="fa fa-briefcase" style="min-width:30px"></i> - -</a>
-                    </div>
-                    <div *ngIf="row.residence !=null">
-                        <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.residence}} </a>
-                    </div>
-                    <div *ngIf="row.residence ==null">
-                        <a><i class="fa fa-map-marker" style="min-width:30px"></i> - -</a>
-                    </div>
-                    <div *ngIf="row.studies !=null">
-                      <a><i class="fas fa-graduation-cap" style="min-width:30px"></i>{{row.studies}} </a>
-                    </div>
-                    <div *ngIf="row.studies ==null">
-                        <a><i class="fas fa-graduation-cap" style="min-width:30px"></i> - -</a>
-                    </div>
+<div class="left">
+    <div class="row">
+        <h1 style="margin-bottom:3rem; padding-left: 20px">Filters</h1>
+    </div>
+    
+    <div class="row">
+        <h2> Profiles with a CV</h2>
+        <label (click)="toggleCv($event)" class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+        </label>
+    </div>
+    <div class="row">
+        <h2> Profiles with a photo</h2>
+        <label (click)="togglePhoto($event)" class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+        </label>
+    </div>
+    <div class="row">
+        <h2> City of residence</h2>
+        <input class="inputtext" placeholder="Residence" style="text-transform: capitalize;" [(ngModel)]="residenceFilter">
+    </div>
+    <div class="row">
+        <h2> Latest form of studies</h2>
+        <div class="list">
+            <div *ngFor = "let item of study; let i = index">
+                <label class="option">
+                    <input type="checkbox" [(ngModel)]="studiesFilter2[i]" value="item"/>
+                    {{item}}
+                 </label>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:2rem">
+        <button mat-raised-button (click)="done()">Done</button>
+    </div>
 
+</div>
+<div class="right">
+    <div class="space">
+        <h1 class="pageTitle">Our community</h1>
+    </div>
+    <div *ngIf="UserList.length > 0">
+        <div *ngFor="let row of UserList">
+            <div class="object" *ngIf="row.role == '1'">
+                <div class="row">
+                    <div class="column" style="flex-basis: 20%; cursor: pointer">
+                        <div *ngIf="row.photo != null">
+                            <img (click)="getUserDetails(row.id)" src="{{row.photo}}" width="100" height="100" style="object-fit: cover;" />
+                        </div>
+                        <div *ngIf="row.photo == null">
+                            <img (click)="getUserDetails(row.id)" src="../../../assets/images/profilePhoto.png" width="100" height="100" style="object-fit: cover;" />
+                        </div>
+                    </div>
+                    <div class="column" style="flex-basis: 70%;">
+                        <div class="title">
+                            <a (click)="getUserDetails(row.id)">{{row.firstName}} {{row.lastName}}</a>
+                        </div>
+                        <div *ngIf="row.occupation !=null">
+                            <a style="width:100%;"><i class="fa fa-briefcase" style="min-width:30px"></i>{{row.occupation}}</a>
+                        </div>
+                        <div *ngIf="row.occupation ==null">
+                            <a style="width:100%;"><i class="fa fa-briefcase" style="min-width:30px"></i> - -</a>
+                        </div>
+                        <div *ngIf="row.residence !=null">
+                            <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.residence}} </a>
+                        </div>
+                        <div *ngIf="row.residence ==null">
+                            <a><i class="fa fa-map-marker" style="min-width:30px"></i> - -</a>
+                        </div>
+                        <div *ngIf="row.studies !=null">
+                        <a><i class="fas fa-graduation-cap" style="min-width:30px"></i>{{row.studies}} </a>
+                        </div>
+                        <div *ngIf="row.studies ==null">
+                            <a><i class="fas fa-graduation-cap" style="min-width:30px"></i> - -</a>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <div *ngIf="UserList.length == 0">
+        <h2 class="no"> No people to show.</h2>
+    </div>
 </div>
-<div *ngIf="UserList.length == 0">
-    <h2 class="no"> No people to show.</h2>
-</div>
+
 </main>

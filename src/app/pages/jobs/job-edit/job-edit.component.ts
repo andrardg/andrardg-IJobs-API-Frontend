@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CompaniesService } from 'app/services/companies.service';
 import { AuthService } from 'app/services/auth.service';
 import { JobsService } from '../../../services/jobs.service';
+import { Job } from 'app/classes/job';
+import { Company } from 'app/classes/company';
 
 @Component({
   selector: 'app-job-edit',
@@ -12,14 +14,14 @@ import { JobsService } from '../../../services/jobs.service';
 })
 export class JobEditComponent implements OnInit {
 
-  Job:any;
+  Job = new Job();
   admin = sessionStorage.getItem('Admin');
   public id: any; 
   public hide: boolean = true; //for the password
   JobTypes:any=["Full-Time", "Part-Time", "Internship", "Volunteering"];
   Experience:any=["Entry Level", "Junior Level", "Mid-Senior Level", "Senior Level", "Associate", "Director"]
   Vacant:any=["Yes", "No"];
-  CompanyList:any=[];
+  CompanyList:Array<Company> = [];
   public error: boolean | string = false;
   public form: FormGroup = new FormGroup({
                 jobTitle: new FormControl('', [Validators.required]),
@@ -83,12 +85,12 @@ export class JobEditComponent implements OnInit {
       this.error = 'You cannot register empty fields. ';
       return;
     }
-    this.Job.JobTitle = this.form.controls['jobTitle'].value.charAt(0).toUpperCase() + this.form.controls['jobTitle'].value.slice(1);
-    this.Job.Description = this.form.controls['description'].value.charAt(0).toUpperCase() + this.form.controls['description'].value.slice(1);
-    this.Job.Salary = this.form.controls['salary'].value;
-    this.Job.JobType = this.form.controls['jobType'].value;
-    this.Job.Experience = this.form.controls['experience'].value;
-    this.Job.Address = this.form.controls['address'].value.charAt(0).toUpperCase() + this.form.controls['address'].value.slice(1);
+    this.Job.jobTitle = this.form.controls['jobTitle'].value.charAt(0).toUpperCase() + this.form.controls['jobTitle'].value.slice(1);
+    this.Job.description = this.form.controls['description'].value.charAt(0).toUpperCase() + this.form.controls['description'].value.slice(1);
+    this.Job.salary = this.form.controls['salary'].value;
+    this.Job.jobType = this.form.controls['jobType'].value;
+    this.Job.experience = this.form.controls['experience'].value;
+    this.Job.address = this.form.controls['address'].value.charAt(0).toUpperCase() + this.form.controls['address'].value.slice(1);
     if(this.form.controls['open'].value == "Yes")
       this.Job.open = true;
     else

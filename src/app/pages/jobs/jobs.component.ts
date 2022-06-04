@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { Job } from 'app/interfaces/job';
+import { Job } from 'app/classes/job';
 import { AuthService } from 'app/services/auth.service';
 import { CompaniesService } from '../../services/companies.service';
 import { JobsService } from '../../services/jobs.service';
@@ -12,13 +12,18 @@ import { JobsService } from '../../services/jobs.service';
 })
 export class JobsComponent implements OnInit {
 
-  JobList:any=[];
-  //columnsToDisplay : string[] = ['JobTitle', 'Company.Name', 'Company.Address', 'Salary', 'JobType', 'Options'];
-  dataSource = new MatTableDataSource<Job>(this.JobList);
+  JobList:Array<Job> = [];
   createRights = sessionStorage.getItem('Admin') || (sessionStorage.getItem('Company') && sessionStorage.getItem('role') ==  '2');
   admin = sessionStorage.getItem('Admin');
-
   deleteProgress = 0;
+
+  jobTypes:Array<string> = ["Full-Time", "Part-Time", "Internship", "Volunteering"];
+  jobTypesFilter: Array<boolean> = [false, false, false, false];
+  experience:any=["Entry Level", "Junior Level", "Mid-Senior Level", "Senior Level", "Associate", "Director"];
+  experienceFilter: Array<boolean> = [false, false, false, false, false, false];
+  salaryFilter:number = 0;
+  error:any = '';
+  Jobs:Array<Job> = [];
 
   constructor(
     private router:Router,
@@ -55,12 +60,36 @@ export class JobsComponent implements OnInit {
     });
     }  
   }
-
   create() {
     this.router.navigate(['/jobs/create']);
   }
 
   logout() {
     this.authService.logout();
+  }
+  doneJob(){
+    if(!Number.isNaN(Number(this.salaryFilter)) == false)
+    this.error= 'Salary has to be numeric';
+    else{
+      this.error = '';
+      this.Jobs = this.JobList.filter(elem => (
+        this.salaryFilter == 0 || elem.salary > this.salaryFilter
+        ));
+      this.Jobs.forEach(job => { // for each user, loop over studies list
+        var add:boolean = false;
+        var add2:boolean = false;
+        for(let i=0; i< this.jobTypesFilter.length; i++)
+            if(this.jobTypesFilter[i] == true && job.jobType?.indexOf(this.jobTypes[i])!= -1)
+              add = true;
+        for(let i=0; i< this.experienceFilter.length; i++)
+          if(this.experienceFilter[i] == true && job.experience?.indexOf(this.experience[i])!= -1)
+            add2 = true;
+        if(add == false && this.jobTypesFilter.indexOf(true) != -1) // if job type not in filter list, delete
+          this.Jobs = this.Jobs.filter( elem => (elem != job));
+        if(add2 == false && this.experienceFilter.indexOf(true) != -1) // if job experience not in filter list, delete
+          this.Jobs = this.Jobs.filter( elem => (elem != job));
+      });
+    }
+    
   }
 }

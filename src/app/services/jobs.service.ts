@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Job } from 'app/interfaces/job';
+import { Job } from 'app/classes/job';
 import { environment } from 'environments/environment';
 import { CompaniesComponent } from '../pages/companies/companies.component';
 import { CompaniesService } from './companies.service';

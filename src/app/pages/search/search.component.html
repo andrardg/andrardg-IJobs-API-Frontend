@@ -15,10 +15,91 @@ Font Awesome Icon brain Icon | fas fa brain | HTML, CSS
         <button mat-button [ngClass]="{'selected': section == '1'}" (click)="sectionOne()"><i class="fa fa-globe" style="min-width:50px;"></i>All</button>
 
         <button mat-button [ngClass]="{'selected': section == '2'}" (click)="sectionTwo()"> <i class="fa fa-institution" style="min-width:50px;"></i>Companies</button>
+        <div *ngIf="section == 2" style="width:70%; padding-left:40px">
+            <div class="column">
+                <div class="row">
+                    <h2>Address</h2>
+                    <input class="inputtext" placeholder="Address" style="text-transform: capitalize;" [(ngModel)]="addressFilter">
+                </div>
+                <div class="row" style="margin-top:1rem; margin-bottom:2rem">
+                    <button mat-raised-button class="buttonDone" (click)="doneCompany()">Done</button>
+                </div>
+            </div>
+        </div>
 
         <button mat-button [ngClass]="{'selected': section == '3'}" (click)="sectionThree()"> <i class="fa fa-briefcase" style="min-width:50px;"></i>Jobs</button>
+        <div *ngIf="section == 3" style="width:70%; padding-left:40px">
+            <div class="column">
+                <div class="row">
+                    <h2> Job Type</h2>
+                    <div class="list">
+                        <div *ngFor = "let item of jobTypes; let i = index">
+                            <label class="option">
+                                <input type="checkbox" [(ngModel)]="jobTypesFilter[i]" value="item"/>
+                                {{item}}
+                             </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <h2> Experience Level</h2>
+                    <div class="list">
+                        <div *ngFor = "let item of experience; let i = index">
+                            <label class="option">
+                                <input type="checkbox" [(ngModel)]="experienceFilter[i]" value="item"/>
+                                {{item}}
+                             </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <h2> Base Salary</h2>
+                    <input class="inputtext" placeholder="0" numbersOnly style="text-transform: capitalize;" [(ngModel)]="salaryFilter">
+                    <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
+                </div>
+                <div class="row" style="margin-top:1rem">
+                    <button mat-raised-button class="buttonDone" (click)="doneJob()">Done</button>
+                </div>
+            </div>
+        </div>
 
         <button mat-button [ngClass]="{'selected': section == '4'}" (click)="sectionFour()"> <i class="fas fa-user-circle" style="min-width:50px;"></i>People</button>
+        <div *ngIf="section == 4" style="width:70%; padding-left:40px">
+            <div class="column">
+                <div class="row">
+                    <h2> Profiles with a CV</h2>
+                    <label (click)="toggleCv($event)" class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="row">
+                    <h2> Profiles with a photo</h2>
+                    <label (click)="togglePhoto($event)" class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="row">
+                    <h2> City of residence</h2>
+                    <input class="inputtext" placeholder="Residence" style="text-transform: capitalize;" [(ngModel)]="residenceFilter">
+                </div>
+                <div class="row">
+                    <h2> Latest form of studies</h2>
+                    <div class="list">
+                        <div *ngFor = "let item of study; let i = index">
+                            <label class="option">
+                                <input type="checkbox" [(ngModel)]="studiesFilter2[i]" value="item"/>
+                                {{item}}
+                             </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:1rem">
+                    <button mat-raised-button class="buttonDone" (click)="doneUser()">Done</button>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="page-right">
         <div *ngIf="section == 1">
@@ -156,8 +237,8 @@ Font Awesome Icon brain Icon | fas fa brain | HTML, CSS
         </div>
 
         <div *ngIf="section == 2">
-            <div *ngIf="CompanyList.length > 0">
-                <div *ngFor="let row of CompanyList">
+            <div *ngIf="Companies.length > 0">
+                <div *ngFor="let row of Companies">
                     <div class="object2">
                         <div class="row">
                             <div class="column" style="cursor:pointer">
@@ -196,7 +277,7 @@ Font Awesome Icon brain Icon | fas fa brain | HTML, CSS
 
         <div *ngIf="section == 3">
             <div *ngIf="JobList.length > 0">
-                <div *ngFor="let row of JobList">
+                <div *ngFor="let row of Jobs">
                     <div class="object2">
                         <div class="row">
                             <div class="column" style="cursor: pointer">
@@ -230,8 +311,8 @@ Font Awesome Icon brain Icon | fas fa brain | HTML, CSS
 
 
         <div *ngIf="section == 4">
-            <div *ngIf="UserList.length > 0">
-                <div *ngFor="let row of UserList">
+            <div *ngIf="Users.length > 0">
+                <div *ngFor="let row of Users">
                     <div class="object2">
                         <div class="row">
                             <div class="column2" style="flex-basis: 20%; cursor: pointer">

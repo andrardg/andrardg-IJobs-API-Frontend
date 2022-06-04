@@ -8,6 +8,7 @@ import * as bcrypt from 'bcryptjs'
 import { JobsComponent } from 'app/pages/jobs/jobs.component';
 import { JobsService } from 'app/services/jobs.service';
 import { PreviousRouteService } from 'app/services/previous-route.service';
+import { Company } from 'app/classes/company';
 
 @Component({
   selector: 'app-company-edit',
@@ -16,8 +17,9 @@ import { PreviousRouteService } from 'app/services/previous-route.service';
 })
 export class CompanyEditComponent implements OnInit {
 
-  Company:any;
+  Company = new Company;
   admin = sessionStorage.getItem('Admin');
+  comp = sessionStorage.getItem('Company');
   public id: any; 
   public hide: boolean = true; //for the password
   public form: FormGroup = new FormGroup({

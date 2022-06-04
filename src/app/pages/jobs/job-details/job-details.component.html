@@ -15,10 +15,10 @@
         <h2>Company</h2>
         <div class="row" style="padding-left:2rem;">
             <div class="column">
-              <div *ngIf="Job.Company.photo != null">
-                  <img (click)="getCompanyDetails(Company.id)" src="{{Job.Company.photo}}" width="150" height="150" style="object-fit: cover;" />
+              <div *ngIf="Job.company.photo != null">
+                  <img (click)="getCompanyDetails(Company.id)" src="{{Job.company.photo}}" width="150" height="150" style="object-fit: cover;" />
               </div>
-              <div *ngIf="Job.Company.photo == null">
+              <div *ngIf="Job.company.photo == null">
                   <img (click)="getCompanyDetails(Company.id)" src="../../../assets/images/companyProfilePhoto.png" width="150" height="150" style="object-fit: cover;" />
               </div>
             </div>
@@ -26,10 +26,10 @@
     
             <div class="column"style="flex-basis: 50%;">
               <div class="title">
-                <a>{{Job.Company.name}}</a>
+                <a>{{Job.company.name}}</a>
               </div>
-              <a><i class="fa fa-envelope" style="min-width:30px"></i>{{Job.Company.email}}</a>
-              <a><i class="fa fa-map-marker-alt" style="min-width:30px"></i>{{Job.Company.address}}</a>
+              <a><i class="fa fa-envelope" style="min-width:30px"></i>{{Job.company.email}}</a>
+              <a><i class="fa fa-map-marker-alt" style="min-width:30px"></i>{{Job.company.address}}</a>
             </div>
           </div>
     </mat-card>
@@ -74,7 +74,7 @@
             </div>
         </mat-card-content>
         <mat-card-header>
-            <mat-card-title>Salary</mat-card-title>
+            <mat-card-title>Base Salary</mat-card-title>
         </mat-card-header>
         <mat-card-content>
             <div>

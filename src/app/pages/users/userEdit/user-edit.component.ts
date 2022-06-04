@@ -5,7 +5,7 @@ import { AuthService } from 'app/services/auth.service';
 import { UsersService } from '../../../services/users.service';
 import * as bcrypt from 'bcryptjs'
 import { DomSanitizer } from '@angular/platform-browser';
-import { Observable, Subscriber } from 'rxjs';
+import { User } from 'app/classes/user';
 
 @Component({
   selector: 'app-user-edit',
@@ -13,7 +13,7 @@ import { Observable, Subscriber } from 'rxjs';
   styleUrls: ['./user-edit.component.scss']
 })
 export class UserEditComponent implements OnInit {
-  User:any;
+  User = new User();
   admin = JSON.parse(sessionStorage.getItem('Admin') || "")
   noCV: boolean = false;
   public id: any; 
@@ -238,6 +238,7 @@ removeUser(id:any){
   if (confirm('Are you sure you want to delete this account?')) {
     this.service.removeUser(id).subscribe((data)=>{
       console.log("success");
+      alert('Deleted successfully');
       this.logout();
     });
     this.router.navigate(['/dashboard']);
