@@ -30,32 +30,37 @@
 </div>
 
 <div class="page-right">
-  <div style="height:10rem"></div>
-  <div *ngFor="let row of CompanyList">
-    <div class="company" *ngIf="(row.verifiedAccount == true && verify == false) || (row.verifiedAccount == false && verify == true)" (click)="getCompanyDetails(row.id)">
-      <div class="row">
-        <div class="column" style="flex-basis: 20%; cursor: pointer">
-          <div *ngIf="row.photo != null">
-              <img (click)="getCompanyDetails(row.id)" src="{{row.photo}}" width="150" height="150" style="object-fit: cover;" />
+  <div style="height:10rem"></div> 
+  <div *ngIf="Companies.length > 0">
+    <div *ngFor="let row of Companies">
+      <div class="company" (click)="getCompanyDetails(row.id)">
+        <div class="row">
+          <div class="column" style="flex-basis: 20%; cursor: pointer">
+            <div *ngIf="row.photo != null">
+                <img (click)="getCompanyDetails(row.id)" src="{{row.photo}}" width="150" height="150" style="object-fit: cover;" />
+            </div>
+            <div *ngIf="row.photo == null">
+                <img (click)="getCompanyDetails(row.id)" src="../../../assets/images/companyProfilePhoto.png" width="150" height="150" style="object-fit: cover;" />
+            </div>
           </div>
-          <div *ngIf="row.photo == null">
-              <img (click)="getCompanyDetails(row.id)" src="../../../assets/images/companyProfilePhoto.png" width="150" height="150" style="object-fit: cover;" />
-          </div>
-        </div>
 
 
-        <div class="column" style="flex-basis: 70%;">
-          <div class="title">
-            <a>{{row.name}}</a>
+          <div class="column" style="flex-basis: 70%;">
+            <div class="title">
+              <a>{{row.name}}</a>
+            </div>
+            <a><i class="fa fa-envelope" style="min-width:30px"></i>{{row.email}}</a>
+            <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.address}}</a>
           </div>
-          <a><i class="fa fa-envelope" style="min-width:30px"></i>{{row.email}}</a>
-          <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.address}}</a>
         </div>
+        
       </div>
-      
+    </div>
+    </div>
+    <div *ngIf="Companies.length == 0">
+      <h2 class="no"> No companies to show.</h2>
     </div>
   </div>
-</div>
 
 
 </body>

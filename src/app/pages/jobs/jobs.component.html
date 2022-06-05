@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
 <body class="main">
-  <div class="left">
+  <div class="left" style="position:fixed">
     <div class="row">
         <h1 style="margin-bottom:3rem; padding-left: 20px">Filters</h1>
     </div>
@@ -47,9 +47,9 @@
       <h1 class="pageTitle">Find your next job!</h1>
     </span>
   </div>
-  <div *ngFor="let row of JobList">
+  <div *ngFor="let row of Jobs">
     
-    <div class="job" *ngIf="(row.company.verifiedAccount == true && row.open == true && !admin) || admin" (click)="getJobDetails(row.id)">
+    <div class="job" *ngIf="count > 0" (click)="getJobDetails(row.id)">
       <div class="row">
         <div class="column" style="flex-basis: 20%;">
           <div *ngIf="row.company.photo != null">
@@ -78,6 +78,9 @@
         </div>
       </div>
     </div>
+  </div>
+  <div *ngIf="count == 0">
+    <h2 class="no"> No jobs to show.</h2>
   </div>
 </div>
 

@@ -64,7 +64,8 @@ export class SearchComponent implements OnInit {
     this.userService.getUsersByName(this.name).subscribe(data=>{
     console.log(data);
     this.UserList = data;
-    this.Users = data;
+    this.UserList = this.UserList.filter(elem => (elem.role == '1'));
+    this.Users = this.UserList;
     if(this.UserList.length > 3)
       this.UserShortList = this.UserList.slice(0,3);
     else
@@ -75,7 +76,8 @@ export class SearchComponent implements OnInit {
     this.companyService.getCompaniesByName(this.name).subscribe(data=>{
     console.log(data);
     this.CompanyList = data;
-    this.Companies = data;
+    this.CompanyList = this.CompanyList.filter(elem => (elem.verifiedAccount == true));
+    this.Companies = this.CompanyList;
     if(this.CompanyList.length > 3)
       this.CompanyShortList = this.CompanyList.slice(0,3);
     else
@@ -86,7 +88,8 @@ export class SearchComponent implements OnInit {
     this.jobService.getJobsByJobTitle(this.name).subscribe(data=>{
     console.log(data);
     this.JobList = data;
-    this.Jobs = data;
+    this.JobList = this.JobList.filter(elem => (elem.company.verifiedAccount == true && elem.open == true));
+    this.Jobs = this.JobList;
     if(this.JobList.length > 3)
       this.JobShortList = this.JobList.slice(0,3);
     else

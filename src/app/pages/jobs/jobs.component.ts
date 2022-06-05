@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Job } from 'app/classes/job';
 import { AuthService } from 'app/services/auth.service';
-import { CompaniesService } from '../../services/companies.service';
 import { JobsService } from '../../services/jobs.service';
 @Component({
   selector: 'app-jobs',
@@ -24,6 +22,7 @@ export class JobsComponent implements OnInit {
   salaryFilter:number = 0;
   error:any = '';
   Jobs:Array<Job> = [];
+  count:any = 0;
 
   constructor(
     private router:Router,
@@ -39,6 +38,12 @@ export class JobsComponent implements OnInit {
     this.service.getJobs().subscribe(data=>{
       console.log(data);
       this.JobList=data;
+      this.Jobs = data;
+      if(this.admin)
+        this.count = data.length;
+      else
+        this.count = this.Jobs.filter(data => (data.company.verifiedAccount == true && data.open == true)).length;
+      console.log(this.count)
     });
   }
   getJobDetails(id: any){
@@ -79,10 +84,10 @@ export class JobsComponent implements OnInit {
         var add:boolean = false;
         var add2:boolean = false;
         for(let i=0; i< this.jobTypesFilter.length; i++)
-            if(this.jobTypesFilter[i] == true && job.jobType?.indexOf(this.jobTypes[i])!= -1)
+            if(this.jobTypesFilter[i] == true && job.jobType && job.jobType.indexOf(this.jobTypes[i])!= -1)
               add = true;
         for(let i=0; i< this.experienceFilter.length; i++)
-          if(this.experienceFilter[i] == true && job.experience?.indexOf(this.experience[i])!= -1)
+          if(this.experienceFilter[i] == true && job.experience && job.experience.indexOf(this.experience[i])!= -1)
             add2 = true;
         if(add == false && this.jobTypesFilter.indexOf(true) != -1) // if job type not in filter list, delete
           this.Jobs = this.Jobs.filter( elem => (elem != job));
@@ -90,6 +95,9 @@ export class JobsComponent implements OnInit {
           this.Jobs = this.Jobs.filter( elem => (elem != job));
       });
     }
-    
+    if(this.admin)
+        this.count = this.Jobs.length;
+      else
+        this.count = this.Jobs.filter(elem => (elem.company.verifiedAccount == true && elem.open == true)).length;
   }
 }

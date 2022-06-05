@@ -99,12 +99,21 @@ export class CompanyEditComponent implements OnInit {
     this.formData.append('Address', this.form.controls['address'].value.charAt(0).toUpperCase() + this.form.controls['address'].value.slice(1));
     this.formData.append('Email', this.form.controls['email'].value);
     this.formData.append('OldPasswordHash', this.oldpasswordHash);
-    if(this.form.controls['verifiedAccount'].value == "Yes")
-      {this.formData.append('VerifiedAccount', "true");
-      this.formData.append('Role', "2");}
-    else
-      {this.formData.append('VerifiedAccount', "false");
-      this.formData.append('Role', "1");}
+    if(this.admin && this.form.controls['verifiedAccount'].value == "Yes")
+    {
+      this.formData.append('VerifiedAccount', "true");
+      this.formData.append('Role', "2");
+    }
+    else if(this.admin)
+    {
+      this.formData.append('VerifiedAccount', "false");
+      this.formData.append('Role', "1");
+    }
+    else{
+      this.formData.append('VerifiedAccount', String(this.Company.verifiedAccount));
+      this.formData.append('Role', this.Company.role!);
+    }
+
     if(this.form.controls['photo'].value != "../../../assets/images/companyProfilePhoto.png") //photo exists
       {
         this.formData.append('Photo', this.form.controls['photo'].value);

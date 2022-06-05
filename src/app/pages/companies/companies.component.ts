@@ -18,6 +18,7 @@ export class CompaniesComponent implements OnInit {
   verify:boolean = false;
   addressFilter:string = '';
   Companies:Array<Company> = [];
+  count:any = 0;
   constructor(
     private router:Router,
     private service: CompaniesService,
@@ -32,6 +33,8 @@ export class CompaniesComponent implements OnInit {
       console.log(data);
       this.CompanyList = data;
       this.Companies = data;
+      this.Companies = this.Companies.filter(elem => (elem.verifiedAccount == true))
+      this.count = this.Companies.length;
     });
   }
   getCompanyDetails(id: any){
@@ -50,9 +53,11 @@ export class CompaniesComponent implements OnInit {
   }
   verifyTrue(){
     this.verify = true;
+    this.Companies = this.CompanyList.filter(elem => (elem.verifiedAccount == false))
   }
   verifyFalse(){
     this.verify = false;
+    this.Companies = this.CompanyList.filter(elem => (elem.verifiedAccount == true))
   }
   doneCompany(){
     this.Companies = this.CompanyList.filter(elem => (

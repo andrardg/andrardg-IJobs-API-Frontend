@@ -58,6 +58,7 @@ getUserDetails(id:any){
     console.log(data);
     this.User = data;
     this.oldpasswordHash = data.passwordHash;
+    this.formData.append('Role', data.role);
     /*if(data.photofile != null && data.photofile.length > 0){
       this.photoaux =this.sanitizer.bypassSecurityTrustUrl('data:image/jpeg;base64,'+data.photofile);
       console.log(this.photoaux);
@@ -119,15 +120,18 @@ save(){
     this.error = "";
 
   //fetch data back
-   this.formData.append('Id', this.id);
-   this.formData.append('FirstName', this.form.controls['firstName'].value.charAt(0).toUpperCase() + this.form.controls['firstName'].value.slice(1));
-   this.formData.append('LastName', this.form.controls['lastName'].value.charAt(0).toUpperCase() + this.form.controls['lastName'].value.slice(1));
-   this.formData.append('Occupation', this.form.controls['occupation'].value.charAt(0).toUpperCase() + this.form.controls['occupation'].value.slice(1));
-   this.formData.append('Residence', this.form.controls['residence'].value.charAt(0).toUpperCase() + this.form.controls['residence'].value.slice(1));
-   this.formData.append('Studies', this.form.controls['studies'].value.charAt(0).toUpperCase() + this.form.controls['studies'].value.slice(1));
-   this.formData.append('Email', this.form.controls['email'].value);
-   this.formData.append('OldPasswordHash', this.oldpasswordHash);
-   if(this.form.controls['photo'].value != "../../../assets/images/profilePhoto.png") //photo exists
+  this.formData.append('Id', this.id);
+  this.formData.append('FirstName', this.form.controls['firstName'].value.charAt(0).toUpperCase() + this.form.controls['firstName'].value.slice(1));
+  this.formData.append('LastName', this.form.controls['lastName'].value.charAt(0).toUpperCase() + this.form.controls['lastName'].value.slice(1));
+  if(this.form.controls['occupation'].value)
+    this.formData.append('Occupation', this.form.controls['occupation'].value.charAt(0).toUpperCase() + this.form.controls['occupation'].value.slice(1));
+  if(this.form.controls['residence'].value)
+    this.formData.append('Residence', this.form.controls['residence'].value.charAt(0).toUpperCase() + this.form.controls['residence'].value.slice(1));
+  if(this.form.controls['studies'].value)
+    this.formData.append('Studies', this.form.controls['studies'].value.charAt(0).toUpperCase() + this.form.controls['studies'].value.slice(1));
+  this.formData.append('Email', this.form.controls['email'].value);
+  this.formData.append('OldPasswordHash', this.oldpasswordHash);
+  if(this.form.controls['photo'].value != "../../../assets/images/profilePhoto.png") //photo exists
     {
       this.formData.append('Photo', this.form.controls['photo'].value);
     }
