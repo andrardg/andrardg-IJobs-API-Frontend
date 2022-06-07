@@ -1,0 +1,77 @@
+.main{
+height:100%;
+min-height: 100vh;
+width: 100%;
+background-color: rgb(242, 244, 245);
+display: flex;
+flex-direction: row;
+padding-bottom: 2rem;
+padding-top: 4rem;
+}
+.page-left{
+display: flex;
+flex-direction: column;
+padding-top:3rem;
+padding-left:2rem;
+padding-right:2rem;
+width:20%;
+min-height:100%;
+border-right: 1px solid black;
+}
+.seeAll{
+width:100px;
+text-align: center;
+margin-left: 16px;
+margin-bottom:20px;
+}
+.filter{
+font-size: 20px;
+border-bottom: 1px solid black;
+width:max-content;
+padding-left:5px;
+padding-right:5px;
+}
+button{
+text-align: left;
+//margin-left:32px;
+}
+.selection{
+padding-left: 16px;
+}
+.page-right{
+height:100%;
+min-height: 100vh;
+padding-top:10rem;
+width: 100%;
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+text-align: center;
+justify-content: center;
+}
+.button2{
+margin-left: 32px;
+}
+.button3{
+margin-left: 32px;
+border: 1px solid black;
+}
+.noTutorial{
+font-size: 25px;
+padding-left: 10%;
+min-width:max-content;
+}
+i{
+cursor:pointer; 
+width:20px;
+}
+input{
+margin-left:16px;
+width: min-content;
+}
+.row {
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+width: 100%;
+}

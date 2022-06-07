@@ -52,6 +52,12 @@ import { SearchComponent } from './pages/search/search.component';
 import { UserDetailComponent } from './pages/users/user-detail/user-detail.component';
 import { PreviousRouteService } from './services/previous-route.service';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { TutorialsComponent } from './pages/tutorials/tutorials.component';
+import { DomainsComponent } from './pages/domains/domains.component';
+import { SubdomainsComponent } from './pages/subdomains/subdomains.component';
+import { DomainService } from './services/domain.service';
+import { SubdomainService } from './services/subdomain.service';
+import { TutorialService } from './services/tutorial.service';
 
 @NgModule({
   declarations: [
@@ -72,7 +78,10 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     FooterComponent,
     UserEditComponent,
     SearchComponent,
-    UserDetailComponent
+    UserDetailComponent,
+    TutorialsComponent,
+    DomainsComponent,
+    SubdomainsComponent
   ],
   imports: [
     BrowserModule,
@@ -111,7 +120,10 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     CompaniesService,
     JobsService,
     UsersService,
-    PreviousRouteService
+    PreviousRouteService,
+    DomainService,
+    SubdomainService,
+    TutorialService
   ],
   exports: [
     HeaderComponent,

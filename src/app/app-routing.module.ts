@@ -6,6 +6,7 @@ import { AdminUserGuard } from './guards/admin-user.guard';
 import { AuthGuard } from './guards/auth.guard';
 import { SessionGuard } from './guards/session.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { DomainsComponent } from './pages/domains/domains.component';
 import { JobCreateComponent } from './pages/jobs/job-create/job-create.component';
 import { JobDetailsComponent } from './pages/jobs/job-details/job-details.component';
 import { JobEditComponent } from './pages/jobs/job-edit/job-edit.component';
@@ -15,6 +16,8 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { RegisterCompanyComponent } from './pages/register-company/register-company.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { SearchComponent } from './pages/search/search.component';
+import { SubdomainsComponent } from './pages/subdomains/subdomains.component';
+import { TutorialsComponent } from './pages/tutorials/tutorials.component';
 import { UserDetailComponent } from './pages/users/user-detail/user-detail.component';
 import { UserEditComponent } from './pages/users/userEdit/user-edit.component';
 import { UsersComponent } from './pages/users/users.component';
@@ -80,6 +83,40 @@ const routes: Routes = [
   {
     path:'registerCompany',
     component: RegisterCompanyComponent,
+  },
+  {
+    path:'tutorials',
+    component: TutorialsComponent,
+  },
+  {
+    path:'tutorials/create',
+    component: TutorialsComponent,
+    canActivate: [AdminCompanyGuard, SessionGuard],
+  },
+  {
+    path:'tutorials/edit/:id',
+    component: TutorialsComponent,
+    canActivate: [AdminCompanyGuard, SessionGuard],
+  },
+  {
+    path:'domains/create',
+    component: DomainsComponent,
+    canActivate: [AdminCompanyGuard, SessionGuard],
+  },
+  {
+    path:'domains/edit/:id',
+    component: DomainsComponent,
+    canActivate: [AdminCompanyGuard, SessionGuard],
+  },
+  {
+    path:'subdomains/create',
+    component: SubdomainsComponent,
+    canActivate: [AdminCompanyGuard, SessionGuard],
+  },
+  {
+    path:'subdomains/edit/:id',
+    component: SubdomainsComponent,
+    canActivate: [AdminCompanyGuard, SessionGuard],
   },
 ];
 

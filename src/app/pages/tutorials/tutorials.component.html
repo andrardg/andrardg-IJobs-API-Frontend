@@ -1,0 +1,50 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+<main class="main">
+    <div class="page-left">
+        <button mat-raised-button class="seeAll" (click)="seeAll()">See All</button>
+        <div *ngIf="DomainList.length > 0 && selectedDomain.name == ''">
+            <div *ngFor="let row of DomainList">
+                <i class="fas fa-edit" *ngIf="admin && editDomain.name == ''"(click)="editDomainTrue(row)"></i>
+                <button mat-button *ngIf="editDomain != row" (click)="getSubdomainList(row)">{{row.name}}</button>
+                <input *ngIf="admin &&editDomain.id == row.id" placeholder="{{row.name}}" [(ngModel)]="row.name" type="text">
+                <i class="fas fa-trash" *ngIf="admin && editDomain == row" style="padding-left:10px" (click)="deleteDomain(row.id)"></i>
+                <i class="fas fa-check" *ngIf="admin && editDomain == row" style="padding-left:10px" (click)="renameDomain(row)"></i>
+            </div>
+            <button mat-stroked-button *ngIf="admin && addNewDomain == false" (click)="addDomain()" style="margin-top:30px">Add new domain</button>
+            <i class="fas fa-check" *ngIf="admin && addNewDomain == true "(click)="saveDomain()"></i>
+            <input *ngIf="admin && addNewDomain == true " placeholder="New domain" [(ngModel)]="newDomain.name" type="text">
+        </div>
+        <div *ngIf="selectedDomain.name != ''">
+            <div class="selection">{{selectedDomain.name}}</div>
+            <div *ngFor="let row of SubdomainList">
+                <i class="fas fa-edit" *ngIf="admin && editSubdomain.name == ''"(click)="editSubdomainTrue(row)"></i>
+                <button mat-button *ngIf="selectedSubdomain != row && editSubdomain != row" class="button2" (click)="selectTutorials(row)">{{row.name}}</button>
+                <button mat-button *ngIf="selectedSubdomain == row && editSubdomain != row" class="button3" (click)="selectTutorials(row)">{{row.name}}</button>
+                <input *ngIf="admin && editSubdomain.id == row.id" placeholder="{{row.name}}" [(ngModel)]="row.name" type="text">
+                <i class="fas fa-trash" *ngIf="admin && editSubdomain == row" style="padding-left:10px" (click)="deleteSubdomain(row.id)"></i>
+                <i class="fas fa-check" *ngIf="admin && editSubdomain == row" style="padding-left:10px" (click)="renameSubdomain(row)"></i>
+            </div>
+            <button mat-stroked-button *ngIf="admin && addNewSubdomain == false" (click)="addSubdomain()" style="margin-top:30px">Add new subdomain</button>
+            <i class="fas fa-check" *ngIf="admin && addNewSubdomain == true "(click)="saveSubdomain()"></i>
+            <input *ngIf="admin && addNewSubdomain == true " placeholder="New subdomain" [(ngModel)]="newSubdomain.name" type="text">
+        </div>
+
+        <button mat-stroked-button *ngIf="admin && selectedDomain.name != '' && selectedSubdomain.name != '' && addNewTutorial == false" style="margin-top:20px; width:max-content" (click)="addTutorial()">Add new tutorial</button>
+        <div class="row">
+            <i class="fas fa-check" *ngIf="admin && addNewTutorial == true"(click)="saveTutorial()"></i>
+            <input *ngIf="admin && addNewTutorial == true " placeholder="New tutorial link" [(ngModel)]="newTutorial.link" type="text">
+        </div>
+        </div>
+    <div class="page-right">
+        <div *ngIf="Tutorials.length > 0" width="100%" height="100%">
+            <div *ngFor="let row of Tutorials">
+                <iframe width="560" height="315" [src]=getSafeUrl(row.link) frameborder="0" allowfullscreen></iframe>
+                <i class="fas fa-trash" *ngIf="admin" style="padding-left:10px" (click)="deleteTutorial(row.id)"></i>
+            </div>
+            
+        </div>
+        <div *ngIf="Tutorials.length == 0">
+            <div class="noTutorial">No tutorials yet.</div>
+        </div>
+    </div>
+</main>
