@@ -108,6 +108,7 @@ export class TutorialsComponent implements OnInit {
     this.addNewDomain = false;
     this.domainService.createDomain(this.newDomain).subscribe(data=>{
       console.log("Saved successfully");
+      this.newDomain = new Domain();
       this.getDomainList();
     });
   }
@@ -146,6 +147,7 @@ export class TutorialsComponent implements OnInit {
     delete this.newSubdomain.domain;
     this.subdomainService.createSubdomain(this.newSubdomain).subscribe(data=>{
       console.log("Saved successfully");
+      this.newSubdomain = new Subdomain();
       this.getSubdomainList(this.selectedDomain);
     });
   }

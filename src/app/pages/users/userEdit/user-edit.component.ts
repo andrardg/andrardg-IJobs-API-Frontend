@@ -14,10 +14,10 @@ import { User } from 'app/classes/user';
 })
 export class UserEditComponent implements OnInit {
   User = new User();
-  admin = JSON.parse(sessionStorage.getItem('Admin') || "")
   noCV: boolean = false;
   public id: any; 
   CVpreview :any;
+  admin:any;
 
   public hide: boolean = true; //for the password
   form: FormGroup = new FormGroup({
@@ -50,6 +50,8 @@ export class UserEditComponent implements OnInit {
       this.id = params['id'];
       console.log(this.id);
     });
+    if(sessionStorage.getItem('Admin'))
+      this.admin = JSON.parse(sessionStorage.getItem('Admin') || "");
     this.getUserDetails(this.id);
   }
 

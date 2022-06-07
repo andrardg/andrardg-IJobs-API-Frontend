@@ -4,6 +4,9 @@
 
 <button *ngIf="showPrevious" style="margin-left:25%;" mat-stroked-button (click)="back()">Back</button>
 <div class="space">
+    <div class="buttons" *ngIf="user.id != '' && alreadyApplied == false" (click)="apply()">
+        <button mat-stroked-button>Apply now</button>
+    </div>
     <div class="buttons" *ngIf="editDeleteRights">
         <button mat-button class="button2" (click)="editJob(Job.id)">Edit</button>
         <button mat-button class="button1" (click)="removeJob(Job.id)">Delete</button>

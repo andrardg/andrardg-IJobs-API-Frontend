@@ -6,6 +6,9 @@ import { JobsService } from '../../../services/jobs.service';
 import { PreviousRouteService } from 'app/services/previous-route.service';
 import { Job } from 'app/classes/job';
 import { Company } from 'app/classes/company';
+import { UsersService } from 'app/services/users.service';
+import { ApplicationService } from 'app/services/application.service';
+import { Application } from 'app/classes/application';
 
 @Component({
   selector: 'app-job-details',
@@ -18,13 +21,17 @@ export class JobDetailsComponent implements OnInit {
   Company = new Company();
   public id: any;
   editDeleteRights : boolean = false;
+  user = JSON.parse(sessionStorage.getItem('User') || "")
   showPrevious: boolean = false;
+  alreadyApplied = false;
 
   constructor(
     private activatedRoute:ActivatedRoute,
     private router:Router,
     private service: JobsService,
     private companyService: CompaniesService,
+    private userService: UsersService,
+    private applicationService: ApplicationService,
     private authService: AuthService,
     private previousRouteService:PreviousRouteService) { }
 
@@ -36,6 +43,13 @@ export class JobDetailsComponent implements OnInit {
     if(this.previousRouteService.getPreviousUrl() != '/jobs'  && sessionStorage.getItem('companyId')!=null)
       this.showPrevious = true;
     this.getJobDetails(this.id);
+    if(this.user.id != ""){
+      this.applicationService.getApplications().subscribe(data =>{
+        for(var elem of data)
+          if(elem.userId == this.user.id && elem.jobId == this.id)
+            this.alreadyApplied = true;
+      })
+    }
   }
 
   getJobDetails(id:any){
@@ -79,5 +93,34 @@ export class JobDetailsComponent implements OnInit {
   }
   logout() {
     this.authService.logout();
+  }
+  apply(){
+    var app = new Application();
+    this.userService.getUserDetails(this.user.id).subscribe(data => {
+      console.log(data);
+      app.cv=data.cv;
+      if(app.cv != ""){
+        app.jobId = this.id;
+        app.userId = this.user.id;
+        app.status = "Pending";
+        delete app.user;
+        delete app.job;
+        console.log(app);
+        this.applicationService.createApplication(app).subscribe(data =>{
+          console.log("Created successfully");
+          alert("You have successfully applied for this job.");
+          this.alreadyApplied = true;
+        },
+        error => {
+          console.log("An error occurred");
+        });
+      }
+      else{
+        alert("You must upload your CV first!");
+      }
+    },
+    error => {
+      console.log("An error occurred");
+    });
   }
 }
