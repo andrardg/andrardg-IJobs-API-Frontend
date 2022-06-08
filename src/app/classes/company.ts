@@ -10,7 +10,7 @@ export class Company {
     photo?:string;
     role?:string;
     verifiedAccount:boolean;
-    jobs?: Array<Job>;
+    jobs: Array<Job>;
 
     constructor(){
       this.name = '';

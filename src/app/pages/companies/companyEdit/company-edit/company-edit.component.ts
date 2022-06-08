@@ -9,6 +9,12 @@ import { JobsComponent } from 'app/pages/jobs/jobs.component';
 import { JobsService } from 'app/services/jobs.service';
 import { PreviousRouteService } from 'app/services/previous-route.service';
 import { Company } from 'app/classes/company';
+import { ApplicationService } from 'app/services/application.service';
+import { InterviewService } from 'app/services/interview.service';
+import { Application } from 'app/classes/application';
+import { Interview } from 'app/classes/interview';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Job } from 'app/classes/job';
 
 @Component({
   selector: 'app-company-edit',
@@ -40,13 +46,27 @@ export class CompanyEditComponent implements OnInit {
   public formData= new FormData();
   showPrevious: boolean = false;
 
+  applicationsList : Array<Application> = [];
+  applications : Array<Application> = [];
+  seeApplications: boolean = false;
+  interviewsList : Array<Interview> = [];
+  interviews : Array<Interview> = [];
+  seeInterviews: boolean = false;
+  filterByInterviewId :string = '';
+  schedule : boolean = false;
+  newInterview = new Interview();
+  isOnline:string = '';
+
   constructor(
     private activatedRoute:ActivatedRoute,
     private router:Router,
     private service: CompaniesService,
     private authService: AuthService,
     private jobsService: JobsService,
-    private previousRouteService: PreviousRouteService) { }
+    private applicationsService : ApplicationService,
+    private interviewsService : InterviewService,
+    private previousRouteService: PreviousRouteService,
+    private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
 
@@ -187,8 +207,16 @@ export class CompanyEditComponent implements OnInit {
     this.section = 4;
   }
   sectionFive(){
-    this.cancel();
+    this.getAllApplications();
     this.section = 5;
+  }
+  sectionSix(){
+    this.cancel();
+    this.section = 6;
+  }
+  sectionSeven(){
+    this.cancel();
+    this.section = 7;
   }
   create() {
     this.router.navigate(['/jobs/create']);
@@ -244,5 +272,71 @@ export class CompanyEditComponent implements OnInit {
         this.form.patchValue({photo: reader.result});
       }
     }
+  }
+  getAllApplications(){
+    this.applicationsService.getApplications().subscribe(data =>{
+      this.applicationsList = data;
+      this.applicationsList = this.applicationsList.filter( data => data.job?.companyId == this.id);
+      this.applications = this.applicationsList;
+      console.log(this.applicationsList);
+    });
+  }
+  getAllInterviews(){
+    this.interviewsService.getInterviews().subscribe(data =>{
+      this.interviewsList = data;
+      this.interviewsList = this.interviewsList.filter( data => data.application?.job?.companyId == this.id);
+      console.log(this.applicationsList);
+    });
+  }
+  getApplicationsForJob(){
+    console.log(this.filterByInterviewId);
+    this.seeApplications = true;
+    this.applications = this.applicationsList.filter(x => x.jobId == this.filterByInterviewId);
+    console.log(this.applications);
+  }
+  getInterviewsForJob(job:any){
+    this.seeInterviews = true;
+    this.interviews = this.interviewsList.filter(x => x.application?.jobId == job.id);
+  }
+  getInterviewsForApplication(application:any){
+    this.interviews = this.interviewsList.filter( x => x.application == application);
+  }
+  createInterview(id:any){
+    this.newInterview.applicationId = id;
+    this.newInterview.responseCompany = true;
+    this.newInterview.responseUser = false;
+    console.log(this.newInterview);
+    this.interviewsService.createInterview(this.newInterview).subscribe(data=>{
+      console.log("Created successfully");
+      alert("Created sucessfully");
+      this.scheduleFalse();
+    },
+    error =>{
+      console.log(error);
+    });
+  }
+  closeApplicationsTab(){
+    this.applications = [];
+    this.interviews = [];
+  }
+  closeInterviewsTab(){
+    this.applications = [];
+    this.interviews = [];
+  }
+  getSafeUrl(file:string){
+    return this.sanitizer.bypassSecurityTrustResourceUrl(file);
+  }
+  scheduleTrue(){
+    this.schedule = true;
+  }
+  scheduleFalse(){
+    this.schedule = false;
+    this.newInterview = new Interview();
+  }
+  convertIsOnline(){
+    if(this.isOnline == 'Online')
+      this.newInterview.isOnline = true;
+    else
+    this.newInterview.isOnline = false;
   }
 }

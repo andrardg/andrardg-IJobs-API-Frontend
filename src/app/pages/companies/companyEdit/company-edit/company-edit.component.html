@@ -61,7 +61,33 @@
           
               </div>
         </div>
-        <div class="section" (click)="sectionFive()" *ngIf="admin">
+
+        <div class="section" (click)="sectionFive()">
+            <div class="row">
+                <div class="column" style="flex-basis: 90%;">
+                    <h1>Applications</h1>
+                    <h2>Manage received applications</h2>
+                </div>
+                <div class="column" style="text-align: right;">
+                    <i class='fa fa-angle-right' style='font-size:20px'></i>
+                </div>
+          
+              </div>
+        </div>
+
+        <div class="section" (click)="sectionSix()">
+            <div class="row">
+                <div class="column" style="flex-basis: 90%;">
+                    <h1>Interviews</h1>
+                    <h2>Manage setup interviews</h2>
+                </div>
+                <div class="column" style="text-align: right;">
+                    <i class='fa fa-angle-right' style='font-size:20px'></i>
+                </div>
+          
+              </div>
+        </div>
+        <div class="section" (click)="sectionSeven()" *ngIf="admin">
             <div class="row">
                 <div class="column" style="flex-basis: 90%;">
                     <h1>Access</h1>
@@ -201,6 +227,75 @@
             </div>
 
             <div *ngIf="section == 5">
+                <select id="filterByInterview" [(ngModel)]="filterByInterviewId" class="select-picker" (change) = "getApplicationsForJob()">
+                    <option *ngFor = "let item of Company.jobs" [value]="item.id">
+                        {{item.jobTitle}}
+                    </option>
+                <i class='fa fa-angle-down'></i>
+                </select>
+                <div style="height:3rem;">
+                    <div *ngIf="applications.length == 0">
+                        <h2 style="text-align:left;">No applications to show yet.</h2>
+                    </div>
+                </div>
+                <div *ngFor="let row of applications">
+                    <div class="job">
+                        <div class="row">
+                            <div class="column" style="padding-top:0.5rem">
+                                <iframe [src]="getSafeUrl(row.cv)" width="200px" height="130px"></iframe>
+                            </div>
+                            <div class="column"style="flex-basis: 70%; margin-botttom:15px">
+                                <div class="title2">
+                                  <a>{{row.job.jobTitle}}</a>
+                                </div>
+                                <div class="title2">
+                                    <a>{{row.user.firstName}} {{row.user.lastName}}</a>
+                                  </div>
+                                <a><i class="fa fa-clock-o" style="min-width:30px"></i>Status: {{row.status}}</a>
+                                <a *ngIf="row.interviews.length == 0"><i class="fa fa-bullhorn" style="min-width:30px"></i>No interview scheduled yet.</a>
+                                <a *ngIf="row.interviews.length > 0"><i class="fa fa-check-square-o" style="min-width:30px"></i> Interviews scheduled.</a>
+                            </div>
+                        </div>
+                    </div>
+                    <button mat-stroked-button *ngIf="row.interviews.length == 0 && schedule == false" (click)="scheduleTrue()">Schedule interview</button>
+                    <div *ngIf="schedule == true" class="new-interview">
+                        <div class="row">
+                            <div class="column">
+                                <a style="padding-right:10px">Date</a>
+                            </div>
+                            <div class="column">
+                                <input class="date" id="newInterview.date" type="datetime-local" name="newInterview.date" value="2022-06-01T08:30">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="column">
+                                <a style="padding-right:10px">Form of interview</a>
+                            </div>
+                            <div class="column">
+                                <select id="newInterview.isOnline" [(ngModel)]="isOnline" class="select-picker" style="background-color:white" (change) = "convertIsOnline()">
+                                    <option>Online</option><option>In person</option>
+                                <i class='fa fa-angle-down'></i></select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="column">
+                                <a *ngIf="isOnline == 'Online'">Meeting Link</a>
+                                <a *ngIf="isOnline == 'In person' || isOnline == ''">Address</a>
+                            </div>
+                            <div class="column">
+                                <input style="text-transform: capitalize;" [(ngModel)]="newInterview.location">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button mat-raised-button (click) ="createInterview(row.id)">Done</button>
+                            <button mat-button (click) ="scheduleFalse()">Cancel</button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="section == 7">
                 <form fxLayout="column" class="form" [formGroup]="form" (ngSubmit)="save()">
                     <mat-label>Is this account a valid company account?</mat-label>
                     <div class="input" matInput>

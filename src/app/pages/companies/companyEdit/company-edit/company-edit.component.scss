@@ -57,7 +57,7 @@ align-items: right;
 width:50%;
 height:100%;
 flex-direction: column;
-margin-top:11rem;
+margin-top:7rem;
 }
 .form{
 width: 70%;
@@ -106,13 +106,13 @@ text-align: justify;
 border-radius: 5px;
 }
 .select-picker{
-width: 100%;
+width: 50%;
 border-color: black;
 padding: 15px 45px 15px 15px;
 border-width: 1px;
 margin-bottom: 15px;
 border-radius: 5px;
-font-size: 15px;
+font-size: 20px;
 background: rgb(242, 244, 245);
 }
 .center-of-screen{
@@ -176,4 +176,11 @@ text-align: center;
 border-bottom: 1px solid gray;
 padding:5px 0px 5px 0px;
 font-size: large;
+}
+.new-interview{
+  font-size: 20px;
+  padding-left:10%;
+}
+.date{
+  padding: 0px 0px 10px 10px;
 }

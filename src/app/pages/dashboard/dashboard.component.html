@@ -16,7 +16,9 @@
             
             <div class="column">
                 <img class="image" src="../../../assets/images/jobsMain.jpg" width="300" height="300"/>
-                <button mat-button class="search" routerLink="/jobs">Search for a job
+                <button mat-button class="search" *ngIf="!company" routerLink="/jobs">Search for a job
+                    <i class='fa fa-angle-right' style='font-size:20px'></i></button>
+                <button mat-button class="search" *ngIf="company" routerLink="/jobs">Post a job
                     <i class='fa fa-angle-right' style='font-size:20px'></i></button>
             </div>
             

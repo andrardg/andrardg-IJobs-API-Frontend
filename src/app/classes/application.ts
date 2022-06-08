@@ -5,12 +5,12 @@ import { User } from "./user";
 export class Application {
     id?:string;
     jobId:string;
-    job?:Job;
+    job:Job;
     userId:string;
-    user?:User;
+    user:User;
     cv:string;
     status:string;
-    interviews?:Array<Interview>;
+    interviews:Array<Interview>;
     constructor(){
         this.jobId = '';
         this.job = new Job();

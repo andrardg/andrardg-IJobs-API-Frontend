@@ -21,9 +21,9 @@ export class JobDetailsComponent implements OnInit {
   Company = new Company();
   public id: any;
   editDeleteRights : boolean = false;
-  user = JSON.parse(sessionStorage.getItem('User') || "")
   showPrevious: boolean = false;
   alreadyApplied = false;
+  user:any;
 
   constructor(
     private activatedRoute:ActivatedRoute,
@@ -43,6 +43,8 @@ export class JobDetailsComponent implements OnInit {
     if(this.previousRouteService.getPreviousUrl() != '/jobs'  && sessionStorage.getItem('companyId')!=null)
       this.showPrevious = true;
     this.getJobDetails(this.id);
+    if(sessionStorage.getItem('User'))
+      this.user = JSON.parse(sessionStorage.getItem('User') || "")
     if(this.user.id != ""){
       this.applicationService.getApplications().subscribe(data =>{
         for(var elem of data)
@@ -103,8 +105,8 @@ export class JobDetailsComponent implements OnInit {
         app.jobId = this.id;
         app.userId = this.user.id;
         app.status = "Pending";
-        delete app.user;
-        delete app.job;
+        //delete app.user;
+        //delete app.job;
         console.log(app);
         this.applicationService.createApplication(app).subscribe(data =>{
           console.log("Created successfully");

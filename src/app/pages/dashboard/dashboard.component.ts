@@ -9,6 +9,7 @@ import { AuthService } from 'app/services/auth.service';
 })
 export class DashboardComponent implements OnInit {
 
+  company = sessionStorage.getItem("Company");
   constructor() { 
     }
   ngOnInit(): void {
