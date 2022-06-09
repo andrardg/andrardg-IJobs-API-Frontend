@@ -48,14 +48,17 @@ export class CompanyEditComponent implements OnInit {
 
   applicationsList : Array<Application> = [];
   applications : Array<Application> = [];
-  seeApplications: boolean = false;
   interviewsList : Array<Interview> = [];
   interviews : Array<Interview> = [];
-  seeInterviews: boolean = false;
-  filterByInterviewId :string = '';
-  schedule : boolean = false;
+  filterByJobId :string = '';
+  schedule = new Application();
+  seeInterview  = new Interview();
   newInterview = new Interview();
   isOnline:string = '';
+  editInterview : boolean = false;
+  seeApplication = new Application();
+  //editApplication: boolean = false;
+  applicationStatuses = ['Rejected', 'Hired'];
 
   constructor(
     private activatedRoute:ActivatedRoute,
@@ -69,7 +72,6 @@ export class CompanyEditComponent implements OnInit {
     private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
-
     this.activatedRoute.params.subscribe((params: any) => {
       this.id = params['id'];
       console.log(this.id);
@@ -81,6 +83,10 @@ export class CompanyEditComponent implements OnInit {
   getJobDetails(id: any){
     console.log(id);
     this.router.navigate(['/jobs', id]);
+  }
+  getUserDetails(id: any){
+    console.log(id);
+    this.router.navigate(['/users', id]);
   }
   getCompanyDetails(id:any){
     this.service.getCompanyDetails(id).subscribe(data=>{
@@ -208,9 +214,11 @@ export class CompanyEditComponent implements OnInit {
   }
   sectionFive(){
     this.getAllApplications();
+    this.getAllInterviews();
     this.section = 5;
   }
   sectionSix(){
+    this.getAllInterviews();
     this.cancel();
     this.section = 6;
   }
@@ -285,52 +293,65 @@ export class CompanyEditComponent implements OnInit {
     this.interviewsService.getInterviews().subscribe(data =>{
       this.interviewsList = data;
       this.interviewsList = this.interviewsList.filter( data => data.application?.job?.companyId == this.id);
-      console.log(this.applicationsList);
+      this.interviews = this.interviewsList;
+      if(this.newInterview.applicationId != ''){
+        this.interviews = this.interviews.filter(x => x.applicationId == this.newInterview.applicationId);
+      }
+      console.log(this.interviews);
+      this.filterByJobId = '';
     });
   }
   getApplicationsForJob(){
-    console.log(this.filterByInterviewId);
-    this.seeApplications = true;
-    this.applications = this.applicationsList.filter(x => x.jobId == this.filterByInterviewId);
+    console.log(this.filterByJobId);
+    this.schedule.id = '';
+    if(this.filterByJobId == 'All')
+      this.applications = this.applicationsList;
+    else if(this.filterByJobId != '')
+      this.applications = this.applicationsList.filter(x => x.jobId == this.filterByJobId);
     console.log(this.applications);
   }
-  getInterviewsForJob(job:any){
-    this.seeInterviews = true;
-    this.interviews = this.interviewsList.filter(x => x.application?.jobId == job.id);
+  getInterviewsForJob(){
+    if(this.filterByJobId == 'All')
+      this.interviews = this.interviewsList;
+    else if(this.filterByJobId != '')
+      this.interviews = this.interviewsList.filter(x => x.application?.jobId == this.filterByJobId);
   }
-  getInterviewsForApplication(application:any){
-    this.interviews = this.interviewsList.filter( x => x.application == application);
+  getInterviewsForApplication(id:any){
+    this.interviews = this.interviewsList.filter( x => x.applicationId == id);
+    console.log(this.interviews);
   }
-  createInterview(id:any){
-    this.newInterview.applicationId = id;
+  createInterview(app:any){
+    this.newInterview.applicationId = app.id;
     this.newInterview.responseCompany = true;
     this.newInterview.responseUser = false;
     console.log(this.newInterview);
     this.interviewsService.createInterview(this.newInterview).subscribe(data=>{
       console.log("Created successfully");
       alert("Created sucessfully");
+      if(app.status == 'Pending')
+        {
+          app.status = 'Interview stage';
+          console.log(app);
+          this.saveApplication(app);
+      }
+      this.seeInterview.applicationId = '';
+      this.getAllInterviews();
       this.scheduleFalse();
     },
     error =>{
       console.log(error);
     });
   }
-  closeApplicationsTab(){
-    this.applications = [];
-    this.interviews = [];
-  }
-  closeInterviewsTab(){
-    this.applications = [];
-    this.interviews = [];
-  }
   getSafeUrl(file:string){
     return this.sanitizer.bypassSecurityTrustResourceUrl(file);
   }
-  scheduleTrue(){
-    this.schedule = true;
+  scheduleTrue(row:any){
+    this.schedule.id = row.id;
+    this.seeApplication.id = '';
+    this.newInterview.date = new Date();
   }
   scheduleFalse(){
-    this.schedule = false;
+    this.schedule.id = '';
     this.newInterview = new Interview();
   }
   convertIsOnline(){
@@ -338,5 +359,82 @@ export class CompanyEditComponent implements OnInit {
       this.newInterview.isOnline = true;
     else
     this.newInterview.isOnline = false;
+  }
+  seeInterviewTrue(app:any){
+    this.seeInterview.applicationId = app.id;
+    this.getInterviewsForApplication(app.id);
+  }
+  seeInterviewFalse(){
+    this.seeInterview.applicationId = '';
+  }
+  editInterviewTrue(intv:any){
+    this.editInterview = true;
+    this.newInterview = intv;
+    this.newInterview.responseCompany = true;
+    this.newInterview.responseUser = false;
+    if(intv.isOnline == true)
+      this.isOnline = 'Online';
+    else
+      this.isOnline = 'In person';
+  }
+  editInterviewFalse(){
+    this.editInterview = false;
+  }
+  saveInterview(){
+    delete this.newInterview.application;
+    console.log(this.newInterview);
+    this.interviewsService.saveInterview(this.newInterview).subscribe(data=>{
+      console.log("Updated sucessfully");
+      alert("Updated sucessfully");
+      this.newInterview = new Interview();
+      this.getAllInterviews();
+      this.editInterviewFalse();
+    })
+  }
+  deleteInterview(id:any){
+    if (confirm('Are you sure you want to delete this interview?')) {
+      this.interviewsService.removeInterview(id).subscribe(data=>{
+        if(this.interviews.length == 1)
+      {
+        this.seeInterviewFalse();
+        this.interviews = [];
+      }
+      console.log("Deleted sucessfully");
+      alert("Deleted sucessfully");
+      this.getAllInterviews();
+      this.interviews = this.interviews.filter( x=> x.id != id);
+    })
+    }
+    else
+    console.log("Delete process cancelled");
+  }
+  confirm(interview:any){
+    this.newInterview = interview;
+    this.newInterview.responseCompany = true;
+    this.saveInterview();
+  }
+  seeApplicationTrue(id:any){
+    this.seeApplication.id = id;
+  }
+  seeApplicationFalse(){
+    this.seeApplication.id = '';
+  }/*
+  editApplicationFalse(){
+    this.editApplication = false;
+  }
+  editApplicationTrue(){
+    this.editApplication = true;
+  }
+  */
+  saveApplication(app:any){
+    this.applicationsService.saveApplication(app).subscribe(data =>{
+      console.log('Application status updated successfully');
+      alert('Application status updated successfully');
+      this.seeApplicationFalse();
+      this.seeApplication.id = '';
+    },
+    error =>{
+      console.log(error);
+    })
   }
 }

@@ -5,17 +5,17 @@ import { User } from "./user";
 export class Application {
     id?:string;
     jobId:string;
-    job:Job;
+    job?:Job;
     userId:string;
-    user:User;
+    user?:User;
     cv:string;
     status:string;
     interviews:Array<Interview>;
     constructor(){
         this.jobId = '';
-        this.job = new Job();
+        //this.job = new Job();
         this.userId = '';
-        this.user = new User();
+        //this.user = new User();
         this.cv = '';
         this.status = 'Pending';
         this.interviews = [];

@@ -31,8 +31,15 @@ display: flex;
 flex-direction: column;
 flex-basis: 100%;
 flex: 1;
-width:50%;
-height: 2rem;
+//width:50%;
+}
+.column a{
+text-align: left;
+padding-left: 2rem;
+padding-top:15px;
+font-size: 14px;
+text-decoration: none;
+color: inherit;
 }
 .column2{
 display: flex;
@@ -77,6 +84,7 @@ align-items: right;
 .page-right{
 width:50%;
 height:100%;
+min-height: fit-content;
 flex-direction: column;
 margin-top:11rem;
 }
@@ -85,7 +93,7 @@ width: 70%;
 }
 .edit mat-form-field{
 width: 100%;
-height:100%;
+//height:100%;
 //padding-right: 30%;
 }
 .edit mat-label{
@@ -110,14 +118,12 @@ margin-bottom: 15px;
 border-radius: 5px;
 }
 .select-picker{
-width: 100%;
-border-color: black;
-padding: 15px 45px 15px 15px;
-border-width: 1px;
+border: 1px solid black;
+padding: 10px 45px 10px 10px;
 margin-bottom: 15px;
 border-radius: 5px;
-font-size: 15px;
-background: rgb(242, 244, 245);
+font-size: 18px;
+background: white;
 }
 .center-of-screen{
 justify-content: center;
@@ -126,9 +132,10 @@ margin-right: auto;
 text-align: center;
 }
 .buttons{
-margin-top: 2rem;
+margin-top: 1rem;
 font-family: "Times New Roman", Times, serif;
 font-size: large;
+padding-bottom:3rem;
 }
 .button{
 margin-right: 2rem;
@@ -142,4 +149,71 @@ background-color:red;
 color:white;
 font-family: "Times New Roman", Times, serif;
 font-size: 20px;
+}
+.width50{
+width:50%;
+}
+.height40{
+height:40px;
+}
+.height50{
+height:50px;
+}
+.job{
+width:85%;
+height:11rem;
+padding: 16px;
+cursor: pointer;
+background-color: white;
+border-radius: 5px;
+margin-bottom:2rem;
+box-shadow: -0.2em 0 .4em grey;
+display: flex;
+flex-direction: row;
+}
+.title2{
+width:100%;
+text-align: center;
+border-bottom: 1px solid gray;
+padding:5px 0px 5px 0px;
+font-size: large;
+}
+
+.new-interview{
+font-size: 20px;
+padding-left:10%;
+width:70%;
+}
+.new-interview input{
+border-radius: 5px;
+border: 1px solid black;
+padding-left:10px;
+padding-bottom: 10px;
+font-size: 18px;
+}
+.date{
+border: 1px solid black;
+border-radius: 5px;
+font-size: 18px;
+padding: 0px 0px 10px 10px;
+}
+.interview-edit{
+border: 1px solid black;
+border-radius: 5px;
+font-size: 15px;
+padding: 0px 0px 5px 5px;
+}
+
+.padding10{
+padding-bottom: 10px;
+}
+.interview{
+margin-top:15px;
+width:80%;
+border:1px solid grey;
+background-color: white;
+}
+.interview input{
+padding-right: 0px;
+font-size: 13px;
 }
