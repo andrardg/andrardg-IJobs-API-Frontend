@@ -1,4 +1,7 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+<link rel="stylesheet"
+          href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <main class="main">
 <h1>{{Job.jobTitle}}</h1>
 
@@ -18,10 +21,10 @@
         <h2>Company</h2>
         <div class="row" style="padding-left:2rem;">
             <div class="column">
-              <div *ngIf="Job.company.photo != null">
-                  <img (click)="getCompanyDetails(Company.id)" src="{{Job.company.photo}}" width="150" height="150" style="object-fit: cover;" />
+              <div *ngIf="Job.company!.photo != null">
+                  <img (click)="getCompanyDetails(Company.id)" src="{{Job.company!.photo}}" width="150" height="150" style="object-fit: cover;" />
               </div>
-              <div *ngIf="Job.company.photo == null">
+              <div *ngIf="Job.company!.photo == null">
                   <img (click)="getCompanyDetails(Company.id)" src="../../../assets/images/companyProfilePhoto.png" width="150" height="150" style="object-fit: cover;" />
               </div>
             </div>
@@ -29,10 +32,10 @@
     
             <div class="column"style="flex-basis: 50%;">
               <div class="title">
-                <a>{{Job.company.name}}</a>
+                <a>{{Job.company!.name}}</a>
               </div>
-              <a><i class="fa fa-envelope" style="min-width:30px"></i>{{Job.company.email}}</a>
-              <a><i class="fa fa-map-marker-alt" style="min-width:30px"></i>{{Job.company.address}}</a>
+              <a><i class="fa fa-envelope" style="min-width:30px"></i>{{Job.company!.email}}</a>
+              <a><i class="fas fa-map-marker-alt" style="min-width:30px"></i>{{Job.company!.address}}</a>
             </div>
           </div>
     </mat-card>
@@ -65,7 +68,7 @@
         </mat-card-header>
         <mat-card-content>
             <div>
-                <a><i class="fa fa-map-marker-alt" style="min-width:30px"></i>{{Job.address}}</a>
+                <a><i class="fas fa-map-marker-alt" style="min-width:30px"></i>{{Job.address}}</a>
             </div>
         </mat-card-content>
         <mat-card-header>
@@ -89,12 +92,21 @@
         </mat-card-header>
         <mat-card-content>
             <div *ngIf="Job.open == true">
-                <a><i class="fa fa-bullhorn" style="min-width:30px"></i>Recruiting</a>
+                <a><i class="fas fa-bullhorn" style="min-width:30px"></i>Recruiting</a>
             </div>
             <div *ngIf="Job.open == false">
                 <a><i class="fa fa-check-square-o" style="min-width:30px"></i>Position filled</a>
             </div>
         </mat-card-content>
+
+        <div *ngIf="Job.subdomain!.name != 'Other'">
+            <mat-card-header>
+                <mat-card-title>Domain</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                    <a><i class="fas fa-chart-line" style="min-width:30px"></i>{{Job.subdomain!.name}}</a>
+            </mat-card-content>
+        </div>
     </mat-card>
 </div>
 

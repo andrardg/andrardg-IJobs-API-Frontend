@@ -232,6 +232,10 @@ export class CompanyEditComponent implements OnInit {
   cancel(){
     this.getCompanyDetails(this.id);
     this.formData.delete;
+    this.editInterview = false;
+    this.newInterview = new Interview();
+    this.scheduleFalse();
+    this.seeApplicationFalse();
     this.section = 0;
     this.error = "";
     this.form.patchValue({name: this.Company.name});
@@ -322,10 +326,13 @@ export class CompanyEditComponent implements OnInit {
   }
   createInterview(app:any){
     this.newInterview.applicationId = app.id;
-    this.newInterview.responseCompany = true;
+    if(!this.admin)
+      this.newInterview.responseCompany = true;
+    else
+      this.newInterview.responseCompany = false;
     this.newInterview.responseUser = false;
-    console.log(this.newInterview);
     this.interviewsService.createInterview(this.newInterview).subscribe(data=>{
+      app.interviews.push(this.newInterview);
       console.log("Created successfully");
       alert("Created sucessfully");
       if(app.status == 'Pending')
@@ -370,8 +377,6 @@ export class CompanyEditComponent implements OnInit {
   editInterviewTrue(intv:any){
     this.editInterview = true;
     this.newInterview = intv;
-    this.newInterview.responseCompany = true;
-    this.newInterview.responseUser = false;
     if(intv.isOnline == true)
       this.isOnline = 'Online';
     else
@@ -382,6 +387,11 @@ export class CompanyEditComponent implements OnInit {
   }
   saveInterview(){
     delete this.newInterview.application;
+    if(!this.admin)
+      this.newInterview.responseCompany = true;
+    else
+      this.newInterview.responseCompany = false;
+    this.newInterview.responseUser = false;
     console.log(this.newInterview);
     this.interviewsService.saveInterview(this.newInterview).subscribe(data=>{
       console.log("Updated sucessfully");
@@ -391,50 +401,61 @@ export class CompanyEditComponent implements OnInit {
       this.editInterviewFalse();
     })
   }
-  deleteInterview(id:any){
+  deleteInterview(interview:any){
     if (confirm('Are you sure you want to delete this interview?')) {
-      this.interviewsService.removeInterview(id).subscribe(data=>{
-        if(this.interviews.length == 1)
-      {
+      this.interviewsService.removeInterview(interview.id).subscribe(data=>{
+        this.getAllApplications();
         this.seeInterviewFalse();
-        this.interviews = [];
-      }
-      console.log("Deleted sucessfully");
-      alert("Deleted sucessfully");
-      this.getAllInterviews();
-      this.interviews = this.interviews.filter( x=> x.id != id);
-    })
+        console.log("Deleted sucessfully");
+        alert("Deleted sucessfully");
+        this.interviews = this.interviews.filter( x=> x.id != interview.id);
+      })
     }
     else
-    console.log("Delete process cancelled");
+      console.log("Delete process cancelled");
   }
   confirm(interview:any){
     this.newInterview = interview;
     this.newInterview.responseCompany = true;
-    this.saveInterview();
+    delete this.newInterview.application;
+    this.interviewsService.saveInterview(this.newInterview).subscribe(data=>{
+      console.log("Updated sucessfully");
+      alert("Updated sucessfully");
+      this.newInterview = new Interview();
+      this.getAllInterviews();
+      this.editInterviewFalse();
+    })
   }
-  seeApplicationTrue(id:any){
-    this.seeApplication.id = id;
+  seeApplicationTrue(app:any){
+    this.scheduleFalse();
+    this.seeApplication.id = app.id;
+    this.seeApplication.status = app.status;
   }
   seeApplicationFalse(){
     this.seeApplication.id = '';
-  }/*
-  editApplicationFalse(){
-    this.editApplication = false;
   }
-  editApplicationTrue(){
-    this.editApplication = true;
-  }
-  */
   saveApplication(app:any){
-    this.applicationsService.saveApplication(app).subscribe(data =>{
-      console.log('Application status updated successfully');
-      alert('Application status updated successfully');
-      this.seeApplicationFalse();
-      this.seeApplication.id = '';
-    },
-    error =>{
-      console.log(error);
-    })
+    var keepGoing = true;
+    app.status = this.seeApplication.status;
+    if(app.status == 'Rejected')
+      if(!confirm('Are you sure you want to mark the application as rejected? All the interviews will be deleted.')){
+        keepGoing = false;
+        alert("The process has been stopped");
+    }
+    if(keepGoing == true){
+      delete app.interviews;
+      delete app.job;
+      delete app.user;
+      this.applicationsService.saveApplication(app).subscribe(data =>{
+        console.log('Application status updated successfully');
+        alert('Application status updated successfully');
+        this.seeApplicationFalse();
+        this.getAllApplications();
+      },
+      error =>{
+        console.log(error);
+      })
+    }
+
   }
 }

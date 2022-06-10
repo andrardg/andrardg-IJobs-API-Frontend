@@ -93,7 +93,6 @@ export class TutorialsComponent implements OnInit {
     this.editDomain = row;
   }
   renameDomain(row:any){
-    console.log(event);
     this.editDomain.name = row.name;
     this.domainService.saveDomain(this.editDomain).subscribe(data=>{
       console.log("Edited successfully");
@@ -129,7 +128,6 @@ export class TutorialsComponent implements OnInit {
     this.editSubdomain = row;
   }
   renameSubdomain(row:any){
-    console.log(event);
     this.editSubdomain.name = row.name;
     this.subdomainService.saveSubdomain(this.editSubdomain).subscribe(data=>{
       console.log("Edited successfully");

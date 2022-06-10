@@ -6,6 +6,8 @@ import { Company } from 'app/classes/company';
 import { CompaniesService } from 'app/services/companies.service';
 import { AuthService } from 'app/services/auth.service';
 import { JobsService } from '../../../services/jobs.service';
+import { DomainService } from 'app/services/domain.service';
+import { Domain } from 'app/classes/domain';
 
 @Component({
   selector: 'app-job-create',
@@ -16,6 +18,8 @@ export class JobCreateComponent implements OnInit {
 
   public Job = new Job();
   CompanyList:Array<Company> = [];
+  DomainList:Array<Domain> = [];
+  selectedDomain = new Domain();
   JobTypes:any=["Full-Time", "Part-Time", "Internship", "Volunteering"];
   Experience:any=["Entry Level", "Junior Level", "Mid-Senior Level", "Senior Level", "Associate", "Director"]
   admin = sessionStorage.getItem('Admin');
@@ -28,6 +32,7 @@ export class JobCreateComponent implements OnInit {
                 experience: new FormControl('', [Validators.required]),
                 address: new FormControl('', [Validators.required]),
                 companyId: new FormControl(''),
+                subdomain: new FormControl('', [Validators.required]),
               });
               
   constructor(
@@ -35,10 +40,12 @@ export class JobCreateComponent implements OnInit {
     private router:Router,
     private service: JobsService,
     private authService: AuthService,
-    private companyService: CompaniesService) { }
+    private companyService: CompaniesService,
+    private domainService: DomainService) { }
 
   ngOnInit(): void {
     this.getCompanies();
+    this.getDomains();
   }
   cancel(){
     this.router.navigate(['/jobs']);
@@ -56,7 +63,7 @@ export class JobCreateComponent implements OnInit {
       this.error = 'You cannot register empty fields. ';
       return;
     }
-    
+    delete this.Job.company;
     this.Job.jobTitle = this.form.controls['jobTitle'].value.charAt(0).toUpperCase() + this.form.controls['jobTitle'].value.slice(1);
     this.Job.description = this.form.controls['description'].value.charAt(0).toUpperCase() + this.form.controls['description'].value.slice(1);
     this.Job.salary = this.form.controls['salary'].value;
@@ -70,21 +77,17 @@ export class JobCreateComponent implements OnInit {
       var company = JSON.parse(sessionStorage.getItem('Company') || "")
       this.Job.companyId = company.id;
     }
+    this.Job.subdomainId = this.form.controls['subdomain'].value;
 
-    console.log(this.Job);
-    
     this.service.createJob(this.Job).subscribe((data)=>{
        console.log("Created successfully");
        alert("Created successfully");
-     },
-            error => {
-              this.error=error;
-            }
+       this.router.navigate(['/jobs']);
+     },error => {
+        this.error=error;
+        console.log(this.error);
+        }
      );
-    if(this.error)
-      console.log(this.error);
-    else
-      this.router.navigate(['/jobs']);
   }
   logout() {
     this.authService.logout();
@@ -93,9 +96,24 @@ export class JobCreateComponent implements OnInit {
     this.companyService.getCompanies().subscribe(data=>{
       console.log(data);
       this.CompanyList=data;
+      this.CompanyList = this.CompanyList.filter( x=> x.verifiedAccount == true);
     });;
   }
   updateCompany(e: any){
     this.form.patchValue({companyId: e.value});
+  }
+  getDomains(){
+    this.domainService.getDomains().subscribe(data=>{
+      this.DomainList = data;
+      this.DomainList = this.DomainList.filter( x => x.subdomains!.length > 0);
+    },
+    error =>{
+      console.log(error);
+    }
+  )};
+  changeDomain(event:any){
+    console.log(event.target.value);
+    this.selectedDomain = this.DomainList.filter(x => x.id == event.target.value)[0];
+    console.log(this.selectedDomain);
   }
 }

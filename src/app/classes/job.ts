@@ -1,4 +1,5 @@
 import { Company } from "./company";
+import { Subdomain } from "./subdomain";
 
 export class Job {
     id?:string;
@@ -10,7 +11,9 @@ export class Job {
     address?:string;
     open?:Boolean;
     companyId:string;
-    company:Company;
+    company?:Company;
+    subdomainId:string;
+    subdomain?:Subdomain;
     constructor(){
         this.jobTitle = '';
         this.description = '';
@@ -19,6 +22,6 @@ export class Job {
         this.experience = '';
         this.open = true;
         this.companyId = '';
-        this.company = new Company();
+        this.subdomainId = '';
     }
 }

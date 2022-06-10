@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Job } from 'app/classes/job';
 import { AuthService } from 'app/services/auth.service';
+import { Domain } from 'app/classes/domain';
 import { JobsService } from '../../services/jobs.service';
+import { DomainService } from 'app/services/domain.service';
+import { Subdomain } from 'app/classes/subdomain';
 @Component({
   selector: 'app-jobs',
   templateUrl: './jobs.component.html',
@@ -16,59 +19,43 @@ export class JobsComponent implements OnInit {
   deleteProgress = 0;
 
   jobTypes:Array<string> = ["Full-Time", "Part-Time", "Internship", "Volunteering"];
-  jobTypesFilter: Array<boolean> = [false, false, false, false];
+  jobTypesFilter: string = 'All';
   experience:any=["Entry Level", "Junior Level", "Mid-Senior Level", "Senior Level", "Associate", "Director"];
-  experienceFilter: Array<boolean> = [false, false, false, false, false, false];
+  experienceFilter:string = 'All';
   salaryFilter:number = 0;
+  jobsOpenFilter:boolean = true;
   error:any = '';
+  DomainList:Array<Domain> = [];
+  domainFilter:any = 'All';
+  SubdomainList:Array<Subdomain> = [];
+  subdomainFilter : any = 'All';
   Jobs:Array<Job> = [];
-  count:any = 0;
-
   constructor(
     private router:Router,
     private service: JobsService,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private domainService: DomainService) {
     }
   
   ngOnInit(): void {  
     this.getJobList();
+    this.getDomains();
   }
-
   getJobList(){
     this.service.getJobs().subscribe(data=>{
       console.log(data);
       this.JobList=data;
       this.Jobs = data;
-      if(this.admin)
-        this.count = data.length;
-      else
-        this.count = this.Jobs.filter(data => (data.company.verifiedAccount == true && data.open == true)).length;
-      console.log(this.count)
+      this.Jobs = this.Jobs.filter(data => (data.company!.verifiedAccount == true && data.open == true));
     });
   }
   getJobDetails(id: any){
     console.log(id);
     this.router.navigate(['/jobs', id]);
   }
-  removeJob(time:any, id:any){
-    
-    console.log(id);
-    console.log(time);
-    this.deleteProgress = Math.max(this.deleteProgress, time / 10);
-    if( this.deleteProgress > 100 && time == 0){
-      
-        this.deleteProgress = 0;
-
-        this.service.removeJob(id).subscribe((data)=>{
-        console.log("success");
-        this.getJobList();
-    });
-    }  
-  }
   create() {
     this.router.navigate(['/jobs/create']);
   }
-
   logout() {
     this.authService.logout();
   }
@@ -80,24 +67,45 @@ export class JobsComponent implements OnInit {
       this.Jobs = this.JobList.filter(elem => (
         this.salaryFilter == 0 || elem.salary > this.salaryFilter
         ));
-      this.Jobs.forEach(job => { // for each user, loop over studies list
-        var add:boolean = false;
-        var add2:boolean = false;
-        for(let i=0; i< this.jobTypesFilter.length; i++)
-            if(this.jobTypesFilter[i] == true && job.jobType && job.jobType.indexOf(this.jobTypes[i])!= -1)
-              add = true;
-        for(let i=0; i< this.experienceFilter.length; i++)
-          if(this.experienceFilter[i] == true && job.experience && job.experience.indexOf(this.experience[i])!= -1)
-            add2 = true;
-        if(add == false && this.jobTypesFilter.indexOf(true) != -1) // if job type not in filter list, delete
-          this.Jobs = this.Jobs.filter( elem => (elem != job));
-        if(add2 == false && this.experienceFilter.indexOf(true) != -1) // if job experience not in filter list, delete
-          this.Jobs = this.Jobs.filter( elem => (elem != job));
-      });
-    }
-    if(this.admin)
-        this.count = this.Jobs.length;
+      if(this.jobTypesFilter != 'All')
+        this.Jobs = this.Jobs.filter(elem => elem.jobType == this.jobTypesFilter);
+      if(this.experienceFilter != 'All')
+        this.Jobs = this.Jobs.filter(elem => elem.experience == this.experienceFilter);
+      if(this.jobsOpenFilter == false)
+        this.Jobs = this.Jobs.filter(x => x.open == false);
       else
-        this.count = this.Jobs.filter(elem => (elem.company.verifiedAccount == true && elem.open == true)).length;
+        this.Jobs = this.Jobs.filter(x => x.open == true);
+      if(this.domainFilter != 'All'){
+        if(this.subdomainFilter != 'All')
+          this.Jobs = this.Jobs.filter( x=> x.subdomainId == this.subdomainFilter);
+        else
+          this.Jobs  = this.Jobs.filter( x=> x.subdomain!.domainId == this.domainFilter);
+      }
+    }
+  }
+  toggleJobNotOpen(event:any){
+    if(this.jobsOpenFilter == false && event.pointerId == 1){
+      this.jobsOpenFilter = true;
+    }
+    else if(event.pointerId == 1){
+      this.jobsOpenFilter = false;
+    }
+  }
+  getDomains(){
+    this.domainService.getDomains().subscribe(data=>{
+      this.DomainList = data;
+      console.log(data);
+      this.DomainList = this.DomainList.filter( x => x.subdomains!.length > 0);
+      console.log(this.DomainList);
+    },
+    error =>{
+      console.log(error);
+    });
+  }
+  getSubdomains(){
+    if(this.domainFilter != 'All')
+      this.SubdomainList = this.DomainList.filter(x => x.id == this.domainFilter)[0].subdomains!;
+    console.log(this.SubdomainList);
+    console.log(this.domainFilter);
   }
 }

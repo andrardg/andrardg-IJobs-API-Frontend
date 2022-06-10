@@ -10,7 +10,7 @@ export class Application {
     user?:User;
     cv:string;
     status:string;
-    interviews:Array<Interview>;
+    interviews?:Array<Interview>;
     constructor(){
         this.jobId = '';
         //this.job = new Job();

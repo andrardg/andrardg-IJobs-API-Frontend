@@ -15,7 +15,7 @@ Font Awesome Icon brain Icon | fas fa brain | HTML, CSS
         <button mat-button [ngClass]="{'selected': section == '1'}" (click)="sectionOne()"><i class="fa fa-globe" style="min-width:50px;"></i>All</button>
 
         <button mat-button [ngClass]="{'selected': section == '2'}" (click)="sectionTwo()"> <i class="fa fa-institution" style="min-width:50px;"></i>Companies</button>
-        <div *ngIf="section == 2" style="width:70%; padding-left:40px">
+        <div *ngIf="section == 2" style="width:90%; padding-left:40px">
             <div class="column">
                 <div class="row">
                     <h2>Address</h2>
@@ -28,34 +28,76 @@ Font Awesome Icon brain Icon | fas fa brain | HTML, CSS
         </div>
 
         <button mat-button [ngClass]="{'selected': section == '3'}" (click)="sectionThree()"> <i class="fa fa-briefcase" style="min-width:50px;"></i>Jobs</button>
-        <div *ngIf="section == 3" style="width:70%; padding-left:40px">
+        <div *ngIf="section == 3" style="width:90%; padding-left:40px">
             <div class="column">
                 <div class="row">
                     <h2> Job Type</h2>
                     <div class="list">
-                        <div *ngFor = "let item of jobTypes; let i = index">
-                            <label class="option">
-                                <input type="checkbox" [(ngModel)]="jobTypesFilter[i]" value="item"/>
-                                {{item}}
-                             </label>
-                        </div>
+                        <select [(ngModel)]="jobTypesFilter" class="select-picker">
+                            <option>All</option>
+                            <option *ngFor = "let item of jobTypes" [value]="item">
+                              {{item}}
+                            </option>
+                            <i class='fa fa-angle-down'></i>
+                          </select>
                     </div>
                 </div>
                 <div class="row">
                     <h2> Experience Level</h2>
                     <div class="list">
-                        <div *ngFor = "let item of experience; let i = index">
-                            <label class="option">
-                                <input type="checkbox" [(ngModel)]="experienceFilter[i]" value="item"/>
-                                {{item}}
-                             </label>
-                        </div>
+                        <select [(ngModel)]="experienceFilter" class="select-picker">
+                            <option>All</option>
+                            <option *ngFor = "let item of experience" [value]="item">
+                              {{item}}
+                            </option>
+                            <i class='fa fa-angle-down'></i>
+                          </select>
                     </div>
                 </div>
                 <div class="row">
                     <h2> Base Salary</h2>
-                    <input class="inputtext" placeholder="0" numbersOnly style="text-transform: capitalize;" [(ngModel)]="salaryFilter">
+                    <input class="select-picker" placeholder="0" numbersOnly style="width:97%" [(ngModel)]="salaryFilter">
                     <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
+                </div>
+                <div class="row">
+                    <h2>Domain</h2>
+                    <div class="list">
+                        <select [(ngModel)]="domainFilter" class="select-picker" (click)="getSubdomains()">
+                          <option>All</option>
+                          <option *ngFor = "let item of DomainList" [value]="item.id">
+                            {{item.name}}
+                          </option>
+                          <i class='fa fa-angle-down'></i>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <h2>Subdomain</h2>
+                    <div class="list">
+                      <div *ngIf="domainFilter != 'All'">
+                        <select [(ngModel)]="subdomainFilter" class="select-picker">
+                          <option>All</option>
+                          <option *ngFor = "let item of SubdomainList" [value]="item.id">
+                            {{item.name}}
+                          </option>
+                          <i class='fa fa-angle-down'></i>
+                        </select>
+                      </div>
+          
+                      <div *ngIf="domainFilter == 'All'">
+                        <select [(ngModel)]="subdomainFilter" class="select-picker">
+                          <option>All</option>
+                          <i class='fa fa-angle-down'></i>
+                        </select>
+                      </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="admin">
+                  <h2>Show filled positions</h2>
+                  <label (click)="toggleJobNotOpen($event)" class="switch">
+                      <input type="checkbox">
+                      <span class="slider round"></span>
+                  </label>
                 </div>
                 <div class="row" style="margin-top:1rem">
                     <button mat-raised-button class="buttonDone" (click)="doneJob()">Done</button>
@@ -64,7 +106,7 @@ Font Awesome Icon brain Icon | fas fa brain | HTML, CSS
         </div>
 
         <button mat-button [ngClass]="{'selected': section == '4'}" (click)="sectionFour()"> <i class="fas fa-user-circle" style="min-width:50px;"></i>People</button>
-        <div *ngIf="section == 4" style="width:70%; padding-left:40px">
+        <div *ngIf="section == 4" style="width:90%; padding-left:40px">
             <div class="column">
                 <div class="row">
                     <h2> Profiles with a CV</h2>
@@ -281,10 +323,10 @@ Font Awesome Icon brain Icon | fas fa brain | HTML, CSS
                     <div class="object2">
                         <div class="row">
                             <div class="column" style="cursor: pointer">
-                                <div *ngIf="row.company.photo != null">
-                                    <img (click)="getJobDetails(row.id)" src="{{row.company.photo}}" width="100" height="100" style="object-fit: cover;" />
+                                <div *ngIf="row.company!.photo != null">
+                                    <img (click)="getJobDetails(row.id)" src="{{row.company!.photo}}" width="100" height="100" style="object-fit: cover;" />
                                 </div>
-                                <div *ngIf="row.company.photo == null">
+                                <div *ngIf="row.company!.photo == null">
                                     <img (click)="getJobDetails(row.id)" src="../../../assets/images/companyProfilePhoto.png" width="100" height="100" style="object-fit: cover;" />
                                 </div>
                             </div>
@@ -294,7 +336,7 @@ Font Awesome Icon brain Icon | fas fa brain | HTML, CSS
                                 </div>
                                 <div class="row">
                                     <div class="column">
-                                        <a><i class="fa fa-institution" style="min-width:50px;"></i>{{row.company.name}}</a>
+                                        <a><i class="fa fa-institution" style="min-width:50px;"></i>{{row.company!.name}}</a>
                                         <a><i class='fa fa-clock-o' style="min-width:50px;"></i>{{row.jobType}}</a>
                                         <a><i class="far fa-lightbulb" style="min-width:50px"></i>{{row.experience}}</a>
                                     </div>
