@@ -161,9 +161,8 @@ height:50px;
 }
 .job{
 width:85%;
-height:11rem;
+height:12rem;
 padding: 16px;
-cursor: pointer;
 background-color: white;
 border-radius: 5px;
 margin-bottom:2rem;
@@ -278,3 +277,8 @@ font-size: 13px;
     .slider.round:before {
     border-radius: 50%;
     }
+.small-button{
+    width:20px;
+    margin-left:10px;
+    padding: 0;
+}

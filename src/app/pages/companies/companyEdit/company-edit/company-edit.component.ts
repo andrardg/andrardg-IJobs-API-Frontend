@@ -15,6 +15,7 @@ import { Application } from 'app/classes/application';
 import { Interview } from 'app/classes/interview';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Job } from 'app/classes/job';
+import { FileService } from 'app/services/file.service';
 
 @Component({
   selector: 'app-company-edit',
@@ -64,11 +65,11 @@ export class CompanyEditComponent implements OnInit {
     private router:Router,
     private service: CompaniesService,
     private authService: AuthService,
-    private jobsService: JobsService,
     private applicationsService : ApplicationService,
     private interviewsService : InterviewService,
     private previousRouteService: PreviousRouteService,
-    private sanitizer: DomSanitizer) { }
+    private sanitizer: DomSanitizer,
+    private fileService: FileService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: any) => {
@@ -350,7 +351,7 @@ export class CompanyEditComponent implements OnInit {
     });
   }
   getSafeUrl(file:string){
-    return this.sanitizer.bypassSecurityTrustResourceUrl(file);
+    return this.fileService.getSafeUrl(file);
   }
   scheduleTrue(row:any){
     this.schedule.id = row.id;
@@ -468,5 +469,11 @@ export class CompanyEditComponent implements OnInit {
       this.seeRejected = false;
       this.applications = this.applicationsList.filter( x => x.status != 'Rejected');
     }
+  }
+  getCV(application: any){
+    this.fileService.getPdf(application.cv);
+  }
+  downloadCV(application: any){
+    this.fileService.downloadPdf(application.cv, application.user.firstName + '-' + application.user.lastName + '-' + 'CV')
   }
 }

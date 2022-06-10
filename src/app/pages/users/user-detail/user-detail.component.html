@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
 <main class="main">
     <div class="column">
-        <div *ngIf="admin">
+        <div *ngIf="admin || ( user && user.id == id)">
             <button style="margin-left:30%" mat-raised-button (click)="editUser()">Edit profile</button>
         </div>
 
@@ -55,10 +55,17 @@
                                 </div>
                                 <div *ngIf="!aboutSection" style="height:10rem; text-align:center">
                                     <div *ngIf="User.cv" style="height:100%; margin-top:10px">
-                                        <iframe [src]="cv" width="200px" height="200px"></iframe>
+                                        <div class="column center-of-screen">
+                                            <object type="application/pdf" width="30%" height="100%"  style="cursor:pointer"[data]="getSafeUrl(User.cv)" id="pdf_content"></object>
+                                            <div class="row" style="justify-content:center; margin-top:20px">
+                                                <button mat-stroked-button style="margin-right:10px" (click)="getCV(User.cv)"><i class="fa fa-eye"></i></button>
+                                                <button mat-stroked-button style="margin-right:10px" (click)="downloadCV(User.cv)"><i class="fa fa-download"></i></button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div *ngIf="!User.cv">
-                                        <div class="text">{{cv}}</div>
+                                        <div class="text">No CV to show.</div>
+                                        
                                     </div>
                                 </div>
                             </div>

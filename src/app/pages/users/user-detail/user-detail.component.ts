@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
 import { UsersService } from 'app/services/users.service';
 import { User } from 'app/classes/user';
+import { FileService } from 'app/services/file.service';
 
 @Component({
   selector: 'app-user-detail',
@@ -15,14 +16,15 @@ export class UserDetailComponent implements OnInit {
   public id: any;
   User = new User();
   aboutSection:boolean = true;
-  cv:any = 'No CV to show.';
   admin = sessionStorage.getItem('Admin');
+  user:any;
 
   constructor(
     private activatedRoute:ActivatedRoute,
     private router:Router,
     private service: UsersService,
-    private sanitizer: DomSanitizer) { }
+    private sanitizer: DomSanitizer,
+    private fileService: FileService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: any) => {
@@ -30,16 +32,14 @@ export class UserDetailComponent implements OnInit {
     console.log(this.id);
   });
   this.getUserDetails(this.id);
+  if (JSON.parse(sessionStorage.getItem('User') || ""))
+    this.user = JSON.parse(sessionStorage.getItem('User') || "")
   }
 
   getUserDetails(id:any){
     this.service.getUserDetails(id).subscribe(data=>{
       console.log(data);
       this.User = data;
-      if(data.cv){
-        var file = data.cv;
-        this.cv = this.sanitizer.bypassSecurityTrustResourceUrl(data.cv);
-      }
     });
   }
   aboutTrue(){
@@ -50,5 +50,14 @@ export class UserDetailComponent implements OnInit {
   }
   editUser(){
     this.router.navigate(['/users/edit', this.id]);
+  }
+  getCV(cv: any){
+    this.fileService.getPdf(cv);
+  }
+  downloadCV(cv: any){
+    this.fileService.downloadPdf(cv, this.User.firstName + '-' + this.User.lastName + '-' + 'CV')
+  }
+  getSafeUrl(url:any){
+    return this.fileService.getSafeUrl(url);
   }
 }

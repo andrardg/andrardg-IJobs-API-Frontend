@@ -5,6 +5,7 @@ import { Domain } from 'app/classes/domain';
 import { Subdomain } from 'app/classes/subdomain';
 import { Tutorial } from 'app/classes/tutorial';
 import { DomainService } from 'app/services/domain.service';
+import { FileService } from 'app/services/file.service';
 import { SubdomainService } from 'app/services/subdomain.service';
 import { TutorialService } from 'app/services/tutorial.service';
 
@@ -41,7 +42,7 @@ export class TutorialsComponent implements OnInit {
     private domainService: DomainService,
     private subdomainService: SubdomainService,
     private tutorialService: TutorialService,
-    private sanitizer: DomSanitizer) { }
+    private fileService: FileService) { }
 
   ngOnInit(): void {
     this.getDomainList();
@@ -87,7 +88,7 @@ export class TutorialsComponent implements OnInit {
     console.log(this.Tutorials);
   }
   getSafeUrl(link:string){
-    return this.sanitizer.bypassSecurityTrustResourceUrl(link );
+    return this.fileService.getSafeUrl(link);
   }
   editDomainTrue(row:any){
     this.editDomain = row;

@@ -120,7 +120,7 @@
                                 <img src="{{form.controls['photo'].value}}" width="200" height="200" style="object-fit: cover;" />
                         </div>
                         <div class="column2">
-                            <iframe [src]="CVpreview" width="200px" height="200px"></iframe>
+                            <object type="application/pdf" width="200px" height="200px" style="cursor:pointer"[data]="getSafeUrl(CVpreview)" id="pdf_content"></object>
                         </div>
                     </div>
 
@@ -205,11 +205,11 @@
                 <div *ngFor="let row of applications">
                     <div class="job">
                         <div class="row">
-                            <div class="column" style="padding-top:0.5rem">
-                                
+                            <div class="column" style="padding-top:0.5rem; cursor:pointer">
+                                <object type="application/pdf" width="100%" height="100%"  style="cursor:pointer"[data]="getSafeUrl(row.cv)" id="pdf_content"></object>
                             </div>
                             <div class="column"style="flex-basis: 70%; margin-botttom:15px">
-                                <div *ngIf="admin">
+                                <div *ngIf="admin" style="cursor:pointer">
                                     <div class="title2" (click)="getJobDetails(row.jobId)">
                                         <a>{{row.job!.jobTitle}} {{row.job!.company!.name}}</a>
                                     </div>
@@ -217,7 +217,7 @@
                                         <a>{{row.user!.firstName}} {{row.user!.lastName}}</a>
                                     </div>
                                 </div>
-                                <div *ngIf="!admin">
+                                <div *ngIf="!admin" style="cursor:pointer">
                                     <div class="title2" (click)="getJobDetails(row.jobId)">
                                     <a>{{row.job!.jobTitle}}</a>
                                     </div>
@@ -243,6 +243,8 @@
                         </div>
                     </div>
                     <div class="buttons">
+                        <button mat-stroked-button style="margin-right:10px" *ngIf="seeApplication.id != row.id"(click)="getCV(row.cv)"><i class="fa fa-eye"></i></button>
+                        <button mat-stroked-button style="margin-right:10px" *ngIf="seeApplication.id != row.id"(click)="downloadCV(row.cv)"><i class="fa fa-download"></i></button>
                         <button mat-stroked-button style="margin-right:10px" *ngIf="seeApplication.id != row.id && admin" (click)="seeApplicationTrue(row)">Change application status</button>
                         <button mat-stroked-button style="margin-right:10px" *ngIf="seeApplication.id == row.id && admin" (click)="saveApplication(row)">Done</button>
                         <button mat-stroked-button style="margin-right:10px" *ngIf="seeApplication.id == row.id && admin" (click)="seeApplicationFalse()">Cancel</button>
@@ -436,9 +438,9 @@
                         <div class="job">
                             <div class="row">
                                 <div class="column width50" style="padding-top:0.5rem">
-                                    <iframe [src]="getSafeUrl(intv.application!.cv)" width="200px" height="130px"></iframe>
+                                    <object type="application/pdf" width="100%" height="100%" [data]="getSafeUrl(intv.application!.cv)" id="pdf_content"></object>
                                 </div>
-                                <div class="column width50"style="margin-botttom:15px">
+                                <div class="column"style="margin-botttom:15px; flex-basis:45%">
                                     <div class="title2" (click)="getJobDetails(intv.application?.jobId)">
                                       <a>{{intv.application?.job?.jobTitle}} {{intv.application?.job?.company?.name}}</a>
                                     </div>
@@ -448,6 +450,10 @@
                                     <a style="text-align: center"><i class="fa fa-clock-o" style="min-width:30px"></i>Status: {{intv.application?.status}}</a>
                                 </div>
                             </div>
+                        </div>
+                        <div class="buttons">
+                            <button mat-stroked-button style="margin-right:10px" (click)="getCV(intv.application?.cv)"><i class="fa fa-eye"></i></button>
+                            <button mat-stroked-button style="margin-right:10px" (click)="downloadCV(intv.application?.cv)"><i class="fa fa-download"></i></button>
                         </div>
                     </div>
                 </div>

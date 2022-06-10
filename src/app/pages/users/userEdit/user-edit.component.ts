@@ -13,6 +13,7 @@ import { Interview } from 'app/classes/interview';
 import { Company } from 'app/classes/company';
 import { Job } from 'app/classes/job';
 import { CompaniesService } from 'app/services/companies.service';
+import { FileService } from 'app/services/file.service';
 
 @Component({
   selector: 'app-user-edit',
@@ -66,7 +67,7 @@ export class UserEditComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private applicationsService: ApplicationService,
     private interviewsService: InterviewService,
-    private companiesService: CompaniesService) { }
+    private fileService: FileService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: any) => {
@@ -220,7 +221,7 @@ cancel(){
   if(this.User.cv){
     var file = this.User.cv;
     this.form.patchValue({cv: this.User.cv});
-    this.CVpreview = this.sanitizer.bypassSecurityTrustResourceUrl(file);
+    this.CVpreview = file
   }
   else
     this.noCV = true;
@@ -272,7 +273,7 @@ onCvChanged(event:any){
     reader.readAsDataURL(file);
     reader.onload = () =>{
       this.form.patchValue({cv: reader.result});
-      this.CVpreview = this.sanitizer.bypassSecurityTrustResourceUrl(this.form.controls['cv'].value)
+      this.CVpreview = this.form.controls['cv'].value
     }
   }
 }
@@ -449,7 +450,7 @@ saveApplication(app:any){
   }
 }
 getSafeUrl(file:string){
-  return this.sanitizer.bypassSecurityTrustResourceUrl(file);
+  return this.fileService.getSafeUrl(file);
 }
 getJobDetails(id: any){
   console.log(id);
@@ -470,5 +471,11 @@ toggleSeeRejected(event:any){
     this.seeRejected = false;
     this.applications = this.applicationsList.filter( x => x.status != 'Rejected');
   }
+}
+getCV(cv: any){
+  this.fileService.getPdf(cv);
+}
+downloadCV(cv: any){
+  this.fileService.downloadPdf(cv, this.User.firstName + '-' + this.User.lastName + '-' + 'CV')
 }
 }
