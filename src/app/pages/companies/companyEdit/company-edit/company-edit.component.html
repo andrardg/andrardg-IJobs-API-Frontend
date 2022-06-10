@@ -220,6 +220,7 @@
             </div>
 
             <div *ngIf="section == 5">
+                <h2>Filter by jobs</h2>
                 <select id="filterByJobId" [(ngModel)]="filterByJobId" class="select-picker width50" (change) = "getApplicationsForJob()">
                     <option>All</option>
                     <option *ngFor = "let item of Company.jobs" [value]="item.id">
@@ -227,10 +228,17 @@
                     </option>
                 <i class='fa fa-angle-down'></i>
                 </select>
+                <div class="row">
+                    <h2 style="width:17rem">Show rejected applications</h2>
+                    <label (click)="toggleSeeRejected($event)" class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
                 <div style="height:3rem;">
-                    <div *ngIf="applications.length == 0">
-                        <h2 style="text-align:left;">No applications to show yet.</h2>
-                    </div>
+                </div>
+                <div *ngIf="applications.length == 0">
+                    <h2 style="text-align:left;">No applications to show yet.</h2>
                 </div>
                 <div *ngFor="let row of applications">
                     <div class="job">

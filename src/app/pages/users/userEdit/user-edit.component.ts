@@ -49,10 +49,6 @@ export class UserEditComponent implements OnInit {
   applications : Array<Application> = [];
   interviewsList : Array<Interview> = [];
   interviews : Array<Interview> = [];
-  //companiesList : Array<Company> = [];
-  //filterByCompanyId:string = '';
-  //jobsList : Array<Job> = []; //for admin to filter by job
-  //filterByJobId:string = ''; //for admin
   schedule = new Application(); //for admin to add interviews
   newInterview = new Interview();
   isOnline:string = ''
@@ -60,6 +56,7 @@ export class UserEditComponent implements OnInit {
   seeApplication = new Application();
   editInterview:boolean = false;
   responseUser:string = '';
+  seeRejected: boolean = false;
 
   constructor(
     private activatedRoute:ActivatedRoute,
@@ -204,6 +201,7 @@ cancel(){
   this.newInterview = new Interview();
   this.scheduleFalse();
   this.seeApplicationFalse();
+  this.seeRejected = false;
   this.section = 0;
   this.error = "";
   this.form.patchValue({firstName: this.User.firstName});
@@ -220,8 +218,7 @@ cancel(){
   this.form.patchValue({photo: "../../../assets/images/profilePhoto.png"});
 
   if(this.User.cv){
-    var file = this.User.cv;//.split(',')[1];
-    //file = "data:image/png;base64,".concat(file);
+    var file = this.User.cv;
     this.form.patchValue({cv: this.User.cv});
     this.CVpreview = this.sanitizer.bypassSecurityTrustResourceUrl(file);
   }
@@ -246,9 +243,9 @@ removeUser(id:any){
   } else {
     console.log('Not deleted');
   }
-  }
+}
 
-  onPhotoChanged(event:any){
+onPhotoChanged(event:any){
   var file: File;
   file = <File>event.target.files[0];
   console.log(file);
@@ -266,14 +263,10 @@ removeUser(id:any){
   }
 }
 onCvChanged(event:any){
-
   var file: File;
   file = <File>event.target.files[0];
   if(file.type != 'application/pdf')
     this.error = 'You can only upload .pdf files for your CV.';
-  //this.formData.append('CV', file, file.name);
-  //this.User.cv =  file;
-  //console.log(file)
   else{
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -283,17 +276,12 @@ onCvChanged(event:any){
     }
   }
 }
-/*getAllCompanies(){
-  this.companiesService.getCompanies().subscribe(data =>{
-    this.companiesList = data;
-  })
-}*/
 getAllApplications(){
   this.applicationsService.getApplications().subscribe(data =>{
     this.applicationsList = data;
     if(!this.admin)
       this.applicationsList = this.applicationsList.filter( data => data.userId == this.id);
-    this.applications = this.applicationsList;
+      this.applications = this.applicationsList.filter( x => x.status != 'Rejected');
     console.log(this.applicationsList);
   });
 }
@@ -470,5 +458,17 @@ getJobDetails(id: any){
 getCompanyDetails(id: any){
   console.log(id);
   this.router.navigate(['/companies', id]);
+}
+toggleSeeRejected(event:any){
+  if(this.seeRejected == false && event.pointerId == 1)
+    {
+      this.seeRejected = true;
+      this.applications = this.applicationsList.filter( x => x.status == 'Rejected');
+    }
+  else if(event.pointerId == 1)
+  {
+    this.seeRejected = false;
+    this.applications = this.applicationsList.filter( x => x.status != 'Rejected');
+  }
 }
 }

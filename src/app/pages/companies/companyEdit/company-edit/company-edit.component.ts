@@ -57,8 +57,7 @@ export class CompanyEditComponent implements OnInit {
   isOnline:string = '';
   editInterview : boolean = false;
   seeApplication = new Application();
-  //editApplication: boolean = false;
-  applicationStatuses = ['Rejected', 'Hired'];
+  seeRejected: boolean = false;
 
   constructor(
     private activatedRoute:ActivatedRoute,
@@ -236,6 +235,7 @@ export class CompanyEditComponent implements OnInit {
     this.newInterview = new Interview();
     this.scheduleFalse();
     this.seeApplicationFalse();
+    this.seeRejected = false;
     this.section = 0;
     this.error = "";
     this.form.patchValue({name: this.Company.name});
@@ -289,7 +289,7 @@ export class CompanyEditComponent implements OnInit {
     this.applicationsService.getApplications().subscribe(data =>{
       this.applicationsList = data;
       this.applicationsList = this.applicationsList.filter( data => data.job?.companyId == this.id);
-      this.applications = this.applicationsList;
+      this.applications = this.applicationsList.filter( x => x.status != 'Rejected');
       console.log(this.applicationsList);
     });
   }
@@ -456,6 +456,17 @@ export class CompanyEditComponent implements OnInit {
         console.log(error);
       })
     }
-
+  }
+  toggleSeeRejected(event:any){
+    if(this.seeRejected == false && event.pointerId == 1)
+      {
+        this.seeRejected = true;
+        this.applications = this.applicationsList.filter( x => x.status == 'Rejected');
+      }
+    else if(event.pointerId == 1)
+    {
+      this.seeRejected = false;
+      this.applications = this.applicationsList.filter( x => x.status != 'Rejected');
+    }
   }
 }

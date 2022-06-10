@@ -50,53 +50,15 @@ export class UsersComponent implements OnInit {
   }
   toggleCv(event:any){
     if(this.cvFilter == false && event.pointerId == 1)
-      {
         this.cvFilter = true;
-        this.UserList = this.UserList.filter( elem => (elem.cv != null));
-      }
     else if(event.pointerId == 1)
-      {
         this.cvFilter = false;
-        this.UserList = this.Users.filter(elem => (
-          (this.cvFilter == false || (this.cvFilter == true && elem.cv != null)) &&
-          (this.photoFilter == false || (this.photoFilter == true && elem.photo != null)) &&
-          (this.residenceFilter == '' || (elem.residence !=null && elem.residence?.toLowerCase().indexOf((this.residenceFilter).toLowerCase()) != -1))
-        ));
-        if(this.studiesFilter2)
-          this.UserList.forEach(user => { // for each user, loop over studies list
-            var add:boolean = false;
-            for(let i=0; i< this.studiesFilter2.length; i++)
-                if(this.studiesFilter2[i] == true && user.studies !=null && user.studies?.toLowerCase().indexOf(this.study[i].toLowerCase())!= -1)
-                  add = true;
-            if(add == false && this.studiesFilter2.indexOf(true) != -1) // if user studies not in filter list, delete
-              this.UserList = this.UserList.filter( elem => (elem != user));
-          });
-      }
   }
   togglePhoto(event:any){
     if(this.photoFilter == false && event.pointerId == 1)
-    {
       this.photoFilter = true;
-      this.UserList = this.UserList.filter( elem => (elem.photo != null));
-    }
     else if(event.pointerId == 1)
-    {
       this.photoFilter = false;
-      this.UserList = this.Users.filter(elem => (
-        (this.cvFilter == false || (this.cvFilter == true && elem.cv != null)) &&
-        (this.photoFilter == false || (this.photoFilter == true && elem.photo != null)) &&
-        (this.residenceFilter == '' || (elem.residence !=null && elem.residence?.toLowerCase().indexOf((this.residenceFilter).toLowerCase()) != -1))
-      ));
-      if(this.studiesFilter2)
-        this.UserList.forEach(user => { // for each user, loop over studies list
-          var add:boolean = false;
-          for(let i=0; i< this.studiesFilter2.length; i++)
-              if(this.studiesFilter2[i] == true && user.studies !=null && user.studies?.toLowerCase().indexOf(this.study[i].toLowerCase())!= -1)
-                add = true;
-          if(add == false && this.studiesFilter2.indexOf(true) != -1) // if user studies not in filter list, delete
-            this.UserList = this.UserList.filter( elem => (elem != user));
-        });
-    }
   }
   done(){
     this.UserList = this.Users.filter(elem => (
