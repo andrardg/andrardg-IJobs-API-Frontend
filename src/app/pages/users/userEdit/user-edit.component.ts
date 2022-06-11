@@ -14,6 +14,9 @@ import { Company } from 'app/classes/company';
 import { Job } from 'app/classes/job';
 import { CompaniesService } from 'app/services/companies.service';
 import { FileService } from 'app/services/file.service';
+import { Domain } from 'app/classes/domain';
+import { Subdomain } from 'app/classes/subdomain';
+import { DomainService } from 'app/services/domain.service';
 
 @Component({
   selector: 'app-user-edit',
@@ -59,24 +62,30 @@ export class UserEditComponent implements OnInit {
   responseUser:string = '';
   seeRejected: boolean = false;
 
+  DomainList:Array<Domain> = [];
+  domainFilter:any = 'All';
+  SubdomainList:Array<Subdomain> = [];
+  subdomainFilter : any = 'All';
+
   constructor(
     private activatedRoute:ActivatedRoute,
     private router:Router,
     private service: UsersService,
     private authService: AuthService,
-    private sanitizer: DomSanitizer,
     private applicationsService: ApplicationService,
     private interviewsService: InterviewService,
-    private fileService: FileService) { }
+    private fileService: FileService,
+    private domainService: DomainService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: any) => {
       this.id = params['id'];
-      console.log(this.id);
+      console.log(this.id);  
     });
     if(sessionStorage.getItem('Admin'))
       this.admin = JSON.parse(sessionStorage.getItem('Admin') || "");
-    this.getUserDetails(this.id);
+    this.getUserDetails(this.id);  
+    this.getDomains();
   }
 getUserDetails(id:any){
   this.service.getUserDetails(id).subscribe(data=>{
@@ -474,20 +483,46 @@ getCompanyDetails(id: any){
 }
 toggleSeeRejected(event:any){
   if(this.seeRejected == false && event.pointerId == 1)
-    {
       this.seeRejected = true;
-      this.applications = this.applicationsList.filter( x => x.status == 'Rejected');
-    }
   else if(event.pointerId == 1)
-  {
     this.seeRejected = false;
-    this.applications = this.applicationsList.filter( x => x.status != 'Rejected');
-  }
 }
 getCV(cv: any){
   this.fileService.getPdf(cv);
 }
 downloadCV(cv: any){
   this.fileService.downloadPdf(cv, this.User.firstName + '-' + this.User.lastName + '-' + 'CV')
+}
+getDomains(){
+  this.domainService.getDomains().subscribe(data=>{
+    this.DomainList = data;
+    console.log(data);
+    this.DomainList = this.DomainList.filter( x => x.subdomains!.length > 0);
+    console.log(this.DomainList);
+  },
+  error =>{
+    console.log(error);
+  });
+}
+getSubdomains(){
+  if(this.domainFilter != 'All')
+    this.SubdomainList = this.DomainList.filter(x => x.id == this.domainFilter)[0].subdomains!;
+  //console.log(this.SubdomainList);
+  //console.log(this.domainFilter);
+}
+doneFilter(){
+  console.log(this.domainFilter, this.subdomainFilter);
+
+  this.applications = this.applicationsList;
+  if(this.domainFilter != 'All'){
+    if(this.subdomainFilter != 'All')
+      this.applications = this.applications.filter( x=> x.job!.subdomainId == this.subdomainFilter);
+    else
+      {console.log("here");this.applications  = this.applications.filter( x=> x.job!.subdomain!.domainId == this.domainFilter);}
+  }
+  if(this.seeRejected == false)
+    this.applications = this.applications.filter( x => x.status != 'Rejected');
+  else
+  this.applications = this.applications.filter( x => x.status == 'Rejected');
 }
 }

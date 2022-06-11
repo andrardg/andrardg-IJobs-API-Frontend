@@ -197,6 +197,42 @@
                         <span class="slider round"></span>
                     </label>
                 </div>
+                <div class="row">
+                    <h2 style="width:7rem">Domain</h2>
+                    <div class="list">
+                        <select [(ngModel)]="domainFilter" class="select-picker" (click)="getSubdomains()" style="width:50%">
+                          <option>All</option>
+                          <option *ngFor = "let item of DomainList" [value]="item.id">
+                            {{item.name}}
+                          </option>
+                          <i class='fa fa-angle-down'></i>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <h2 style="width:7rem">Subdomain</h2>
+                    <div class="list">
+                      <div *ngIf="domainFilter != 'All'">
+                        <select [(ngModel)]="subdomainFilter" class="select-picker" style="width:50%">
+                          <option>All</option>
+                          <option *ngFor = "let item of SubdomainList" [value]="item.id">
+                            {{item.name}}
+                          </option>
+                          <i class='fa fa-angle-down'></i>
+                        </select>
+                      </div>
+          
+                      <div *ngIf="domainFilter == 'All'">
+                        <select [(ngModel)]="subdomainFilter" class="select-picker" style="width:50%">
+                          <option>All</option>
+                          <i class='fa fa-angle-down'></i>
+                        </select>
+                      </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:1rem; width:5rem; padding-left:1rem">
+                    <button mat-raised-button class="buttonDone" (click)="doneFilter()">Done</button>
+                </div>
                 <div style="height:3rem;">
                     <div *ngIf="applications.length == 0">
                         <h2 style="text-align:left;">No applications to show yet.</h2>
@@ -206,7 +242,7 @@
                     <div class="job">
                         <div class="row">
                             <div class="column" style="padding-top:0.5rem; cursor:pointer">
-                                <object type="application/pdf" width="100%" height="100%"  style="cursor:pointer"[data]="getSafeUrl(row.cv)" id="pdf_content"></object>
+                                
                             </div>
                             <div class="column"style="flex-basis: 70%; margin-botttom:15px">
                                 <div *ngIf="admin" style="cursor:pointer">
