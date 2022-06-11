@@ -249,8 +249,9 @@
                         <button mat-stroked-button style="margin-right:10px" *ngIf="seeApplication.id == row.id && admin" (click)="saveApplication(row)">Done</button>
                         <button mat-stroked-button style="margin-right:10px" *ngIf="seeApplication.id == row.id && admin" (click)="seeApplicationFalse()">Cancel</button>
                         <button mat-stroked-button style="margin-right:10px" *ngIf="admin && row.status != 'Rejected' && seeApplication.id != row.id"(click)="scheduleTrue(row)">Schedule interview</button>
-                        <button mat-stroked-button *ngIf="row.interviews!.length > 0 && seeInterview.applicationId != row.id && seeApplication.id != row.id" (click)="seeInterviewTrue(row)">See interviews</button>
-                        <button mat-stroked-button *ngIf="row.interviews!.length > 0 && seeInterview.applicationId == row.id && seeApplication.id != row.id" (click)="seeInterviewFalse()">Hide interviews</button>
+                        <button mat-stroked-button style="margin-right:10px" *ngIf="row.interviews!.length > 0 && seeInterview.applicationId != row.id && seeApplication.id != row.id" (click)="seeInterviewTrue(row)">See interviews</button>
+                        <button mat-stroked-button style="margin-right:10px" *ngIf="row.interviews!.length > 0 && seeInterview.applicationId == row.id && seeApplication.id != row.id" (click)="seeInterviewFalse()">Hide interviews</button>
+                        <button mat-stroked-button style="margin-right:10px" *ngIf="seeApplication.id != row.id"(click)="deleteApplication(row)"><i class="fa fa-trash"></i></button>
                     </div>
                     <div *ngIf="schedule.id == row.id" class="new-interview">
                         <div class="row padding10">

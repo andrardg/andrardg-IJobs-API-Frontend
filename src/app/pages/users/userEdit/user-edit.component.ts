@@ -449,6 +449,18 @@ saveApplication(app:any){
     })
   }
 }
+deleteApplication(app:any){
+  if (confirm('Are you sure you want to delete this application?')) {
+    this.applicationsService.removeApplication(app.id).subscribe(data=>{
+      console.log("Deleted successfully");
+      alert("Deleted successfully");
+      this.applicationsList.splice(app,1);
+      this.applications.splice(app,1);
+    },error=>{
+      console.log(error);
+    })
+  }
+}
 getSafeUrl(file:string){
   return this.fileService.getSafeUrl(file);
 }

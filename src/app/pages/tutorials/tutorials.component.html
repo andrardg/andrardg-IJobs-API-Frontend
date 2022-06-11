@@ -4,36 +4,49 @@
         <button mat-raised-button class="seeAll" (click)="seeAll()">See All</button>
         <div *ngIf="DomainList.length > 0 && selectedDomain.name == ''">
             <div *ngFor="let row of DomainList">
-                <i class="fas fa-edit" *ngIf="admin && editDomain.name == ''"(click)="editDomainTrue(row)"></i>
-                <button mat-button *ngIf="editDomain != row" (click)="getSubdomainList(row)">{{row.name}}</button>
-                <input *ngIf="admin &&editDomain.id == row.id" placeholder="{{row.name}}" [(ngModel)]="row.name" type="text">
-                <i class="fas fa-trash" *ngIf="admin && editDomain == row" style="padding-left:10px" (click)="deleteDomain(row.id)"></i>
-                <i class="fas fa-check" *ngIf="admin && editDomain == row" style="padding-left:10px" (click)="renameDomain(row)"></i>
+                <i class="fas fa-edit" *ngIf="admin && newDomain.id != row.id"(click)="editDomainTrue(row)"></i>
+                <button mat-button *ngIf="newDomain.id != row.id" (click)="selectedDomainId(row.id)">{{row.name}}</button>
+                <input *ngIf="admin &&newDomain.id == row.id" placeholder="{{newDomain.name}}" [(ngModel)]="newDomain.name" type="text">
+                <i class="fas fa-trash" *ngIf="admin && newDomain.id == row.id" (click)="deleteDomain(row.id)"></i>
+                <i class="fas fa-check" *ngIf="admin && newDomain.id == row.id" (click)="renameDomain()"></i>
+                <i class="fas fa-close" *ngIf="admin && newDomain.id == row.id" (click)="cancel()"></i>
             </div>
-            <button mat-stroked-button *ngIf="admin && addNewDomain == false" (click)="addDomain()" style="margin-top:30px">Add new domain</button>
-            <i class="fas fa-check" *ngIf="admin && addNewDomain == true "(click)="saveDomain()"></i>
-            <input *ngIf="admin && addNewDomain == true " placeholder="New domain" [(ngModel)]="newDomain.name" type="text">
+            <div style="margin-top:30px">
+                <button mat-stroked-button *ngIf="admin && addNewDomain == false" (click)="addDomain()">Add new domain</button>
+                <i class="fas fa-check" *ngIf="admin && addNewDomain == true "(click)="saveDomain()"></i>
+                <i class="fas fa-close" *ngIf="admin && addNewDomain == true "(click)="cancel()"></i>
+                <input *ngIf="admin && addNewDomain == true " placeholder="New domain" [(ngModel)]="newDomain.name" type="text">
+            </div>
+            
         </div>
         <div *ngIf="selectedDomain.name != ''">
             <div class="selection">{{selectedDomain.name}}</div>
-            <div *ngFor="let row of SubdomainList">
-                <i class="fas fa-edit" *ngIf="admin && editSubdomain.name == ''"(click)="editSubdomainTrue(row)"></i>
-                <button mat-button *ngIf="selectedSubdomain != row && editSubdomain != row" class="button2" (click)="selectTutorials(row)">{{row.name}}</button>
-                <button mat-button *ngIf="selectedSubdomain == row && editSubdomain != row" class="button3" (click)="selectTutorials(row)">{{row.name}}</button>
-                <input *ngIf="admin && editSubdomain.id == row.id" placeholder="{{row.name}}" [(ngModel)]="row.name" type="text">
-                <i class="fas fa-trash" *ngIf="admin && editSubdomain == row" style="padding-left:10px" (click)="deleteSubdomain(row.id)"></i>
-                <i class="fas fa-check" *ngIf="admin && editSubdomain == row" style="padding-left:10px" (click)="renameSubdomain(row)"></i>
-            </div>
-            <button mat-stroked-button *ngIf="admin && addNewSubdomain == false" (click)="addSubdomain()" style="margin-top:30px">Add new subdomain</button>
-            <i class="fas fa-check" *ngIf="admin && addNewSubdomain == true "(click)="saveSubdomain()"></i>
-            <input *ngIf="admin && addNewSubdomain == true " placeholder="New subdomain" [(ngModel)]="newSubdomain.name" type="text">
-        </div>
+            <div *ngFor="let row of SubdomainList" style="margin-left: 10px">
+                <i class="fas fa-edit" *ngIf="admin && newSubdomain.id != row.id"(click)="editSubdomainTrue(row)"></i>
+                <button mat-button *ngIf="selectedSubdomain != row && newSubdomain.id != row.id" (click)="selectedSubdomainId(row.id)">{{row.name}}</button>
+                <button mat-button *ngIf="selectedSubdomain == row && newSubdomain.id != row.id" class="button3" (click)="selectedSubdomainId(row.id)">{{row.name}}</button>
+                <input *ngIf="admin && newSubdomain.id == row.id" placeholder="{{newSubdomain.name}}" [(ngModel)]="newSubdomain.name" type="text">
 
-        <button mat-stroked-button *ngIf="admin && selectedDomain.name != '' && selectedSubdomain.name != '' && addNewTutorial == false" style="margin-top:20px; width:max-content" (click)="addTutorial()">Add new tutorial</button>
-        <div class="row">
-            <i class="fas fa-check" *ngIf="admin && addNewTutorial == true"(click)="saveTutorial()"></i>
-            <input *ngIf="admin && addNewTutorial == true " placeholder="New tutorial link" [(ngModel)]="newTutorial.link" type="text">
+                <i class="fas fa-trash" *ngIf="admin && newSubdomain.id == row.id" style="padding-left:10px" (click)="deleteSubdomain(row.id)"></i>
+                <i class="fas fa-check" *ngIf="admin && newSubdomain.id == row.id" style="padding-left:10px" (click)="renameSubdomain()"></i>
+                <i class="fas fa-close" *ngIf="admin && newSubdomain.id == row.id" style="padding-left:10px" (click)="cancel()"></i>
+            </div>
+            <div style="margin-top:30px">
+                <button mat-stroked-button *ngIf="admin && addNewSubdomain == false" (click)="addSubdomain()">Add new subdomain</button>
+                <i class="fas fa-check" *ngIf="admin && addNewSubdomain == true "(click)="saveSubdomain()"></i>
+                <i class="fas fa-close" *ngIf="admin && addNewSubdomain == true "(click)="cancel()"></i>
+                <input *ngIf="admin && addNewSubdomain == true " placeholder="New subdomain" [(ngModel)]="newSubdomain.name" type="text">
+            </div>
         </div>
+        <div style="margin-top:20px;">
+            <button mat-stroked-button *ngIf="admin && selectedDomain.name != '' && selectedSubdomain.name != '' && addNewTutorial == false" (click)="addTutorial()">Add new tutorial</button>
+            <div class="row">
+                <i class="fas fa-check" *ngIf="admin && addNewTutorial == true"(click)="saveTutorial()"></i>
+                <i class="fas fa-close" *ngIf="admin && addNewTutorial == true"(click)="cancel()"></i>
+                <input *ngIf="admin && addNewTutorial == true " placeholder="New tutorial link" [(ngModel)]="newTutorial.link" type="text">
+            </div>
+        </div>
+        
         </div>
     <div class="page-right">
         <div *ngIf="Tutorials.length > 0" width="100%" height="100%">

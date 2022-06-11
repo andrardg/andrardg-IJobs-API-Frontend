@@ -89,6 +89,14 @@ const routes: Routes = [
     component: TutorialsComponent,
   },
   {
+    path:'tutorials/:domainId',
+    component: TutorialsComponent,
+  },
+  {
+    path:'tutorials/:domainId/:subdomainId',
+    component: TutorialsComponent,
+  },
+  {
     path:'tutorials/create',
     component: TutorialsComponent,
     canActivate: [AdminCompanyGuard, SessionGuard],

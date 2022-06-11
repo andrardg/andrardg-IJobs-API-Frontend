@@ -36,4 +36,9 @@ export class FileService {
       a.click();
     });
   }
+  convertVideoLink(link:string){
+    link = link.split("&")[0];
+    link = link.split("watch?v=")[0] + 'embed/' + link.split("watch?v=")[1];
+    return link;
+  }
 }

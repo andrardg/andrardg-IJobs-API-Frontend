@@ -37,6 +37,8 @@ text-align: left;
 }
 .selection{
 padding-left: 16px;
+padding-bottom:1rem;
+font-size:20px;
 }
 .page-right{
 height:100%;
@@ -49,11 +51,7 @@ flex-wrap: wrap;
 text-align: center;
 justify-content: center;
 }
-.button2{
-margin-left: 32px;
-}
 .button3{
-margin-left: 32px;
 border: 1px solid black;
 }
 .noTutorial{
@@ -74,4 +72,7 @@ display: flex;
 flex-direction: row;
 flex-wrap: wrap;
 width: 100%;
+}
+i{
+    width:20px;
 }

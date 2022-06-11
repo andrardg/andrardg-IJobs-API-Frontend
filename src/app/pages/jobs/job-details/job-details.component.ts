@@ -110,7 +110,9 @@ export class JobDetailsComponent implements OnInit {
         console.log(app);
         this.applicationService.createApplication(app).subscribe(data =>{
           console.log("Created successfully");
-          alert("You have successfully applied for this job.");
+          if (confirm('Congratulations! You have successfully applied for this job. Would you like to refreshen your knowledge for your upcoming interviews using our learning videos?')) {
+            this.router.navigate(['/tutorials', this.Job.subdomain!.domainId, this.Job.subdomainId]);
+          }
           this.alreadyApplied = true;
         },
         error => {
