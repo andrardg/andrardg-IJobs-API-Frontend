@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Job } from 'app/classes/job';
 import { Company } from 'app/classes/company';
@@ -24,15 +24,15 @@ export class JobCreateComponent implements OnInit {
   Experience:any=["Entry Level", "Junior Level", "Mid-Senior Level", "Senior Level", "Associate", "Director"]
   admin = sessionStorage.getItem('Admin');
   public error: boolean | string = false;
-  public form: FormGroup = new FormGroup({
-                jobTitle: new FormControl('', [Validators.required]),
-                description: new FormControl('', [Validators.required]),
-                salary: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
-                jobType: new FormControl('', [Validators.required]),
-                experience: new FormControl('', [Validators.required]),
-                address: new FormControl('', [Validators.required]),
-                companyId: new FormControl(''),
-                subdomain: new FormControl('', [Validators.required]),
+  public form: UntypedFormGroup = new UntypedFormGroup({
+                jobTitle: new UntypedFormControl('', [Validators.required]),
+                description: new UntypedFormControl('', [Validators.required]),
+                salary: new UntypedFormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
+                jobType: new UntypedFormControl('', [Validators.required]),
+                experience: new UntypedFormControl('', [Validators.required]),
+                address: new UntypedFormControl('', [Validators.required]),
+                companyId: new UntypedFormControl(''),
+                subdomain: new UntypedFormControl('', [Validators.required]),
               });
               
   constructor(

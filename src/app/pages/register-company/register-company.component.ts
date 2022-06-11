@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Account } from 'app/classes/account';
 import { Company } from 'app/classes/company';
@@ -14,16 +14,16 @@ export class RegisterCompanyComponent implements OnInit {
 
   
   public error: boolean | string = false;
-  public myForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    address: new FormControl(''),
-    password: new FormControl('', [Validators.required, Validators.minLength(5)]),
+  public myForm = new UntypedFormGroup({
+    name: new UntypedFormControl('', [Validators.required]),
+    email: new UntypedFormControl('', [Validators.required, Validators.email]),
+    address: new UntypedFormControl(''),
+    password: new UntypedFormControl('', [Validators.required, Validators.minLength(5)]),
   });
   public company = new Account();
   
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private router: Router,
     private authService: AuthService) { }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
 import { UsersService } from '../../../services/users.service';
@@ -31,18 +31,18 @@ export class UserEditComponent implements OnInit {
   admin:any;
 
   public hide: boolean = true; //for the password
-  form: FormGroup = new FormGroup({
-                firstName: new FormControl('', [Validators.required]),
-                lastName: new FormControl('', [Validators.required]),
-                occupation: new FormControl(''),
-                residence: new FormControl(''),
-                studies: new FormControl(''),
-                photo: new FormControl(''),
-                cv: new FormControl(''),
-                email: new FormControl('', [Validators.required, Validators.email]),
-                oldpassword: new FormControl(''),
-                newpassword: new FormControl(''),
-                newpassword2: new FormControl(''),
+  form: UntypedFormGroup = new UntypedFormGroup({
+                firstName: new UntypedFormControl('', [Validators.required]),
+                lastName: new UntypedFormControl('', [Validators.required]),
+                occupation: new UntypedFormControl(''),
+                residence: new UntypedFormControl(''),
+                studies: new UntypedFormControl(''),
+                photo: new UntypedFormControl(''),
+                cv: new UntypedFormControl(''),
+                email: new UntypedFormControl('', [Validators.required, Validators.email]),
+                oldpassword: new UntypedFormControl(''),
+                newpassword: new UntypedFormControl(''),
+                newpassword2: new UntypedFormControl(''),
               });
   public oldpasswordHash:string="";
   public formData= new FormData();

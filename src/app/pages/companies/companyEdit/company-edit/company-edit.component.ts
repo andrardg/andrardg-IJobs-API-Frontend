@@ -1,6 +1,6 @@
 import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y/input-modality/input-modality-detector';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
 import { CompaniesService } from '../../../../services/companies.service';
@@ -29,16 +29,16 @@ export class CompanyEditComponent implements OnInit {
   comp = sessionStorage.getItem('Company');
   public id: any; 
   public hide: boolean = true; //for the password
-  public form: FormGroup = new FormGroup({
-                name: new FormControl('', [Validators.required]),
-                photo: new FormControl(''),
-                email: new FormControl('', [Validators.required, Validators.email]),
-                oldpassword: new FormControl(''),
-                newpassword: new FormControl(''),
-                newpassword2: new FormControl(''),
-                address: new FormControl('', [Validators.required]),
-                description: new FormControl('', [Validators.required]),
-                verifiedAccount: new FormControl(''),
+  public form: UntypedFormGroup = new UntypedFormGroup({
+                name: new UntypedFormControl('', [Validators.required]),
+                photo: new UntypedFormControl(''),
+                email: new UntypedFormControl('', [Validators.required, Validators.email]),
+                oldpassword: new UntypedFormControl(''),
+                newpassword: new UntypedFormControl(''),
+                newpassword2: new UntypedFormControl(''),
+                address: new UntypedFormControl('', [Validators.required]),
+                description: new UntypedFormControl('', [Validators.required]),
+                verifiedAccount: new UntypedFormControl(''),
               });
   public oldpasswordHash:string="";
   public section:any = 0;

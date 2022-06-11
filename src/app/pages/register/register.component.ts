@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'app/classes/user';
@@ -14,11 +14,11 @@ import { Account } from 'app/classes/account';
 export class RegisterComponent implements OnInit {
 
   public error: boolean | string = false;
-  public myForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
-    firstName: new FormControl('', [Validators.required]),
-    lastName: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required, Validators.minLength(5)]),
+  public myForm = new UntypedFormGroup({
+    email: new UntypedFormControl('', [Validators.required, Validators.email]),
+    firstName: new UntypedFormControl('', [Validators.required]),
+    lastName: new UntypedFormControl('', [Validators.required]),
+    password: new UntypedFormControl('', [Validators.required, Validators.minLength(5)]),
   });
   public user = new Account();
 
