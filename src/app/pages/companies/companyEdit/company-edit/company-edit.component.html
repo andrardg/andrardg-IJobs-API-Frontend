@@ -117,10 +117,10 @@
                         </div>
 
                         <div class="row" style="margin-left:0px">
-                                <i class="material-icons">add_a_photo</i>
+                            <i class="fa fa-trash" (click)="deletePhoto()"*ngIf="form.controls['photo'].value != '../../../assets/images/companyProfilePhoto.png'" (click)="deletePhoto()"  style="font-size:24px;width:10%; padding:0px;cursor:pointer"></i>
                                 <label class="custom-file-upload">
                                     <input type="file" accept=".jpg,.png,.jpeg,.gif" (change)="onPhotoChanged($event)"/>
-                                    Change Profile Picture 
+                                    <i class="material-icons" style="font-size:24px; padding-top:3px;">add_a_photo</i>Change Profile Picture 
                                 </label>
                         </div>
                     </div>
@@ -151,7 +151,7 @@
                         <mat-label>New Password</mat-label>
                         <input matInput type="password" placeholder="newpassword" formControlName="newpassword">
                     </mat-form-field>
-                    <mat-form-field *ngIf="!admin">
+                    <mat-form-field>
                         <mat-label>Repeat New Password</mat-label>
                         <input matInput type="password" placeholder="newpassword2" formControlName="newpassword2">
                     </mat-form-field>
@@ -220,7 +220,7 @@
             </div>
 
             <div *ngIf="section == 5">
-                <h2>Filter by jobs</h2>
+                <h2>Filter by job</h2>
                 <select id="filterByJobId" [(ngModel)]="filterByJobId" class="select-picker width50" (change) = "getApplicationsForJob()">
                     <option>All</option>
                     <option *ngFor = "let item of Company.jobs" [value]="item.id">
@@ -378,6 +378,7 @@
             </div>
 
             <div *ngIf="section == 6">
+                <h2>Filter by job</h2>
                 <select [(ngModel)]="filterByJobId" class="select-picker width50" (change) = "getInterviewsForJob()">
                     <option>All</option>
                     <option *ngFor = "let item of Company.jobs" [value]="item.id">

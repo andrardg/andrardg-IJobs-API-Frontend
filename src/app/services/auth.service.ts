@@ -43,7 +43,7 @@ export class AuthService {
     const token = sessionStorage.getItem('token');
 
     if (token === null || token === '') {
-      sessionStorage.removeItem('User');
+      sessionStorage.clear();
       return false;
     }
     else {

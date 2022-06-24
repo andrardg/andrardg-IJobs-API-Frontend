@@ -41,27 +41,24 @@ export class CompaniesComponent implements OnInit {
     console.log(id);
     this.router.navigate(['/companies', id]);
   }
-  removeCompany(id:any){
-    console.log(id);
-    this.service.removeCompany(id).subscribe((data)=>{
-      console.log("success");
-      this.getCompanies();
- });
-  }
   logout() {
     this.authService.logout();
   }
   verifyTrue(){
     this.verify = true;
-    this.Companies = this.CompanyList.filter(elem => (elem.verifiedAccount == false))
+    this.doneCompany();
   }
   verifyFalse(){
     this.verify = false;
-    this.Companies = this.CompanyList.filter(elem => (elem.verifiedAccount == true))
+    this.doneCompany();
   }
   doneCompany(){
     this.Companies = this.CompanyList.filter(elem => (
       this.addressFilter == '' || (elem.address !=null && elem.address?.toLowerCase().indexOf((this.addressFilter).toLowerCase()) != -1)
     ));
+    if(this.verify == true)
+      this.Companies = this.Companies.filter(elem => (elem.verifiedAccount == false))
+    else
+      this.Companies = this.Companies.filter(elem => (elem.verifiedAccount == true))
   }
 }

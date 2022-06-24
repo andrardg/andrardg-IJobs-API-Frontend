@@ -22,7 +22,9 @@ export class JobDetailsComponent implements OnInit {
   public id: any;
   editDeleteRights : boolean = false;
   showPrevious: boolean = false;
-  alreadyApplied = false;
+  alreadyApplied: boolean = false;
+  canReapply: boolean = false;
+  currentApp : any;
   user:any;
 
   constructor(
@@ -44,13 +46,23 @@ export class JobDetailsComponent implements OnInit {
       this.showPrevious = true;
     this.getJobDetails(this.id);
     if(sessionStorage.getItem('User'))
-      this.user = JSON.parse(sessionStorage.getItem('User') || "")
-    if(this.user.id != ""){
-      this.applicationService.getApplications().subscribe(data =>{
-        for(var elem of data)
-          if(elem.userId == this.user.id && elem.jobId == this.id)
-            this.alreadyApplied = true;
-      })
+      {
+        this.user = JSON.parse(sessionStorage.getItem('User') || "")
+        this.userService.getUserDetails(this.user.id).subscribe(data => {
+          this.user = data;
+          this.applicationService.getApplications().subscribe(data =>{
+          for(var elem of data)
+            {
+            if(elem.userId == this.user.id && elem.jobId == this.id)
+              {
+                this.alreadyApplied = true;
+                this.currentApp = elem;
+              }
+            if(elem.userId == this.user.id && elem.jobId == this.id &&  elem.cv != this.user.cv)
+              this.canReapply = true;
+            }
+          })
+        });
     }
   }
 
@@ -98,33 +110,43 @@ export class JobDetailsComponent implements OnInit {
   }
   apply(){
     var app = new Application();
-    this.userService.getUserDetails(this.user.id).subscribe(data => {
-      console.log(data);
-      app.cv=data.cv;
-      if(app.cv != ""){
-        app.jobId = this.id;
-        app.userId = this.user.id;
-        app.status = "Pending";
-        //delete app.user;
-        //delete app.job;
-        console.log(app);
-        this.applicationService.createApplication(app).subscribe(data =>{
-          console.log("Created successfully");
-          if (confirm('Congratulations! You have successfully applied for this job. Would you like to refreshen your knowledge for your upcoming interviews using our learning videos?')) {
-            this.router.navigate(['/tutorials', this.Job.subdomain!.domainId, this.Job.subdomainId]);
-          }
-          this.alreadyApplied = true;
-        },
-        error => {
-          console.log("An error occurred");
-        });
+    app.cv=this.user.cv;
+    if(app.cv != "" && app.cv!=null){
+      app.jobId = this.id;
+      app.userId = this.user.id;
+      app.status = "Pending";
+      //delete app.user;
+      delete app.interviews;
+      console.log(app);
+      this.applicationService.createApplication(app).subscribe(data =>{
+        console.log("Created successfully");
+        if (confirm('Congratulations! You have successfully applied for this job. Would you like to refreshen your knowledge for your upcoming interviews using our learning videos?')) {
+          this.router.navigate(['/tutorials', this.Job.subdomain!.domainId, this.Job.subdomainId]);
+        }
+        this.alreadyApplied = true;
+      },
+      error => {
+        console.log("An error occurred");
+      });
+    }
+    else{
+      alert("You must upload your CV first!");
+    }
+  }
+  reapply(){
+    console.log(this.currentApp);
+    delete this.currentApp.interviews;
+    delete this.currentApp.job;
+    delete this.currentApp.user;
+    this.currentApp.cv = this.user.cv;
+    this.currentApp.status = 'Pending';
+    this.applicationService.saveApplication(this.currentApp).subscribe(data =>{
+      console.log("Created successfully");
+      console.log(this.currentApp);
+      if (confirm('Congratulations! You have successfully reapplied for this job. Would you like to refreshen your knowledge for your upcoming interviews using our learning videos?')) {
+        this.router.navigate(['/tutorials', this.Job.subdomain!.domainId, this.Job.subdomainId]);
       }
-      else{
-        alert("You must upload your CV first!");
-      }
-    },
-    error => {
-      console.log("An error occurred");
-    });
+      this.canReapply = false;
+    })
   }
 }

@@ -10,6 +10,9 @@
     <div class="buttons" *ngIf="user != null && alreadyApplied == false" (click)="apply()">
         <button mat-stroked-button>Apply now</button>
     </div>
+    <div class="buttons" *ngIf="user != null && canReapply == true" (click)="reapply()">
+        <button mat-stroked-button>Reapply here</button>
+    </div>
     <div class="buttons" *ngIf="editDeleteRights">
         <button mat-button class="button2" (click)="editJob(Job.id)">Edit</button>
         <button mat-button class="button1" (click)="removeJob(Job.id)">Delete</button>
@@ -45,7 +48,7 @@
     <mat-card class="example-card">
         <h2>Job Description</h2>
         <mat-card-content>
-            <div>
+            <div style="white-space: pre-wrap;">
                 <a>{{Job.description}}</a>
             </div>
         </mat-card-content>

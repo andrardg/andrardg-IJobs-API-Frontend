@@ -2,10 +2,11 @@
     padding: 100px;
 }
 .main-div mat-card {
-    padding: 0px;
+    padding-top: 2rem;
     background-color: rgb(255, 251, 247);
     width: 40%;
-    max-width: 40%;
+    margin-top: 6rem;
+    height: 22rem;
 }
 .title{
     color: rgb(0, 0, 0);
@@ -29,4 +30,5 @@
   font-family: "Times New Roman", Times, serif;
   font-size: large;
   width: 50%;
+  margin-top: 1rem;
 }

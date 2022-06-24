@@ -18,7 +18,7 @@ export class RegisterCompanyComponent implements OnInit {
     name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
     address: new FormControl(''),
-    password: new FormControl('', [Validators.required, Validators.minLength(5)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
   });
   public company = new Account();
   

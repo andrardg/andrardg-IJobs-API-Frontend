@@ -16,6 +16,7 @@ import { Interview } from 'app/classes/interview';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Job } from 'app/classes/job';
 import { FileService } from 'app/services/file.service';
+import { User } from 'app/classes/user';
 
 @Component({
   selector: 'app-company-edit',
@@ -33,11 +34,11 @@ export class CompanyEditComponent implements OnInit {
                 name: new FormControl('', [Validators.required]),
                 photo: new FormControl(''),
                 email: new FormControl('', [Validators.required, Validators.email]),
-                oldpassword: new FormControl(''),
-                newpassword: new FormControl(''),
-                newpassword2: new FormControl(''),
+                oldpassword: new FormControl('', [Validators.minLength(8)]),
+                newpassword: new FormControl('', [Validators.minLength(8)]),
+                newpassword2: new FormControl('',[Validators.minLength(8)]),
                 address: new FormControl('', [Validators.required]),
-                description: new FormControl('', [Validators.required]),
+                description: new FormControl(''),
                 verifiedAccount: new FormControl(''),
               });
   public oldpasswordHash:string="";
@@ -119,10 +120,20 @@ export class CompanyEditComponent implements OnInit {
 
     //fetch back data
     this.formData.append('Id', this.id);
-    this.formData.append('Name', this.form.controls['name'].value.charAt(0).toUpperCase() + this.form.controls['name'].value.slice(1));
+    var words = this.form.controls['name'].value.split(" ");
+    for(var i=0 ; i<words.length ;i++)
+      words[i]= words[i][0].toUpperCase()+words[i].substring(1);
+    if(this.Company.name != words && this.comp)
+      this.authService.name.next(words);
+    words = words.join(" ");
+    this.formData.append('Name', words);
     this.formData.append('Email', this.form.controls['email'].value);
     this.formData.append('Description', this.form.controls['description'].value.charAt(0).toUpperCase() + this.form.controls['description'].value.slice(1));
-    this.formData.append('Address', this.form.controls['address'].value.charAt(0).toUpperCase() + this.form.controls['address'].value.slice(1));
+    var words = this.form.controls['address'].value.split(" ");
+    for(var i=0 ; i<words.length ;i++)
+      words[i]= words[i][0].toUpperCase()+words[i].substring(1);
+    words = words.join(" ");
+    this.formData.append('Address', words);
     this.formData.append('Email', this.form.controls['email'].value);
     this.formData.append('OldPasswordHash', this.oldpasswordHash);
     if(this.admin && this.form.controls['verifiedAccount'].value == "Yes")
@@ -162,8 +173,13 @@ export class CompanyEditComponent implements OnInit {
             this.error = "All password fields must be filled."
           }
       else{
-        if(this.form.controls['newpassword'].value)
-          this.formData.append('password', this.form.controls['newpassword'].value);
+        if(this.form.controls['newpassword'].value && this.form.controls['newpassword2'].value)
+        {
+          if(this.form.controls['newpassword'].value == this.form.controls['newpassword2'].value)
+            this.formData.append('password', this.form.controls['newpassword'].value);
+          else
+            this.error = "The new password fields must match."
+        }
         else
         this.error = "All fields must be filled."
       }
@@ -286,6 +302,9 @@ export class CompanyEditComponent implements OnInit {
       }
     }
   }
+deletePhoto(){
+  this.form.patchValue({photo: "../../../assets/images/companyProfilePhoto.png"});
+}
   getAllApplications(){
     this.applicationsService.getApplications().subscribe(data =>{
       this.applicationsList = data;
@@ -313,6 +332,10 @@ export class CompanyEditComponent implements OnInit {
       this.applications = this.applicationsList;
     else if(this.filterByJobId != '')
       this.applications = this.applicationsList.filter(x => x.jobId == this.filterByJobId);
+    if(this.seeRejected == true)
+      this.applications = this.applications.filter( x => x.status == 'Rejected');
+    else
+      this.applications = this.applications.filter( x => x.status != 'Rejected');
     console.log(this.applications);
   }
   getInterviewsForJob(){
@@ -331,24 +354,29 @@ export class CompanyEditComponent implements OnInit {
       this.newInterview.responseCompany = true;
     else
       this.newInterview.responseCompany = false;
-    this.newInterview.responseUser = false;
-    this.interviewsService.createInterview(this.newInterview).subscribe(data=>{
-      app.interviews.push(this.newInterview);
-      console.log("Created successfully");
-      alert("Created sucessfully");
-      if(app.status == 'Pending')
-        {
-          app.status = 'Interview stage';
-          console.log(app);
-          this.saveApplication(app);
-      }
-      this.seeInterview.applicationId = '';
-      this.getAllInterviews();
-      this.scheduleFalse();
-    },
-    error =>{
-      console.log(error);
-    });
+    let difference = new Date(this.newInterview.date).getTime() - new Date().getTime()
+    if(difference /1000 / 60 / 60 > 1)
+      {this.newInterview.responseUser = false;
+      this.interviewsService.createInterview(this.newInterview).subscribe(data=>{
+        app.interviews.push(this.newInterview);
+        console.log("Created successfully");
+        alert("Created sucessfully");
+        if(app.status == 'Pending')
+          {
+            app.status = 'Interview stage';
+            console.log(app);
+            this.saveApplication(app);
+        }
+        this.seeInterview.applicationId = '';
+        this.getAllInterviews();
+        this.scheduleFalse();
+      },
+      error =>{
+        console.log(error);
+      });
+    }
+    else
+      alert("The interview has to be at least one hour later than now.");
   }
   getSafeUrl(file:string){
     return this.fileService.getSafeUrl(file);
@@ -409,7 +437,7 @@ export class CompanyEditComponent implements OnInit {
         this.seeInterviewFalse();
         console.log("Deleted sucessfully");
         alert("Deleted sucessfully");
-        this.interviews = this.interviews.filter( x=> x.id != interview.id);
+        this.interviewsList = this.interviewsList.filter( x=> x.id != interview.id);
       })
     }
     else
@@ -437,7 +465,8 @@ export class CompanyEditComponent implements OnInit {
   }
   saveApplication(app:any){
     var keepGoing = true;
-    app.status = this.seeApplication.status;
+    if(this.seeApplication.id != '') // if editing
+      app.status = this.seeApplication.status;
     if(app.status == 'Rejected')
       if(!confirm('Are you sure you want to mark the application as rejected? All the interviews will be deleted.')){
         keepGoing = false;

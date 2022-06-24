@@ -1,3 +1,7 @@
+import { Application } from "./application";
+import { Invite } from "./invite";
+import { Job } from "./job";
+
 export class User {
   id?:string;
   firstName?:string;
@@ -11,6 +15,9 @@ export class User {
   studies?:string;
   cv?:string;
   photo?:string;
+  applications?: Array<Application>;
+  invites?: Array<Invite>;
+  jobs?:Array<Job>;
 
   constructor(){
     this.firstName = '';

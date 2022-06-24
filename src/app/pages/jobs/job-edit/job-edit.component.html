@@ -57,6 +57,7 @@
                 <p class="label2" for="jobType">Job Type</p>
                 <div class="input">
                     <select id="jobType" name="jobType" formControlName= "jobType" class="select-picker">
+                        <option disabled selected value> -- select an option -- </option>
                         <option *ngFor = "let item of JobTypes" [value]="item">
                             {{item}}
                         </option>
@@ -79,6 +80,7 @@
             <div class="form-group">
                 <p class="label2" for="experience">Experience Level</p>
                 <select id="experience" name="experience" formControlName= "experience" class="select-picker">
+                    <option disabled selected value> -- select an option -- </option>
                     <option *ngFor = "let item of Experience" [value]="item">
                         {{item}}
                     </option>
@@ -102,6 +104,7 @@
                 <label class="col-sm-2 control-label" for="companyId">Company</label>
 
                     <select id="companyId" name="companyId" formControlName= "companyId" class="select-picker">
+                        <option disabled selected value> -- select an option -- </option>
                         <option *ngFor = "let item of CompanyList" [value]="item.id">
                             {{item.name}}
                         </option>
@@ -116,13 +119,15 @@
                 <h1>Place the job in a category</h1>
                 <label class="col-sm-2 control-label">Domain*</label>
                 <select class="select-picker" (change)="changeDomain($event)">
+                    <option disabled selected value> -- select an option -- </option>
                     <option *ngFor = "let item of DomainList" [value]="item.id">
                         {{item.name}}
                     </option>
                 </select>
                 <div *ngIf="selectedDomain.name != ''">
                     <label class="col-sm-2 control-label">Subdomain*</label>
-                    <select id="subdomain" name="subdomain" formControlName= "subdomain" class="select-picker">
+                    <select class="select-picker" (click)="changeSubdomain($event)">
+                        <option disabled selected value> -- select an option -- </option>
                         <option *ngFor = "let item of selectedDomain.subdomains" [value]="item.id">
                             {{item.name}}
                         </option>

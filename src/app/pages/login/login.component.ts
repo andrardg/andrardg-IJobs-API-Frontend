@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   account = new Account();
   public formGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
   });
   public error: boolean | string = false;
   public invalid: Boolean = false;
@@ -30,11 +30,11 @@ export class LoginComponent implements OnInit {
     this.account.email = this.formGroup.controls["email"].value;
     this.account.password = this.formGroup.controls["password"].value;
     console.log(this.account);
-    if (this.validateEmail(this.account.email)) { 
+    if (this.validateEmail(this.account.email) && !this.formGroup.invalid) { 
       this.authService.login(this.account).subscribe(async data =>{
         sessionStorage.setItem('token', data.token);
         sessionStorage.setItem('role', data.role);
-        //sessionStorage.setItem('id', data.id);
+        sessionStorage.setItem('id', data.id);
 
         if(data.type =='company')
         {
@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
     }
     else {
         if(!this.error)
-          this.error = 'Incorrect email format';
+          this.error = 'Invalid form';
         console.log(this.error);
       }
 }

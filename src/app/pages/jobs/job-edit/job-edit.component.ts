@@ -108,6 +108,7 @@ export class JobEditComponent implements OnInit {
     if(keepGoing == true){
       delete this.Job.company;
       delete this.Job.subdomain;
+      delete this.Job.applications;
       this.Job.jobTitle = this.form.controls['jobTitle'].value.charAt(0).toUpperCase() + this.form.controls['jobTitle'].value.slice(1);
       this.Job.description = this.form.controls['description'].value.charAt(0).toUpperCase() + this.form.controls['description'].value.slice(1);
       this.Job.salary = this.form.controls['salary'].value;
@@ -128,6 +129,7 @@ export class JobEditComponent implements OnInit {
       this.service.saveJob(this.Job).subscribe((data)=>{
         console.log("Update successful");
         alert('Updated successfully');
+        this.error= '';
       },
       error => {
         this.error=error;
@@ -162,6 +164,11 @@ export class JobEditComponent implements OnInit {
     console.log(event.target.value);
     this.selectedDomain = this.DomainList.filter(x => x.id == event.target.value)[0];
     console.log(this.selectedDomain);
+  }
+  changeSubdomain(event:any){
+    console.log(event.target.value);
+    this.form.patchValue({subdomain: event.target.value});
+
   }
   rejectApplications(){
     this.applicationsService.getApplications().subscribe(data =>{

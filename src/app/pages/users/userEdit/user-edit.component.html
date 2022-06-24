@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="column">
                     <h1>About Me</h1>
-                    <h2>Name</h2>
+                    <h2>Personal details</h2>
                 </div>
                 <div class="column" style="text-align: right;">
                     <i class='fa fa-angle-right' style='font-size:20px'></i>
@@ -17,7 +17,7 @@
               </div>
         </div>
 
-        <div class="section" (click)="sectionTwo()">
+        <div class="section" (click)="sectionTwo()" *ngIf="!admin || admin.id != User.id">
             <div class="row">
                 <div class="column">
                     <h1>Documents</h1>
@@ -90,17 +90,17 @@
                         <input matInput placeholder="Last Name" style="text-transform: capitalize;" formControlName="lastName">
                     </mat-form-field>
 
-                    <mat-form-field>
+                    <mat-form-field *ngIf="!admin || admin.id != User.id">
                         <mat-label>Occupation</mat-label>
                         <input matInput placeholder="Occupation" style="text-transform: capitalize;" formControlName="occupation">
                     </mat-form-field>
 
-                    <mat-form-field>
+                    <mat-form-field *ngIf="!admin || admin.id != User.id">
                         <mat-label>Residence</mat-label>
                         <input matInput placeholder="Place of residence" style="text-transform: capitalize;" formControlName="residence">
                     </mat-form-field>
 
-                    <mat-form-field>
+                    <mat-form-field *ngIf="!admin || admin.id != User.id">
                         <mat-label>Education</mat-label>
                         <input matInput placeholder="Education" style="text-transform: capitalize;" formControlName="studies">
                     </mat-form-field>
@@ -113,34 +113,34 @@
                   </form>
             </div>
 
-            <div *ngIf="section == 2">
+            <div *ngIf="section == 2 && (!admin || admin.id != User.id)">
                 <form fxLayout="column" class="form" [formGroup]="form" (ngSubmit)="save()">
                     <div class="row" style="height: 30%; padding-bottom:2rem">
                         <div class="column2">
                                 <img src="{{form.controls['photo'].value}}" width="200" height="200" style="object-fit: cover;" />
                         </div>
                         <div class="column2">
-                            <object type="application/pdf" width="200px" height="200px" style="cursor:pointer"[data]="getSafeUrl(CVpreview)" id="pdf_content"></object>
+                            <object *ngIf="CVpreview != '' && CVpreview != null" type="application/pdf" width="200px" height="200px" style="cursor:pointer"[data]="getSafeUrl(CVpreview)" id="pdf_content"></object>
                         </div>
                     </div>
 
                     <div class="row" style="height: 30%">
                         <div class="column2">
                             <div class="row">
-                                <i class="material-icons">add_a_photo</i>
+                                <i class="fa fa-trash" *ngIf="form.controls['photo'].value != '../../../assets/images/profilePhoto.png'" (click)="deletePhoto()" style="font-size:24px;width:10%; padding:0px;cursor:pointer"></i>
                                 <label class="custom-file-upload">
                                     <input type="file" accept=".jpg,.png,.jpeg,.gif" (change)="onPhotoChanged($event)"/>
-                                    Change Profile Picture 
+                                    <i class="material-icons" style="font-size:24px; padding-top:3px;">add_a_photo</i>Change Profile Picture 
                                 </label>
                             </div>
                             
                         </div>
                         <div class="column2">
                             <div class="row">
-                                <i class="fa fa-upload" style="font-size:24px"></i>
+                                <i class="fa fa-trash" *ngIf="CVpreview != '' && CVpreview != null" (click)="deleteCV()" style="font-size:24px;width:10%; padding:0px;cursor:pointer"></i>
                                 <label class="custom-file-upload">
                                     <input type="file" accept=".pdf" (change)="onCvChanged($event)"/>
-                                    Upload new CV
+                                    <i class="fa fa-upload" style="font-size:24px"></i>Upload new CV
                                 </label>
                             </div>
                             
@@ -176,7 +176,7 @@
                         <mat-label>New Password</mat-label>
                         <input matInput type="password" placeholder="New Password" formControlName="newpassword">
                     </mat-form-field>
-                    <mat-form-field *ngIf="!admin || User.id == admin.id">
+                    <mat-form-field>
                         <mat-label>Repeat New Password</mat-label>
                         <input matInput type="password" placeholder="New Password" formControlName="newpassword2"(keydown)="save2($event)">
                     </mat-form-field>
@@ -242,7 +242,7 @@
                     <div class="job">
                         <div class="row">
                             <div class="column" style="padding-top:0.5rem; cursor:pointer">
-                                
+                                <object type="application/pdf" width="200px" height="150px" style="cursor:pointer"[data]="getSafeUrl(row.cv)" id="pdf_content"></object>
                             </div>
                             <div class="column"style="flex-basis: 70%; margin-botttom:15px">
                                 <div *ngIf="admin" style="cursor:pointer">

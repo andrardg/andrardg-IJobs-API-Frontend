@@ -40,9 +40,9 @@ export class UserEditComponent implements OnInit {
                 photo: new FormControl(''),
                 cv: new FormControl(''),
                 email: new FormControl('', [Validators.required, Validators.email]),
-                oldpassword: new FormControl(''),
-                newpassword: new FormControl(''),
-                newpassword2: new FormControl(''),
+                oldpassword: new FormControl('', [Validators.minLength(8)]),
+                newpassword: new FormControl('', [Validators.minLength(8)]),
+                newpassword2: new FormControl('', [Validators.minLength(8)]),
               });
   public oldpasswordHash:string="";
   public formData= new FormData();
@@ -91,6 +91,7 @@ getUserDetails(id:any){
   this.service.getUserDetails(id).subscribe(data=>{
     console.log(data);
     this.User = data;
+    this.CVpreview = data.cv;
     this.oldpasswordHash = data.passwordHash;
     this.formData.append('Role', data.role);
   })
@@ -110,6 +111,10 @@ save(){
   console.log(this.error);}
   else{
     this.error = "";
+
+  if(this.User.firstName != this.form.controls['firstName'].value.charAt(0).toUpperCase() + this.form.controls['firstName'].value.slice(1))
+    if((this.admin && this.admin.id == this.id) || (sessionStorage.getItem('User') && JSON.parse(sessionStorage.getItem('User') || "")))
+      this.authService.name.next(this.form.controls['firstName'].value.charAt(0).toUpperCase() + this.form.controls['firstName'].value.slice(1));
   //fetch data back
   this.formData.append('Id', this.id);
   this.formData.append('FirstName', this.form.controls['firstName'].value.charAt(0).toUpperCase() + this.form.controls['firstName'].value.slice(1));
@@ -148,8 +153,12 @@ save(){
       this.error = "All password fields must be filled."
     }
     else if(this.admin){
-      if(this.form.controls['newpassword'].value)
-        this.formData.append('password', this.form.controls['newpassword'].value);
+      if(this.form.controls['newpassword'].value && this.form.controls['newpassword2'].value){
+        if(this.form.controls['newpassword'].value == this.form.controls['newpassword2'].value)
+          this.formData.append('password', this.form.controls['newpassword'].value);
+          else
+            this.error = "The new password fields must match."
+      }
       else
       this.error = "All fields must be filled."
     }
@@ -272,6 +281,9 @@ onPhotoChanged(event:any){
     }
   }
 }
+deletePhoto(){
+  this.form.patchValue({photo: "../../../assets/images/profilePhoto.png"});
+}
 onCvChanged(event:any){
   var file: File;
   file = <File>event.target.files[0];
@@ -286,10 +298,14 @@ onCvChanged(event:any){
     }
   }
 }
+deleteCV(){
+  this.form.patchValue({cv: ''});
+  this.CVpreview = '';
+}
 getAllApplications(){
   this.applicationsService.getApplications().subscribe(data =>{
     this.applicationsList = data;
-    if(!this.admin)
+    if(!this.admin || this.admin.id != this.User.id)
       this.applicationsList = this.applicationsList.filter( data => data.userId == this.id);
       this.applications = this.applicationsList.filter( x => x.status != 'Rejected');
     console.log(this.applicationsList);
@@ -318,22 +334,27 @@ createInterview(app:any){
   this.newInterview.applicationId = app.id;
   this.newInterview.responseCompany = false;
   this.newInterview.responseUser = false;
-  this.interviewsService.createInterview(this.newInterview).subscribe(data=>{
-    app.interviews.push(this.newInterview);
-    console.log("Created successfully");
-    alert("Created sucessfully");
-    this.seeInterview.applicationId = '';
-    this.getAllInterviews();
-    this.scheduleFalse();
-    if(app.status == 'Pending')
-      {
-        app.status = 'Interview stage';
-        this.saveApplication(app);
-    }
-  },
-  error =>{
-    console.log(error);
-  });
+  let difference = new Date(this.newInterview.date).getTime() - new Date().getTime()
+  if(difference /1000 / 60 / 60 > 1){
+    this.interviewsService.createInterview(this.newInterview).subscribe(data=>{
+      app.interviews.push(this.newInterview);
+      console.log("Created successfully");
+      alert("Created sucessfully");
+      this.seeInterview.applicationId = '';
+      this.getAllInterviews();
+      this.scheduleFalse();
+      if(app.status == 'Pending')
+        {
+          app.status = 'Interview stage';
+          this.saveApplication(app);
+      }
+    },
+    error =>{
+      console.log(error);
+    });
+  }
+  else
+    alert("The interview has to be at least one hour later than now.");
 }
 //for admin
 deleteInterview(interview:any){
@@ -407,13 +428,18 @@ saveInterview(){
   else
     this.newInterview.responseUser = true;
   console.log(this.newInterview);
-  this.interviewsService.saveInterview(this.newInterview).subscribe(data=>{
-    console.log("Updated sucessfully");
-    alert("Updated sucessfully");
-    this.newInterview = new Interview();
-    this.getAllInterviews();
-    this.editInterviewFalse();
-  })
+  let difference = new Date(this.newInterview.date).getTime() - new Date().getTime()
+  if(difference /1000 / 60 / 60 > 1){
+    this.interviewsService.saveInterview(this.newInterview).subscribe(data=>{
+      console.log("Updated sucessfully");
+      alert("Updated sucessfully");
+      this.newInterview = new Interview();
+      this.getAllInterviews();
+      this.editInterviewFalse();
+    })
+  }
+  else
+    alert("The interview has to be at least one hour later than now.");
 }
 confirm(interview:any){
   this.newInterview = interview;

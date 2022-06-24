@@ -18,7 +18,7 @@ export class RegisterComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required, Validators.minLength(5)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
   });
   public user = new Account();
 
