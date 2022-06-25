@@ -1,0 +1,41 @@
+<div class="main">
+    <div *ngIf="company"  style="height:8rem; width:100%">
+        <div *ngIf="availableJobs.length">
+            <h1>Select a job</h1>
+            <select [(ngModel)]="selectedJob" class="select-picker width50">
+                <option disabled selected value> -- select an option -- </option>
+                <option *ngFor = "let item of availableJobs" [value]="item.id">
+                    {{item.jobTitle}}
+                </option>
+            <i class='fa fa-angle-down'></i>
+            </select>
+        </div>
+        <div *ngIf="!availableJobs.length">
+            <h1 style="text-align:center;">No more jobs to invite to.</h1>
+        </div>
+    </div>
+
+
+    <div *ngIf="admin" style="height:14rem;width:100%">
+        <h1>Select a company</h1>
+        <select class="select-picker" (change)="changeCompany($event)">
+            <option *ngFor = "let item of CompanyList" [value]="item.id">
+                {{item.name}}
+            </option>
+        </select>
+        <div *ngIf="selectedCompany">
+            <div *ngIf="availableJobs.length">
+                <h1>Select a job</h1>
+                <select [(ngModel)]="selectedJob" class="select-picker">
+                    <option *ngFor = "let item of availableJobs" [value]="item.id">
+                        {{item.jobTitle}}
+                    </option>
+                </select>
+            </div>
+            <div *ngIf="!availableJobs.length">
+                <h1>No more jobs to invite to.</h1>
+            </div>
+        </div>
+    </div>
+    <button mat-raised-button class="button" *ngIf="availableJobs.length" (click)="sendInvite()">Invite</button>
+</div>

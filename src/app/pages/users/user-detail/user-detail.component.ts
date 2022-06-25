@@ -5,6 +5,9 @@ import { AuthService } from 'app/services/auth.service';
 import { UsersService } from 'app/services/users.service';
 import { User } from 'app/classes/user';
 import { FileService } from 'app/services/file.service';
+import { CompaniesService } from 'app/services/companies.service';
+import { MatDialog } from '@angular/material/dialog';
+import { InviteComponent } from 'app/pages/invite/invite.component';
 
 @Component({
   selector: 'app-user-detail',
@@ -18,13 +21,15 @@ export class UserDetailComponent implements OnInit {
   aboutSection:boolean = true;
   admin = sessionStorage.getItem('Admin');
   user:any;
+  company:any;
 
   constructor(
     private activatedRoute:ActivatedRoute,
     private router:Router,
     private service: UsersService,
-    private sanitizer: DomSanitizer,
-    private fileService: FileService) { }
+    private companyService: CompaniesService,
+    private fileService: FileService,
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: any) => {
@@ -32,8 +37,10 @@ export class UserDetailComponent implements OnInit {
     console.log(this.id);
   });
   this.getUserDetails(this.id);
-  if (JSON.parse(sessionStorage.getItem('User') || ""))
+  if (sessionStorage.getItem('User') != null)
     this.user = JSON.parse(sessionStorage.getItem('User') || "")
+  else if (sessionStorage.getItem('Company') != null)
+    this.company = JSON.parse(sessionStorage.getItem('Company') || "")
   }
 
   getUserDetails(id:any){
@@ -59,5 +66,12 @@ export class UserDetailComponent implements OnInit {
   }
   getSafeUrl(url:any){
     return this.fileService.getSafeUrl(url);
+  }
+  invite(){
+    this.dialog.open(InviteComponent,{
+      data : {
+        userId : this.id
+      }
+    });
   }
 }

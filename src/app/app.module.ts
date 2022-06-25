@@ -58,6 +58,8 @@ import { SubdomainsComponent } from './pages/subdomains/subdomains.component';
 import { DomainService } from './services/domain.service';
 import { SubdomainService } from './services/subdomain.service';
 import { TutorialService } from './services/tutorial.service';
+import {MatDialogModule} from '@angular/material/dialog';
+import { InviteComponent } from './pages/invite/invite.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +83,8 @@ import { TutorialService } from './services/tutorial.service';
     UserDetailComponent,
     TutorialsComponent,
     DomainsComponent,
-    SubdomainsComponent
+    SubdomainsComponent,
+    InviteComponent
   ],
   imports: [
     BrowserModule,
@@ -107,7 +110,8 @@ import { TutorialService } from './services/tutorial.service';
     MatIconModule,
     MatCheckboxModule,
     PdfViewerModule,
-    NgxExtendedPdfViewerModule
+    NgxExtendedPdfViewerModule,
+    MatDialogModule
     //DropDownsModule,
   ],
   providers: [

@@ -1,0 +1,22 @@
+.main{
+width:30rem;
+height:15rem;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+}
+.select-picker{
+border: 1px solid black;
+padding: 10px 45px 10px 10px;
+margin-bottom: 15px;
+width:100%;
+border-radius: 5px;
+font-size: 18px;
+background: white;
+}
+button{
+background-color:rgb(14, 83, 212);
+color:white;
+width:20%;
+}

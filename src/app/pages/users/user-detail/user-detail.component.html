@@ -1,10 +1,13 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
 <main class="main">
     <div class="column">
-        <div *ngIf="admin || ( user && user.id == id)">
-            <button style="margin-left:30%" mat-raised-button (click)="editUser()">Edit profile</button>
+        <div *ngIf="admin || ( user && user.id == id)" style="text-align:right; margin-bottom:10px;">
+            <button mat-raised-button (click)="editUser()">Edit profile</button>
         </div>
+        <div *ngIf="admin || (company && company.role == 2)" style="text-align:right">
+            <button mat-raised-button (click)="invite()">Invite to recruitment process</button>
 
+        </div>
         <div class="container">
             <div class="column" style="width:100%;">
                 <div class="row" style="flex-basis: 45%; align-items:flex-end; text-align: center;">
