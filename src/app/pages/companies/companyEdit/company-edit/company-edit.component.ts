@@ -242,6 +242,10 @@ export class CompanyEditComponent implements OnInit {
     this.cancel();
     this.section = 7;
   }
+  sectionEight(){
+    this.cancel();
+    this.section = 8;
+  }
   create() {
     this.router.navigate(['/jobs/create']);
   }

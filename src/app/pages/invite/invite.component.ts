@@ -34,7 +34,6 @@ export class InviteComponent implements OnInit {
       this.getCurrentCompany();
     else if(sessionStorage.getItem("Admin")!= null)
       this.getCompanies();
-    console.log(this.selectedCompany);
   }
   getCurrentCompany(){
     var id = JSON.parse(sessionStorage.getItem('Company') || "").id;
@@ -61,6 +60,7 @@ export class InviteComponent implements OnInit {
         if(element.userId == this.userId)
           this.availableJobs = this.availableJobs.filter(x => x.id != element.jobId)
       });
+      this.availableJobs = this.availableJobs.filter( x=> x.open == true)
       console.log(this.availableJobs);
     });
   }

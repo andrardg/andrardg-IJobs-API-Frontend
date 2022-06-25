@@ -81,7 +81,19 @@
                 </div>
               </div>
         </div>
-        <div class="section" (click)="sectionSeven()" *ngIf="admin">
+
+        <div class="section" (click)="sectionSeven()">
+            <div class="row">
+                <div class="column" style="flex-basis: 90%;">
+                    <h1>Recruitment invitations</h1>
+                    <h2>Manage invitations sent</h2>
+                </div>
+                <div class="column" style="text-align: right;">
+                    <i class='fa fa-angle-right' style='font-size:20px'></i>
+                </div>
+              </div>
+        </div>
+        <div class="section" (click)="sectionEight()" *ngIf="admin">
             <div class="row">
                 <div class="column" style="flex-basis: 90%;">
                     <h1>Access</h1>
@@ -478,6 +490,11 @@
 
 
             <div *ngIf="section == 7">
+                <app-invite-details [id]="id"></app-invite-details>
+            </div>
+            
+
+            <div *ngIf="section == 8">
                 <form fxLayout="column" class="form" [formGroup]="form" (ngSubmit)="save()">
                     <mat-label>Is this account a valid company account?</mat-label>
                     <div class="input" matInput>

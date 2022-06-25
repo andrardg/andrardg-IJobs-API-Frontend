@@ -35,7 +35,6 @@ import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { JobsService } from './services/jobs.service';
 import { UsersService } from './services/users.service';
 import { CompaniesService } from './services/companies.service';
-import { CompanyModule } from './modules/company.module';
 import { JobTitlePipe } from './pages/jobs/jobtitle.pipe';
 import { HoldableDirective } from './directives/holdable.directive';
 import { JobDetailsComponent } from './pages/jobs/job-details/job-details.component';
@@ -60,6 +59,16 @@ import { SubdomainService } from './services/subdomain.service';
 import { TutorialService } from './services/tutorial.service';
 import {MatDialogModule} from '@angular/material/dialog';
 import { InviteComponent } from './pages/invite/invite.component';
+import { InviteDetailsComponent } from './pages/invite/invite-details/invite-details.component';
+import { InviteService } from './services/invite.service';
+import { InterviewService } from './services/interview.service';
+import { FileService } from './services/file.service';
+import { Application } from './classes/application';
+import { ApplicationService } from './services/application.service';
+import { CompaniesComponent } from './pages/companies/companies.component';
+import { CompanyEditComponent } from './pages/companies/companyEdit/company-edit/company-edit.component';
+import { CompanyDetailComponent } from './pages/companies/companyDetail/company-detail/company-detail.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -76,6 +85,9 @@ import { InviteComponent } from './pages/invite/invite.component';
     JobEditComponent,
     JobCreateComponent,
     RegisterCompanyComponent,
+    CompaniesComponent,
+    CompanyEditComponent,
+    CompanyDetailComponent,
     HeaderComponent,
     FooterComponent,
     UserEditComponent,
@@ -84,13 +96,14 @@ import { InviteComponent } from './pages/invite/invite.component';
     TutorialsComponent,
     DomainsComponent,
     SubdomainsComponent,
-    InviteComponent
+    InviteComponent,
+    InviteDetailsComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    CompanyModule,
     AppRoutingModule,
+    CommonModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
@@ -119,15 +132,19 @@ import { InviteComponent } from './pages/invite/invite.component';
     {provide:HTTP_INTERCEPTORS,useClass : TokenInterceptor, multi:true,},
     AuthGuard,
     AdminAuthGuard,
+    ApplicationService,
     AuthService,
-    PrivateService,
     CompaniesService,
-    JobsService,
-    UsersService,
-    PreviousRouteService,
     DomainService,
+    FileService,
+    InterviewService,
+    InviteService,
+    JobsService,
+    PreviousRouteService,
+    PrivateService,
     SubdomainService,
-    TutorialService
+    TutorialService,
+    UsersService,
   ],
   exports: [
     HeaderComponent,

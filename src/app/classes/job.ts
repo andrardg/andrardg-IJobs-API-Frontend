@@ -13,11 +13,11 @@ export class Job {
     experience?:string;
     address?:string;
     open?:Boolean;
-    companyId:string;
+    companyId?:string;
     company?:Company;
     subdomainId:string;
     subdomain?:Subdomain;
-    userId:string;
+    userId?:string;
     user?:User;
     applications?: Array<Application>;
     invites?: Array<Invite>;

@@ -11,6 +11,7 @@ import { DomainService } from 'app/services/domain.service';
 import { ApplicationService } from 'app/services/application.service';
 import { Application } from 'app/classes/application';
 import { InterviewService } from 'app/services/interview.service';
+import { InviteService } from 'app/services/invite.service';
 
 @Component({
   selector: 'app-job-edit',
@@ -52,7 +53,8 @@ export class JobEditComponent implements OnInit {
     private companyService: CompaniesService,
     private domainService: DomainService,
     private applicationsService: ApplicationService,
-    private interviewService: InterviewService) { }
+    private interviewService: InterviewService,
+    private inviteService: InviteService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: any) => {
@@ -101,7 +103,7 @@ export class JobEditComponent implements OnInit {
     }
     var keepGoing = true;
     if (this.form.controls['open'].value == "No" && this.Job.open == true)
-      if(!confirm('Are you sure you want to mark the job position as filled? All the interview will be deleted and the applications market as rejected')){
+      if(!confirm('Are you sure you want to mark the job position as filled? All the interview and invitations will be deleted and the remaining applications will be marked as rejected')){
         keepGoing = false;
         alert("The process has been stopped");
     }
@@ -109,6 +111,8 @@ export class JobEditComponent implements OnInit {
       delete this.Job.company;
       delete this.Job.subdomain;
       delete this.Job.applications;
+      delete this.Job.user;
+      this.Job.userId;
       this.Job.jobTitle = this.form.controls['jobTitle'].value.charAt(0).toUpperCase() + this.form.controls['jobTitle'].value.slice(1);
       this.Job.description = this.form.controls['description'].value.charAt(0).toUpperCase() + this.form.controls['description'].value.slice(1);
       this.Job.salary = this.form.controls['salary'].value;
@@ -121,6 +125,7 @@ export class JobEditComponent implements OnInit {
         {
           this.Job.open = false;
           this.rejectApplications();
+          this.deleteInvitations();
         }
       if(this.admin)
         this.Job.companyId = this.form.controls['companyId'].value;
@@ -191,5 +196,16 @@ export class JobEditComponent implements OnInit {
         }
       });
     });
+  }
+  deleteInvitations(){
+    this.inviteService.getInvites().subscribe(data=>{
+      data = data.filter( (x: { jobId: any; })=> x.jobId == this.id)
+      if(data)
+      data.forEach((element: any) => {
+        this.inviteService.removeInvite(element.id).subscribe(data=>{
+          console.log("Invitation deleted successfully");
+        })
+      });
+    })
   }
 }

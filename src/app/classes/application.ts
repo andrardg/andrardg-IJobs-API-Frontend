@@ -18,6 +18,5 @@ export class Application {
         //this.user = new User();
         this.cv = '';
         this.status = 'Pending';
-        this.interviews = [];
     }
 }

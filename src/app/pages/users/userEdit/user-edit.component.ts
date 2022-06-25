@@ -213,6 +213,10 @@ sectionFive(){
   this.getAllInterviews();
   this.section = 5;
 }
+sectionSix(){
+  this.cancel();
+  this.section = 6;
+}
 cancel(){
   this.getUserDetails(this.id);
   this.formData.delete;

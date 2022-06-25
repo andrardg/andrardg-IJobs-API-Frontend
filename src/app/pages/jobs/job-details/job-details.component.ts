@@ -9,6 +9,7 @@ import { Company } from 'app/classes/company';
 import { UsersService } from 'app/services/users.service';
 import { ApplicationService } from 'app/services/application.service';
 import { Application } from 'app/classes/application';
+import { InviteService } from 'app/services/invite.service';
 
 @Component({
   selector: 'app-job-details',
@@ -35,7 +36,8 @@ export class JobDetailsComponent implements OnInit {
     private userService: UsersService,
     private applicationService: ApplicationService,
     private authService: AuthService,
-    private previousRouteService:PreviousRouteService) { }
+    private previousRouteService:PreviousRouteService,
+    private inviteService: InviteService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: any) => {
@@ -120,6 +122,14 @@ export class JobDetailsComponent implements OnInit {
       console.log(app);
       this.applicationService.createApplication(app).subscribe(data =>{
         console.log("Created successfully");
+        this.inviteService.getInvites().subscribe(data=>{
+          data = data.filter((x: { userId: string; jobId: string; })=> x.userId == app.userId && x.jobId == app.jobId);
+          if(data)
+            this.inviteService.removeInvite(data[0].id).subscribe(data =>{
+              console.log("Invite deleted successfully");
+              alert("Invite accepted successfully");
+            })
+        })
         if (confirm('Congratulations! You have successfully applied for this job. Would you like to refreshen your knowledge for your upcoming interviews using our learning videos?')) {
           this.router.navigate(['/tutorials', this.Job.subdomain!.domainId, this.Job.subdomainId]);
         }

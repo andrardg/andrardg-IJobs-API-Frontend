@@ -1,0 +1,20 @@
+<div class="main">
+    <div *ngIf="invitesList.length">
+        <div *ngFor="let inv of invitesList">
+            <div class="invite">
+                <div class="row">
+                    <h1 *ngIf="user" routerLink="/jobs/{{inv.jobId}}">{{inv.job!.company!.name}} has invited you to join their recruitment process for the {{inv.job!.jobTitle}} position.</h1>
+                    <h1 *ngIf="company" routerLink="/users/{{inv.userId}}">You have invited {{inv.user!.firstName}} {{inv.user!.lastName}} to join your recruitment process for the {{inv.job!.jobTitle}} position.</h1>
+                    <h1 *ngIf="admin" routerLink="/jobs/{{inv.jobId}}">{{inv.user!.firstName}} {{inv.user!.lastName}} has invited you to join their recruitment process for the {{inv.job!.jobTitle}} position.</h1>
+                </div>
+            </div>
+            <div class="buttons">
+                <button mat-button *ngIf="user || admin"(click)="acceptInvite(inv)" style="color:green;padding-right:10px"><i class="fa fa-check-square-o" style="min-width:30px"></i>Accept invitation</button>
+                <button mat-button (click)="deleteInvite(inv.id)"><i class="fa fa-trash" style="padding-right:10px"></i>Delete invitation</button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!invitesList.length">
+        <h1>No invitations for recruitment processes to show yet.</h1>
+    </div>
+</div>

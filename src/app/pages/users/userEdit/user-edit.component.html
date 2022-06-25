@@ -67,6 +67,19 @@
           
               </div>
         </div>
+        <div class="section" (click)="sectionSix()">
+            <div class="row">
+                <div class="column" style="flex-basis: 90%;">
+                    <h1>Recruitment invitations</h1>
+                    <h2 *ngIf="admin">Manage all the invitations</h2>
+                    <h2 *ngIf="!admin">Manage nvitations received</h2>
+                </div>
+                <div class="column" style="text-align: right;">
+                    <i class='fa fa-angle-right' style='font-size:20px'></i>
+                </div>
+          
+              </div>
+        </div>
 
         <div class="section" (click)="removeUser(id)">
             <button mat-button class="delete">Permanently delete account</button>
@@ -494,6 +507,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div *ngIf="section == 6">
+                <app-invite-details [id]="id"></app-invite-details>
             </div>
         </div>
     </div>

@@ -5,6 +5,9 @@ import { AdminCompanyGuard } from './guards/admin-company.guard';
 import { AdminUserGuard } from './guards/admin-user.guard';
 import { AuthGuard } from './guards/auth.guard';
 import { SessionGuard } from './guards/session.guard';
+import { CompaniesComponent } from './pages/companies/companies.component';
+import { CompanyDetailComponent } from './pages/companies/companyDetail/company-detail/company-detail.component';
+import { CompanyEditComponent } from './pages/companies/companyEdit/company-edit/company-edit.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { DomainsComponent } from './pages/domains/domains.component';
 import { JobCreateComponent } from './pages/jobs/job-create/job-create.component';
@@ -83,6 +86,19 @@ const routes: Routes = [
   {
     path:'registerCompany',
     component: RegisterCompanyComponent,
+  },   
+  {
+    path: 'companies',
+    component: CompaniesComponent,
+  },
+  {
+    path: 'companies/:id',
+    component: CompanyDetailComponent,
+  },
+  {
+    path: 'companies/edit/:id',
+    component: CompanyEditComponent,
+    canActivate: [AdminCompanyGuard],
   },
   {
     path:'tutorials',
