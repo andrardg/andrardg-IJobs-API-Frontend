@@ -78,6 +78,8 @@ export class UserEditComponent implements OnInit {
     private domainService: DomainService) { }
 
   ngOnInit(): void {
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
     this.activatedRoute.params.subscribe((params: any) => {
       this.id = params['id'];
       console.log(this.id);  

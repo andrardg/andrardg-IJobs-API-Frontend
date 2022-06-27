@@ -38,6 +38,8 @@ export class JobsComponent implements OnInit {
     }
   
   ngOnInit(): void {  
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
     this.getJobList();
     this.getDomains();
   }

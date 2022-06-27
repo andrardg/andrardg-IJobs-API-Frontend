@@ -10,6 +10,8 @@ export class DomainsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  sessionStorage.removeItem('jobId');
+  sessionStorage.removeItem('companyId');
   }
 
 }

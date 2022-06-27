@@ -13,6 +13,7 @@ export class Job {
     experience?:string;
     address?:string;
     open?:Boolean;
+    workType:Boolean;
     companyId?:string;
     company?:Company;
     subdomainId:string;
@@ -28,6 +29,7 @@ export class Job {
         this.jobType = '';
         this.experience = '';
         this.open = true;
+        this.workType = false;
         this.companyId = '';
         this.subdomainId = '';
         this.userId = '';

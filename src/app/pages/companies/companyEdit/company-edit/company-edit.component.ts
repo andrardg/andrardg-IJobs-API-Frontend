@@ -73,6 +73,8 @@ export class CompanyEditComponent implements OnInit {
     private fileService: FileService) { }
 
   ngOnInit(): void {
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
     this.activatedRoute.params.subscribe((params: any) => {
       this.id = params['id'];
       console.log(this.id);

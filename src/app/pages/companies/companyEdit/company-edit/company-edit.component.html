@@ -9,6 +9,7 @@
         <div *ngIf="showPrevious">
             <button mat-stroked-button style="margin-left:10rem; margin-bottom:2rem;" (click)="goBack(id)">Back</button>
         </div>
+        <button mat-raised-button style="margin-left:10rem; margin-bottom:2rem;" routerLink="/companies/{{Company.id}}">Preview profile</button>
         <div class="section" (click)="sectionOne()">
             <div class="row">
                 <div class="column" style="flex-basis: 90%;">

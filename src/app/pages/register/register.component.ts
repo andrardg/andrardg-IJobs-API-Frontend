@@ -27,6 +27,8 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService) { }
 
   ngOnInit(): void {
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
   }
   doRegister(){
     if(this.myForm.invalid){

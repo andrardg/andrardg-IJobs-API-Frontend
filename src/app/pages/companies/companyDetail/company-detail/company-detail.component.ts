@@ -6,6 +6,7 @@ import { FormControl } from '@angular/forms';
 import { AuthService } from 'app/services/auth.service';
 import { PreviousRouteService } from 'app/services/previous-route.service';
 import { Company } from 'app/classes/company';
+import { Job } from 'app/classes/job';
 
 @Component({
   selector: 'app-company-detail',
@@ -15,8 +16,10 @@ import { Company } from 'app/classes/company';
 export class CompanyDetailComponent implements OnInit {
 
   Company = new Company();
+  Jobs : Array<Job> = [];
+  Work : Array<Job> = [];
   public id: any;
-  public aboutSection:boolean = true;
+  public section:any = 1;
   editDeleteRights : boolean = false;
   showPrevious: boolean = false;
 
@@ -25,14 +28,15 @@ export class CompanyDetailComponent implements OnInit {
     private router:Router,
     private service: CompaniesService,
     private authService: AuthService,
-    private previousRouteService:PreviousRouteService) { }
+    private previousRouteService:PreviousRouteService) { 
+    sessionStorage.removeItem('companyId');}
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: any) => {
       this.id = params['id'];
       console.log(this.id);
     });
-    if(this.previousRouteService.getPreviousUrl() != '/companies' && this.previousRouteService.getPreviousUrl() != '/profile' && sessionStorage.getItem('jobId')!=null)
+    if(sessionStorage.getItem('jobId')!=null)
       this.showPrevious = true;
     this.getCompanyDetails(this.id);
   }
@@ -40,6 +44,8 @@ export class CompanyDetailComponent implements OnInit {
   getCompanyDetails(id:any){
     this.service.getCompanyDetails(id).subscribe(data=>{
       this.Company=data;
+      this.Jobs = this.Company.jobs.filter( x=> x.workType == false)
+      this.Work = this.Company.jobs.filter( x=> x.workType == true)
       if (sessionStorage.getItem("Company") != null)
       var company = JSON.parse(sessionStorage.getItem('Company') || "")
 
@@ -64,10 +70,13 @@ export class CompanyDetailComponent implements OnInit {
   logout() {
     this.authService.logout();
   }
-  aboutTrue(){
-    this.aboutSection = true;
+  sectionOne(){
+    this.section = 1;
   }
-  aboutFalse(){
-    this.aboutSection = false;
+  sectionTwo(){
+    this.section = 2;
+  }
+  sectionThree(){
+    this.section = 3;
   }
 }

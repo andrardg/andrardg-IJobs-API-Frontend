@@ -13,13 +13,15 @@ export class ProfileComponent implements OnInit {
     private router:Router) { }
 
   ngOnInit(): void {
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
     if(sessionStorage.getItem('Company') != null)
       {var company = JSON.parse(sessionStorage.getItem('Company') || "")
-      this.router.navigate(['/companies', company.id]);}
+      this.router.navigate(['/companies/edit', company.id]);}
 
     if(sessionStorage.getItem('User') != null)
       {console.log(sessionStorage.getItem('User'));var user = JSON.parse(sessionStorage.getItem('User') || "")
-      this.router.navigate(['/users', user.id]);}
+      this.router.navigate(['/users/edit', user.id]);}
 
     if(sessionStorage.getItem('Admin') != null)
     {var admin = JSON.parse(sessionStorage.getItem('Admin') || "")

@@ -61,6 +61,8 @@ export class SearchComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
     this.activatedRoute.params.subscribe((params: any) => {
     this.name = params['search'];
     console.log(this.name);

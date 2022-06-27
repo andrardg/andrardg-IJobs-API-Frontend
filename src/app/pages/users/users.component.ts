@@ -31,6 +31,8 @@ export class UsersComponent implements OnInit {
     private authService: AuthService) { }
   
   ngOnInit(): void {
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
     this.getAllUsers();
   }
 

@@ -47,9 +47,9 @@ export class TutorialsComponent implements OnInit {
     private fileService: FileService) { }
 
   ngOnInit(): void {
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
     
-
-
     this.activatedRoute.params.subscribe((params: any) => {
       //this.getTutorials();
       this.domainIdUrl = params['domainId'];

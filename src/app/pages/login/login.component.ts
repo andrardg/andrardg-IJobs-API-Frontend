@@ -24,6 +24,8 @@ export class LoginComponent implements OnInit {
     private router:Router) { }
 
   ngOnInit(): void {
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
   }
 
   async doLogin(): Promise<void> {

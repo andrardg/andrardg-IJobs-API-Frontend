@@ -30,6 +30,8 @@ export class InviteComponent implements OnInit {
      }
 
   ngOnInit(): void {
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
     if(sessionStorage.getItem("Company")!= null)
       this.getCurrentCompany();
     else if(sessionStorage.getItem("Admin")!= null)

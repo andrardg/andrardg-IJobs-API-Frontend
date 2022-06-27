@@ -37,14 +37,16 @@ export class JobDetailsComponent implements OnInit {
     private applicationService: ApplicationService,
     private authService: AuthService,
     private previousRouteService:PreviousRouteService,
-    private inviteService: InviteService) { }
+    private inviteService: InviteService) {
+    sessionStorage.removeItem('jobId');}
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
+
     this.activatedRoute.params.subscribe((params: any) => {
       this.id = params['id'];
       console.log(this.id);
     });
-    if(this.previousRouteService.getPreviousUrl() != '/jobs'  && sessionStorage.getItem('companyId')!=null)
+    if(sessionStorage.getItem('companyId')!=null)
       this.showPrevious = true;
     this.getJobDetails(this.id);
     if(sessionStorage.getItem('User'))

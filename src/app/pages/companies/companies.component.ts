@@ -25,6 +25,8 @@ export class CompaniesComponent implements OnInit {
     private authService: AuthService) { }
     
   ngOnInit(): void {
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
     this.getCompanies();
   }
 

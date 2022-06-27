@@ -27,6 +27,8 @@ export class InviteDetailsComponent implements OnInit {
     private applicationService: ApplicationService) { }
 
   ngOnInit(): void {
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
     if (sessionStorage.getItem('Admin'))
       this.admin = JSON.parse(sessionStorage.getItem('Admin') || "")
     //else if (sessionStorage.getItem('User'))

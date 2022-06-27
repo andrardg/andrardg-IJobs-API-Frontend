@@ -28,6 +28,8 @@ export class RegisterCompanyComponent implements OnInit {
     private authService: AuthService) { }
 
   ngOnInit(): void {
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
   }
 
   doRegister(){

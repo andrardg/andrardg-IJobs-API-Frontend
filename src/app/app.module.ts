@@ -69,6 +69,10 @@ import { CompaniesComponent } from './pages/companies/companies.component';
 import { CompanyEditComponent } from './pages/companies/companyEdit/company-edit/company-edit.component';
 import { CompanyDetailComponent } from './pages/companies/companyDetail/company-detail/company-detail.component';
 import { CommonModule } from '@angular/common';
+import { WorkComponent } from './pages/work/work.component';
+import { AdminCompanyGuard } from './guards/admin-company.guard';
+import { AdminUserGuard } from './guards/admin-user.guard';
+import { SessionGuard } from './guards/session.guard';
 
 @NgModule({
   declarations: [
@@ -97,7 +101,8 @@ import { CommonModule } from '@angular/common';
     DomainsComponent,
     SubdomainsComponent,
     InviteComponent,
-    InviteDetailsComponent
+    InviteDetailsComponent,
+    WorkComponent
   ],
   imports: [
     BrowserModule,
@@ -130,8 +135,11 @@ import { CommonModule } from '@angular/common';
   providers: [
     {provide:HTTP_INTERCEPTORS,useClass : HttpErrorsInterceptor, multi:true,},
     {provide:HTTP_INTERCEPTORS,useClass : TokenInterceptor, multi:true,},
-    AuthGuard,
     AdminAuthGuard,
+    AdminCompanyGuard,
+    AdminUserGuard,
+    AuthGuard,
+    SessionGuard,
     ApplicationService,
     AuthService,
     CompaniesService,
