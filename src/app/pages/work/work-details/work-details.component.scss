@@ -1,0 +1,80 @@
+.main{
+    height:100%;
+    min-height: 100vh;
+    background: rgb(242, 244, 245);
+    padding-bottom: 4rem;
+    padding-top: 5rem;
+}
+.main h1{
+    text-align:center; 
+    padding-top: 3%;
+    margin-bottom: 3%;
+    font-size: 24px;
+}
+.main h2{
+    text-align:left; 
+    padding-top: 2%;
+    padding-left: 5rem;
+    margin-bottom: 3%;
+    font-size: x-large;
+    
+  border-bottom: 1px solid gray;
+}
+.primary{
+    border-radius: 5px;
+    width:50%;
+    margin-left: 25%;
+    height: 25p;
+    box-shadow: -0.2em 0 .4em grey;
+    background-color: #fff;
+    margin-bottom: 25px;
+}
+.mat-card-title{
+    padding-left: 4rem;
+    font-size: medium;
+    margin-top: 1rem;
+}
+.mat-card-content{
+    padding-left: 5rem;
+    text-align: justify;
+    padding-right: 3rem;
+}
+.space{
+    height:4rem;
+    width:50%;
+    margin-left:25%;
+  }
+.buttons{
+    text-align: right;
+}
+.button1{
+color: black;
+padding-right: 1rem;
+font-size: large;
+font-family: "Times New Roman", Times, serif;
+}
+.button2{
+color : rgb(255, 251, 247);
+background-color: rgb(33, 101, 227);
+margin: 0.5rem;
+font-size: large;
+font-family: "Times New Roman", Times, serif;
+}
+.row {
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+width: 100%;
+}
+.column {
+display: flex;
+flex-direction: column;
+flex-basis: 100%;
+flex: 1;
+width:50%;
+}
+a{
+//padding-left:30px;
+padding-top:15px;
+font-size: 20px;
+}

@@ -1,0 +1,128 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+<link rel="stylesheet"
+          href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<main class="main">
+<h1>{{Job.jobTitle}}</h1>
+
+<button *ngIf="showPrevious" style="margin-left:25%;" mat-stroked-button (click)="back()">Back</button>
+<div class="space">
+    <div class="buttons" *ngIf="user != null && alreadyApplied == false" (click)="apply()">
+        <button mat-stroked-button>Apply now</button>
+    </div>
+    <div class="buttons" *ngIf="user != null && canReapply == true" (click)="reapply()">
+        <button mat-stroked-button>Reapply here</button>
+    </div>
+    <div class="buttons" *ngIf="editDeleteRights">
+        <button mat-button class="button2" (click)="editJob(Job.id)">Edit</button>
+        <button mat-button class="button1" (click)="removeJob(Job.id)">Delete</button>
+    </div>
+</div>
+
+<div class="primary" style="cursor: pointer;"  (click)="getCompanyDetails(Job.companyId)">
+    <mat-card class="example-card" *ngIf="Job.company">
+        <h2>Posted By Company</h2>
+        <div class="row" style="padding-left:2rem;">
+            <div class="column">
+              <div *ngIf="Job.company!.photo != null">
+                  <img (click)="getCompanyDetails(Company.id)" src="{{Job.company!.photo}}" width="150" height="150" style="object-fit: cover;" />
+              </div>
+              <div *ngIf="Job.company!.photo == null">
+                  <img (click)="getCompanyDetails(Company.id)" src="../../../assets/images/companyProfilePhoto.png" width="150" height="150" style="object-fit: cover;" />
+              </div>
+            </div>
+    
+            <div class="column"style="flex-basis: 50%;">
+              <div class="title">
+                <a>{{Job.company!.name}}</a>
+              </div>
+              <a><i class="fa fa-envelope" style="min-width:30px"></i>{{Job.company!.email}}</a>
+              <a><i class="fas fa-map-marker-alt" style="min-width:30px"></i>{{Job.company!.address}}</a>
+            </div>
+        </div>
+    </mat-card>
+
+    <mat-card class="example-card" *ngIf="Job.user">
+        <h2>Posted By User</h2>
+        <div class="row" style="padding-left:2rem;">
+            <div class="column">
+              <div *ngIf="Job.user!.photo != null">
+                  <img (click)="getUserDetails(Job.userId)" src="{{Job.user!.photo}}" width="150" height="150" style="object-fit: cover;" />
+              </div>
+              <div *ngIf="Job.user!.photo == null">
+                  <img (click)="getUserDetails(Job.userId)" src="../../../assets/images/profilePhoto.png" width="150" height="150" style="object-fit: cover;" />
+              </div>
+            </div>
+
+            <div class="column"style="flex-basis: 50%;">
+              <div class="title">
+                <a>{{Job.user!.firstName}} {{Job.user!.lastName}}</a>
+              </div>
+              <a><i class="fa fa-envelope" style="min-width:30px"></i>{{Job.user!.email}}</a>
+              <a *ngIf="Job.user!.residence"><i class="fas fa-map-marker-alt" style="min-width:30px"></i>{{Job.user!.residence}}</a>
+              <a *ngIf="!Job.user!.residence"><i class="fas fa-map-marker-alt" style="min-width:30px"></i>- -</a>
+            </div>
+        </div>
+    </mat-card>
+</div>
+
+<div class="primary">
+    <mat-card class="example-card">
+        <h2>Job Description</h2>
+        <mat-card-content>
+            <div style="white-space: pre-wrap;">
+                <a>{{Job.description}}</a>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<div class="primary">
+    <mat-card class="example-card">
+        <h2>Details</h2>
+        <mat-card-header>
+            <mat-card-title>Job Duration</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div>
+                <a><i class="fa fa-clock-o" style="min-width:30px"></i>{{Job.jobType}}</a>
+            </div>
+        </mat-card-content>
+        <mat-card-header>
+            <mat-card-title>Address</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div>
+                <a><i class="fas fa-map-marker-alt" style="min-width:30px"></i>{{Job.address}}</a>
+            </div>
+        </mat-card-content>
+        <mat-card-header>
+            <mat-card-title>Experience Level</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div>
+                <a><i class="far fa-lightbulb" style="min-width:30px"></i>{{Job.experience}}</a>
+            </div>
+        </mat-card-content>
+        <mat-card-header>
+            <mat-card-title>Pay</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div>
+                <a><i class="far fa-money-bill-alt" style="min-width:30px"></i>{{Job.salary | currency: 'EUR':true:'1.0-0'}}</a>
+            </div>
+        </mat-card-content>
+
+
+        <div *ngIf="Job.subdomain!.name != 'Other'">
+            <mat-card-header>
+                <mat-card-title>Domain</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                    <a><i class="fas fa-chart-line" style="min-width:30px"></i>{{Job.subdomain!.name}}</a>
+            </mat-card-content>
+        </div>
+    </mat-card>
+</div>
+
+</main>

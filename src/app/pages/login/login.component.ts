@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
       },);
     }
     else {
-        if(!this.error)
+        if(!this.error){}
           this.error = 'Invalid form';
         console.log(this.error);
       }

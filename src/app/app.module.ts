@@ -73,6 +73,11 @@ import { WorkComponent } from './pages/work/work.component';
 import { AdminCompanyGuard } from './guards/admin-company.guard';
 import { AdminUserGuard } from './guards/admin-user.guard';
 import { SessionGuard } from './guards/session.guard';
+import { WorkCreateComponent } from './pages/work/work-create/work-create.component';
+import { WorkDetailsComponent } from './pages/work/work-details/work-details.component';
+import { WorkEditComponent } from './pages/work/work-edit/work-edit.component';
+import { ApplicationComponent } from './pages/application/application.component';
+import { InterviewComponent } from './pages/interview/interview.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +107,12 @@ import { SessionGuard } from './guards/session.guard';
     SubdomainsComponent,
     InviteComponent,
     InviteDetailsComponent,
-    WorkComponent
+    WorkComponent,
+    WorkCreateComponent,
+    WorkDetailsComponent,
+    WorkEditComponent,
+    ApplicationComponent,
+    InterviewComponent
   ],
   imports: [
     BrowserModule,

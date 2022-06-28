@@ -23,6 +23,9 @@ export class JobsService {
   getJobs(){
     return this.http.get<any>(`${environment.baseUrl}api/Jobs`, this.privateHeaders);
   }
+  getWork(){
+    return this.http.get<any>(`${environment.baseUrl}api/Jobs/GetAllWork`, this.privateHeaders);
+  }
   getJobDetails(id: any){
     return this.http.get<any>(`${environment.baseUrl}api/Jobs/${id}`, this.privateHeaders);
   }

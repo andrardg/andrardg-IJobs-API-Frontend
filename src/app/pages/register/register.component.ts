@@ -33,7 +33,12 @@ export class RegisterComponent implements OnInit {
   doRegister(){
     if(this.myForm.invalid){
       console.log("Register error");
-      this.error = 'You cannot register empty fields.'
+      if(this.myForm.controls['email'].invalid)
+        this.error = 'The email has wrong format.';
+      else if(this.myForm.controls['password'].invalid)
+        this.error = 'The password must have at least 8 characters';
+      else
+        this.error = 'You cannot register empty fields.'
       return;
     }
     this.error = false;
@@ -52,7 +57,7 @@ export class RegisterComponent implements OnInit {
       this.router.navigate(['/login']);
      },
      error => {
-       this.error = error;
+       this.error = "Email is already taken.";
      },);
     if(this.error)
       console.log(this.error);

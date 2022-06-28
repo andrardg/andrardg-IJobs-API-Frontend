@@ -9,13 +9,13 @@
         </div>
         <div class="row">
             <div class="column">
-                <img class="image" src="../../../assets/images/companyMain.png" width="300" height="300"/>
+                <img class="image" style="cursor:pointer" routerLink="/companies" src="../../../assets/images/companyMain.png" width="300" height="300"/>
                 <button mat-button class="search" routerLink="/companies">Look through our companies
                     <i class='fa fa-angle-right' style='font-size:20px'></i></button>
             </div>
             
             <div class="column">
-                <img class="image" src="../../../assets/images/jobsMain.jpg" width="300" height="300"/>
+                <img class="image" style="cursor:pointer" routerLink="/jobs" src="../../../assets/images/jobsMain.jpg" width="300" height="300"/>
                 <button mat-button class="search" *ngIf="!company" routerLink="/jobs">Search for a job
                     <i class='fa fa-angle-right' style='font-size:20px'></i></button>
                 <button mat-button class="search" *ngIf="company" routerLink="/jobs">Post a job
@@ -23,7 +23,7 @@
             </div>
             
             <div class="column">
-                <img class="image" src="../../../assets/images/peopleMain.jpg" width="300" height="300"/>
+                <img class="image" style="cursor:pointer" routerLink="/users" src="../../../assets/images/peopleMain.jpg" width="300" height="300"/>
                 <button mat-button class="search" routerLink="/users">Our community
                     <i class='fa fa-angle-right' style='font-size:20px'></i></button>
             </div>

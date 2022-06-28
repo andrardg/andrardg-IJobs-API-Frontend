@@ -1,1 +1,124 @@
-<p>work works!</p>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+<body class="main">
+  <div class="left" style="position:fixed">
+    <div class="row">
+        <h1 style="margin-bottom:3rem; padding-left: 20px">Filters</h1>
+    </div>
+    <div class="column">
+      <div class="row">
+          <h2> Job Duration</h2>
+          <div class="list">
+              <select [(ngModel)]="jobTypesFilter" class="select-picker">
+                <option>All</option>
+                <option *ngFor = "let item of jobTypes" [value]="item">
+                  {{item}}
+                </option>
+                <i class='fa fa-angle-down'></i>
+              </select>
+          </div>
+      </div>
+      <div class="row">
+          <h2> Experience Level</h2>
+          <div class="list">
+              <select [(ngModel)]="experienceFilter" class="select-picker">
+                <option>All</option>
+                <option *ngFor = "let item of experience" [value]="item">
+                  {{item}}
+                </option>
+                <i class='fa fa-angle-down'></i>
+              </select>
+          </div>
+      </div>
+      <div class="row">
+          <h2> Pay</h2>
+          <input class="select-picker" placeholder="0" numbersOnly style="margin-left:20px; width: 94%" [(ngModel)]="salaryFilter">
+          <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
+      </div>
+      <div class="row">
+          <h2>Domain</h2>
+          <div class="list">
+              <select [(ngModel)]="domainFilter" class="select-picker" (click)="getSubdomains()">
+                <option>All</option>
+                <option *ngFor = "let item of DomainList" [value]="item.id">
+                  {{item.name}}
+                </option>
+                <i class='fa fa-angle-down'></i>
+              </select>
+          </div>
+      </div>
+      <div class="row">
+          <h2>Subdomain</h2>
+          <div class="list">
+            <div *ngIf="domainFilter != 'All'">
+              <select [(ngModel)]="subdomainFilter" class="select-picker">
+                <option>All</option>
+                <option *ngFor = "let item of SubdomainList" [value]="item.id">
+                  {{item.name}}
+                </option>
+                <i class='fa fa-angle-down'></i>
+              </select>
+            </div>
+
+            <div *ngIf="domainFilter == 'All'">
+              <select [(ngModel)]="subdomainFilter" class="select-picker">
+                <option>All</option>
+                <i class='fa fa-angle-down'></i>
+              </select>
+            </div>
+
+          </div>
+      </div>
+      <div class="row" style="margin-top:1rem">
+          <button mat-raised-button class="buttonDone" (click)="doneJob()">Done</button>
+      </div>
+  </div>
+</div>
+<div class="right">
+
+  <div class="space">
+    <span *ngIf="createRights"> 
+        <a mat-button class="button1" (click)="create()">Post a new announce</a>
+    </span>
+  </div>
+  <div *ngFor="let row of Jobs">
+    
+    <div class="job" *ngIf="Jobs.length > 0" (click)="getJobDetails(row.id)">
+      <div class="row">
+        <div class="column" style="flex-basis: 20%;">
+          <div *ngIf="row.company && row.company!.photo != null">
+            <img src="{{row.company!.photo}}" width="150" height="150" style="object-fit: cover;" />
+          </div>
+          <div *ngIf="row.user && row.user!.photo != null">
+            <img src="{{row.user!.photo}}" width="150" height="150" style="object-fit: cover;" />
+          </div>
+          <div *ngIf="(row.user && row.user!.photo == null) || (row.company && row.company!.photo == null)">
+              <img src="../../../assets/images/work.jpg" width="150" height="150" style="object-fit: cover;" />
+          </div>
+        </div>
+
+        <div class="column" style="flex-basis: 70%;">
+          <div class="title">
+            <a>{{row.jobTitle}}</a>
+          </div>
+          <div class="row">
+            <div class="column">
+              <a *ngIf="row.company"><i class="fa fa-institution" style="min-width:50px;"></i>{{row.company!.name}}</a>
+              <a *ngIf="row.user"><i class="far fa-address-card" style="min-width:50px;"></i>{{row.user!.firstName}} {{row.user!.lastName}}</a>
+              <a><i class='fa fa-clock-o' style="min-width:50px;"></i>{{row.jobType}}</a>
+            </div>
+      
+            <div class="column" style="color:rgb(110, 110, 110);">
+              <a><i class="fa fa-map-marker-alt" style="min-width:30px"></i>{{row.address}}</a>
+              <a><i class="far fa-lightbulb" style="min-width:30px"></i>{{row.experience}} </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="Jobs.length == 0">
+    <h2 class="no"> No work ads to show.</h2>
+  </div>
+</div>
+
+</body>

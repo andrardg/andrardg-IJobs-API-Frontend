@@ -24,6 +24,10 @@ import { TutorialsComponent } from './pages/tutorials/tutorials.component';
 import { UserDetailComponent } from './pages/users/user-detail/user-detail.component';
 import { UserEditComponent } from './pages/users/userEdit/user-edit.component';
 import { UsersComponent } from './pages/users/users.component';
+import { WorkCreateComponent } from './pages/work/work-create/work-create.component';
+import { WorkDetailsComponent } from './pages/work/work-details/work-details.component';
+import { WorkEditComponent } from './pages/work/work-edit/work-edit.component';
+import { WorkComponent } from './pages/work/work.component';
 
 const routes: Routes = [
   {
@@ -141,6 +145,24 @@ const routes: Routes = [
     path:'subdomains/edit/:id',
     component: SubdomainsComponent,
     canActivate: [AdminCompanyGuard, SessionGuard],
+  },
+  {
+    path:'work',
+    component: WorkComponent,
+  },
+  {
+    path:'work/create',
+    component: WorkCreateComponent,
+    canActivate: [AuthGuard, SessionGuard],
+  },
+  {
+    path:'work/:id',
+    component: WorkDetailsComponent,
+  },
+  {
+    path:'work/edit/:id',
+    component: WorkEditComponent,
+    canActivate: [AuthGuard, SessionGuard],
   },
 ];
 

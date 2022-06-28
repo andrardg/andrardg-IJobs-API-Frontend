@@ -91,12 +91,11 @@ export class JobDetailsComponent implements OnInit {
   }
   removeJob(id:any){
     console.log(id);
-    if (confirm('Are you sure you want to delete this account?')) {
+    if (confirm('Are you sure you want to delete this job post? All the interviews, invitations and applications will be deleted.')) {
       this.service.removeJob(id).subscribe((data)=>{
         console.log("success");
-        this.logout();
+        this.router.navigate(['/jobs']);
       });
-      this.router.navigate(['/jobs']);
     } else {
       console.log('Not deleted');
     }

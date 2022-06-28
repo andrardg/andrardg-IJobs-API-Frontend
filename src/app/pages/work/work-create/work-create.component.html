@@ -1,0 +1,143 @@
+<link rel="stylesheet"
+          href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<main class="main">
+<h1>Post your new work ad</h1>
+
+
+<form [formGroup]="form" (ngSubmit)="createJob()" class="form">
+    <div class = "primary">
+        <h1>Give us more details!</h1>
+ 
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="label" for="jobTitle">Job Title*</label>
+                <div class="input">
+                    <input matInput style="text-transform: capitalize;" formControlName="jobTitle">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="jobType">Job Duration*</label>
+                <div class="input">
+                    <select id="jobType" name="jobType" formControlName= "jobType" class="select-picker">
+                        <option disabled selected value> -- select an option -- </option>
+                        <option *ngFor = "let item of JobTypes" [value]="item">
+                            {{item}}
+                        </option>
+                    <i class='fa fa-angle-down'></i>
+                    </select>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="experience">Experience*</label>
+                <select id="experience" name="experience" formControlName= "experience" class="select-picker">
+                    <option disabled selected value> -- select an option -- </option>
+                    <option *ngFor = "let item of Experience" [value]="item">
+                        {{item}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="address">Address*</label>
+                <div class="input" >
+                    <input matInput style="text-transform: capitalize;" formControlName="address">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="salary">Pay*</label>
+                <div class="input" >
+                    <input matInput formControlName="salary" numbersOnly>
+                </div>
+            </div>
+        </div>
+
+
+        <div *ngIf="admin" class="panel-body">
+            
+            <div class="form-group" style="padding-left: 2rem;padding-bottom:6px; font-size:18px">
+                <mat-checkbox [checked]="ownerIsCompany" (change)="ownerIsCompany = !ownerIsCompany">Company</mat-checkbox>
+                <mat-checkbox style="padding-left:20px" [checked]="!ownerIsCompany" (change)="ownerIsCompany = !ownerIsCompany">User</mat-checkbox>
+            </div>
+            <div class="form-group">
+                <div *ngIf="ownerIsCompany == true">
+                    <label class="col-sm-2 control-label" for="companyId">Company*</label>
+                    <select id="companyId" name="companyId" formControlName= "companyId" class="select-picker">
+                        <option disabled selected value> -- select an option -- </option>
+                        <option *ngFor = "let item of CompanyList" [value]="item.id">
+                            {{item.name}}
+                        </option>
+                    </select>
+                </div>
+                <div *ngIf="ownerIsCompany == false">
+                    <label class="col-sm-2 control-label" for="companyId">User*</label>
+                    <select id="userId" name="userId" formControlName= "userId" class="select-picker">
+                        <option disabled selected value> -- select an option -- </option>
+                        <option *ngFor = "let item of UserList" [value]="item.id">
+                            {{item.firstName}} {{item.lastName}} {{item.id}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class = "primary">
+        <div class="panel-body">
+            <div class="form-group">
+                <h1>The Job Description*</h1>
+                <div class="input">
+                    <textarea rows="10" placeholder="Try to add all the essential details." formControlName="description">
+                    </textarea>
+                </div>
+            </div>
+        </div> 
+    </div>
+
+    <div class = "primary">
+        <div class="panel-body">
+            <div class="form-group">
+                <h1>Place the job in a category</h1>
+                <label class="col-sm-2 control-label">Domain*</label>
+                <select class="select-picker" (change)="changeDomain($event)">
+                    <option disabled selected value> -- select an option -- </option>
+                    <option *ngFor = "let item of DomainList" [value]="item.id">
+                        {{item.name}}
+                    </option>
+                </select>
+                <div *ngIf="selectedDomain.name != ''">
+                    <label class="col-sm-2 control-label">Subdomain*</label>
+                    <select id="companyId" name="companyId" formControlName= "subdomain" class="select-picker">
+                        <option disabled selected value> -- select an option -- </option>
+                        <option *ngFor = "let item of selectedDomain.subdomains" [value]="item.id">
+                            {{item.name}}
+                        </option>
+                    </select>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
+    <div class="buttons">
+        <button mat-button class="button1" (click)="cancel()">Cancel </button>
+        <button mat-raised-button class="button2" type="submit"> Post Job</button>
+    </div>
+        
+
+</form>
+</main>
