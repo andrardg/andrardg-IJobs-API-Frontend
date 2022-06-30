@@ -47,7 +47,7 @@ color:white;
 font-family: "Times New Roman", Times, serif;
 }
 .job{
-width:50%;
+width:60%;
 height:12rem;
 margin-left:25%;
 padding: 16px;
@@ -160,9 +160,9 @@ box-shadow: 0 0 1px #2196F3;
 }
 
 input:checked + .slider:before {
--webkit-transform: translateX(26px);
--ms-transform: translateX(26px);
-transform: translateX(26px);
+-webkit-transform: translateX(18px);
+-ms-transform: translateX(18px);
+transform: translateX(18px);
 }
 
 /* Rounded sliders */

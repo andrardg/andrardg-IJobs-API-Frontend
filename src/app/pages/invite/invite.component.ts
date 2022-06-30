@@ -42,6 +42,7 @@ export class InviteComponent implements OnInit {
   ngOnInit(): void {
     sessionStorage.removeItem('jobId');
     sessionStorage.removeItem('companyId');
+    sessionStorage.removeItem('workId');
     if(sessionStorage.getItem("Company")!= null)
       this.getCurrentCompany();
     else if(sessionStorage.getItem("Admin")!= null){
@@ -72,13 +73,16 @@ export class InviteComponent implements OnInit {
   getCompanies(){
     this.companyService.getCompanies().subscribe(data=>{
       this.CompanyList = data;
-      this.CompanyList = this.CompanyList.filter( x=> x.verifiedAccount == true);
+      this.CompanyList = this.CompanyList.filter( x=> x.verifiedAccount == true && x.jobs.length > 0);
+      this.CompanyList = this.CompanyList.sort((a,b) => a.name!.localeCompare(b.name!));
       console.log(this.CompanyList);
     });
   }
   getUsers(){
     this.userService.getUsers().subscribe(data=>{
       this.UserList = data;
+      this.UserList = this.UserList.filter( x=> x.role == '1');
+      this.UserList = this.UserList.sort((a,b) => a.firstName!.localeCompare(b.firstName!));
     })
   }
   getInvites(company:any){
@@ -90,6 +94,7 @@ export class InviteComponent implements OnInit {
         if(element.userId == this.userId)
           this.availableJobs = this.availableJobs.filter(x => x.id != element.jobId)
       });
+      console.log(this.availableJobs);
       this.availableJobs = this.availableJobs.filter( x=> x.open == true)
       this.User.applications!.forEach(element => {
         if(element.userId == this.userId)

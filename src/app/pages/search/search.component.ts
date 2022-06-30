@@ -21,9 +21,11 @@ export class SearchComponent implements OnInit {
   UserList:Array<User> = [];
   CompanyList:Array<Company> = [];
   JobList:Array<Job> = [];
+  WorkList:Array<Job> = [];
   UserShortList:any=[];
   CompanyShortList:any=[];
   JobShortList:any=[];
+  WorkShortList:Array<Job> = [];
   section:any = 1;  
   admin = sessionStorage.getItem('Admin');
 
@@ -31,8 +33,10 @@ export class SearchComponent implements OnInit {
   Companies:Array<Company> = [];
 
   jobTypes:Array<string> = ["Full-Time", "Part-Time", "Internship", "Volunteering"];
+  jobTypesWork:Array<string> = ["One day", "A few days", "Weekly", "Monthly", "Regularly"];
   jobTypesFilter: string = 'All';
   experience:any=["Entry Level", "Junior Level", "Mid-Senior Level", "Senior Level", "Associate", "Director"];
+  experienceWork:any=["Entry Level", "Junior Level", "Mid-Senior Level", "Senior Level"];
   experienceFilter:string = 'All';
   salaryFilter:number = 0;
   jobsOpenFilter:boolean = true;
@@ -42,6 +46,7 @@ export class SearchComponent implements OnInit {
   SubdomainList:Array<Subdomain> = [];
   subdomainFilter : any = 'All';
   Jobs:Array<Job> = [];
+  Work:Array<Job> = [];
   
   Users:Array<User>=[];
   residenceFilter:string = '';
@@ -63,6 +68,7 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
     sessionStorage.removeItem('jobId');
     sessionStorage.removeItem('companyId');
+    sessionStorage.removeItem('workId');
     this.activatedRoute.params.subscribe((params: any) => {
     this.name = params['search'];
     console.log(this.name);
@@ -100,13 +106,24 @@ export class SearchComponent implements OnInit {
     this.jobService.getJobsByJobTitle(this.name).subscribe(data=>{
     console.log(data);
     this.JobList = data;
-    this.JobList = this.JobList.filter(elem => (elem.company!.verifiedAccount == true && elem.open == true));
+    this.JobList = this.JobList.filter(elem => (elem.company && elem.company!.verifiedAccount == true && elem.open == true && elem.workType == false));
     this.Jobs = this.JobList;
     if(this.JobList.length > 3)
       this.JobShortList = this.JobList.slice(0,3);
     else
       this.JobShortList = this.JobList;
+
+    this.WorkList = data;
+    console.log(this.WorkList)
+    this.WorkList = this.WorkList.filter(elem => (((elem.company && elem.company!.verifiedAccount == true) || elem.user) && elem.open == true && elem.workType == true));
+    if(this.WorkList.length > 3)
+      this.WorkShortList = this.WorkList.slice(0,3);
+    else
+      this.WorkShortList = this.WorkList;
     });
+    console.log(this.WorkList)
+
+
   }
   sectionOne(){
     this.section = 1;
@@ -116,10 +133,16 @@ export class SearchComponent implements OnInit {
   }
   sectionThree(){
     this.section = 3;
+    this.Jobs = this.JobList;
     this.getDomains();
   }
   sectionFour(){
     this.section = 4;
+  }
+  sectionFive(){
+    this.section = 5;
+    this.Jobs = this.WorkList;
+    this.getDomains();
   }
   getCompanyDetails(id:any){
     console.log(id);
@@ -127,7 +150,10 @@ export class SearchComponent implements OnInit {
   }
   getJobDetails(id:any){
     console.log(id);
-    this.router.navigate(['/jobs', id]);
+    if(this.section == 3)
+      this.router.navigate(['/jobs', id]);
+    else if(this.section == 5)
+      this.router.navigate(['/work', id]);
   }
   getUserDetails(id:any){
     console.log(id);
@@ -141,11 +167,15 @@ export class SearchComponent implements OnInit {
   }
 
   doneJob(){
+    if(this.section == 3)
+      this.Jobs = this.JobList;
+    else if(this.section == 5)
+      this.Jobs = this.WorkList;
     if(!Number.isNaN(Number(this.salaryFilter)) == false)
     this.error= 'Salary has to be numeric';
     else{
       this.error = '';
-      this.Jobs = this.JobList.filter(elem => (
+      this.Jobs = this.Jobs.filter(elem => (
         this.salaryFilter == 0 || elem.salary > this.salaryFilter
         ));
       if(this.jobTypesFilter != 'All')
@@ -178,6 +208,7 @@ export class SearchComponent implements OnInit {
       this.DomainList = data;
       console.log(data);
       this.DomainList = this.DomainList.filter( x => x.subdomains!.length > 0);
+      this.DomainList = this.DomainList.sort((a,b) => a.name!.localeCompare(b.name!));
       console.log(this.DomainList);
     },
     error =>{
@@ -185,8 +216,12 @@ export class SearchComponent implements OnInit {
     });
   }
   getSubdomains(){
-    if(this.domainFilter != 'All')
+    if(this.domainFilter != 'All'){
+      this.subdomainFilter = 'All';
       this.SubdomainList = this.DomainList.filter(x => x.id == this.domainFilter)[0].subdomains!;
+    
+    }
+    this.SubdomainList = this.SubdomainList.sort((a,b) => a.name!.localeCompare(b.name!));
     console.log(this.SubdomainList);
     console.log(this.domainFilter);
   }

@@ -69,6 +69,7 @@ export class CompanyEditComponent implements OnInit {
   ngOnInit(): void {
     sessionStorage.removeItem('jobId');
     sessionStorage.removeItem('companyId');
+    sessionStorage.removeItem('workId');
     this.activatedRoute.params.subscribe((params: any) => {
       this.id = params['id'];
       console.log(this.id);
@@ -163,7 +164,7 @@ export class CompanyEditComponent implements OnInit {
       this.error = "";
 
     //fetch back data
-    this.formData.append('Id', this.id);
+    this.formData.set('Id', this.id);
     var words = this.form.controls['name'].value.split(" ");
     for(var i=0 ; i<words.length ;i++)
       words[i]= words[i][0].toUpperCase()+words[i].substring(1);
@@ -248,7 +249,7 @@ export class CompanyEditComponent implements OnInit {
       if(this.formData.get('VerifiedAccount') == 'false' && this.formData.get('VerifiedAccount') != String(this.Company.verifiedAccount)){
         this.deleteApplications();
         this.deleteInvites();
-        this.jobNotOpen();
+        //this.jobNotOpen();
       }
 
       this.cancel();

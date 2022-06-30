@@ -48,17 +48,15 @@
 </div>
 
 <div *ngIf="!comp">
-    <div class="row">
-        <h2 style="width:7rem">Domain</h2>
-        <div class="list">
-            <select [(ngModel)]="domainFilter" class="select-picker width50" (change)="filter()">
-              <option>All</option>
-              <option *ngFor = "let item of DomainList" [value]="item.id">
-                {{item.name}}
-              </option>
-              <i class='fa fa-angle-down'></i>
-            </select>
-        </div>
+    <h2 style="width:7rem">Domain</h2>
+    <div class="list">
+        <select [(ngModel)]="domainFilter" class="select-picker width50" (change)="filter()">
+            <option>All</option>
+            <option *ngFor = "let item of DomainList" [value]="item.id">
+            {{item.name}}
+            </option>
+            <i class='fa fa-angle-down'></i>
+        </select>
     </div>
     <div class="row" *ngIf="domainFilter !='All' && domainFilter != '' && SubdomainList[0].domain!.name != 'Other'">
         <h2 style="width:7rem">Subdomain</h2>
@@ -159,7 +157,7 @@
         </div>
         <div class="row padding10">
             <div class="column">
-                <a *ngIf="isOnline == 'Online'">Meeting Link*</a>
+                <a *ngIf="isOnline == 'Online'">Link*</a>
                 <a *ngIf="isOnline == 'In person' || isOnline == ''">Address*</a>
             </div>
             <div class="column" style="flex-basis: 40%;">
@@ -176,7 +174,7 @@
         <div *ngFor="let intv of interviews">
             <div class="interview">
                 <div class="row">
-                    <div class="column" style="border-right: 1px solid grey">
+                    <div class="column" style="border-right: 1px solid grey; height:max-content">
                         <div *ngIf="editInterview == true && newInterview.id == intv.id">
                             <div class="row height50">
                                 <div class="column" style="width:50%">
@@ -203,13 +201,13 @@
                             </div>
                             
                             <div *ngIf="user" class="column">
-                                <a class="height50" *ngIf="intv.isOnline == true">Meeting link: {{intv.location}}</a>
+                                <a class="height50" *ngIf="intv.isOnline == true">Link: {{intv.location}}</a>
                                 <a class="height50" *ngIf="intv.isOnline == false">Address: {{intv.location}}</a>
                             </div>
 
                             <div class="row height50" *ngIf="!user">
                                 <div class="column" style="width:50%">
-                                    <a *ngIf="isOnline == 'Online'">Meeting Link</a>
+                                    <a *ngIf="isOnline == 'Online'">Link</a>
                                     <a *ngIf="isOnline == 'In person' || isOnline == ''">Address</a>
                                 </div>
                                 <div class="column height40"  style="width:50%">
@@ -222,20 +220,25 @@
                             <a class="height50"> Date: {{intv.date | date: 'dd/MM/yyyy hh:mm a'}}</a>
                             <a class="height50" *ngIf="intv.isOnline == true"> Form of interview: Online </a>
                             <a class="height50" *ngIf="intv.isOnline == false"> Form of interview: In person </a>
-                            <a class="height50" *ngIf="intv.isOnline == true">Meeting link: {{intv.location}}</a>
+                            <a class="height50" *ngIf="intv.isOnline == true">Link: {{intv.location}}</a>
                             <a class="height50" *ngIf="intv.isOnline == false">Address: {{intv.location}}</a>
                         </div>
                         
                     </div>
                     <div class="column">
                         <a *ngIf="intv.responseUser == false && !user"><i class="fa fa-close" style="color:red"></i>Candidate has not accepted the interview details yet.</a>
-                        <a *ngIf="intv.responseUser == false && user"><i class="fa fa-close" style="color:red"></i>You have not accepted the interview request yet.</a>
+                        <a *ngIf="intv.responseUser == false && user && myJobs == false"><i class="fa fa-close" style="color:red"></i>You have not accepted the interview request yet.</a>
+                        <a *ngIf="intv.responseUser == false && user && myJobs == true"><i class="fa fa-close" style="color:red"></i>Candidate has not accepted the interview request yet.</a>
                         <a *ngIf="intv.responseUser == true && !user"><i class="fa fa-check-square-o" style="color:green"></i>Candidate has accepted the interview details.</a>
-                        <a *ngIf="intv.responseUser == true && user"><i class="fa fa-check-square-o" style="color:green"></i>You have accepted the interview request.</a>
-                        <a *ngIf="intv.responseCompany == false && comp"><i class="fa fa-close" style="color:red"></i>You have not accepted the interview date yet.</a>
-                        <a *ngIf="intv.responseCompany == true && comp"><i class="fa fa-check-square-o" style="color:green"></i>You have approved the interview details.</a>
-                        <a *ngIf="intv.responseCompany == false && !comp"><i class="fa fa-close" style="color:red"></i>The company has not accepted the interview date alteration yet.</a>
-                        <a *ngIf="intv.responseCompany == true && !comp"><i class="fa fa-check-square-o" style="color:green"></i>The company has approved the interview details.</a>
+                        <a *ngIf="intv.responseUser == true && user && myJobs == false"><i class="fa fa-check-square-o" style="color:green"></i>You have accepted the interview request.</a>
+
+                        <a *ngIf="intv.responseUser == true && user && myJobs == true"><i class="fa fa-check-square-o" style="color:green"></i>Candidate has accepted the interview request.</a>
+                        <a *ngIf="intv.responseCompany == false && (comp || (user && myJobs == true))"><i class="fa fa-close" style="color:red"></i>You have not accepted the interview date yet.</a>
+                        <a *ngIf="intv.responseCompany == true && (comp || (user && myJobs == true))"><i class="fa fa-check-square-o" style="color:green"></i>You have approved the interview details.</a>
+                        <a *ngIf="intv.responseCompany == false && intv.application!.job!.company && !comp && (!user || myJobs == false)"><i class="fa fa-close" style="color:red"></i>The company has not accepted the interview date alteration yet.</a>
+                        <a *ngIf="intv.responseCompany == false && intv.application!.job!.user && !comp && (!user || myJobs == false)"><i class="fa fa-close" style="color:red"></i>The user has not accepted the interview date alteration yet.</a>
+                        <a *ngIf="intv.responseCompany == true && intv.application!.job!.company && !comp && (!user || myJobs == false)"><i class="fa fa-check-square-o" style="color:green"></i>The company has approved the interview details.</a>
+                        <a *ngIf="intv.responseCompany == true && intv.application!.job!.user && !comp && (!user || myJobs == false)"><i class="fa fa-check-square-o" style="color:green"></i>The user has approved the interview details.</a>
                     </div>
                 </div>
             </div>
@@ -246,8 +249,8 @@
                 <button mat-button *ngIf="editInterview == true && newInterview.id == intv.id" (click)="editInterviewFalse()"><i class="fa fa-close" style="color:red;padding-right:10px"></i>Cancel</button>
                 <button mat-button *ngIf="!user" (click)="deleteInterview(intv)"><i class="fa fa-trash" style="padding-right:10px"></i>Delete</button>
                 <button mat-button *ngIf="!comp" style="color:red" (click)="rejectInterview(intv)"><i class="fa fa-trash" style="padding-right:10px"></i>Reject</button>
-                <button mat-button *ngIf="intv.responseUser == false && user" style="color:green;padding-right:10px" (click)="confirm(intv)">Accept interview</button>
-                <button mat-button *ngIf="intv.responseCompany == false && comp" style="color:green;padding-right:10px" (click)="confirm(intv)">Accept interview date change</button>
+                <button mat-button *ngIf="intv.responseUser == false && user && myJobs == false" style="color:green;padding-right:10px" (click)="confirm(intv)">Accept interview</button>
+                <button mat-button *ngIf="intv.responseCompany == false && (comp || (user && myJobs==true))" style="color:green;padding-right:10px" (click)="confirm(intv)">Accept interview date change</button>
             </div>
         </div>
     </div>

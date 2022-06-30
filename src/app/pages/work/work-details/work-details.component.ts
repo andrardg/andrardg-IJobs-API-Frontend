@@ -23,7 +23,7 @@ export class WorkDetailsComponent implements OnInit {
   public id: any;
   editDeleteRights : boolean = false;
   showPrevious: boolean = false;
-  alreadyApplied: boolean = false;
+  alreadyApplied: boolean = true;
   canReapply: boolean = false;
   currentApp : any;
   user:any;
@@ -67,9 +67,18 @@ export class WorkDetailsComponent implements OnInit {
         if(this.user && this.user.id != this.Job.userId){
           this.userService.getUserDetails(this.user.id).subscribe(data => {
             this.user = data;
-            console.log(this.user);
-            console.log(this.Job)
-            this.applicationService.getApplications().subscribe(data =>{
+            var ok = 1;
+            this.user.applications.forEach((element: { jobId: any; cv: any; }) => {
+              if(element.jobId == this.id){
+                this.currentApp = element;
+                if(element.cv != this.user.cv)
+                  this.canReapply = true;
+                  ok = 0;
+              }
+            });
+            if(ok == 1)
+              this.alreadyApplied = false;
+            /*this.applicationService.getApplications().subscribe(data =>{
             for(var elem of data)
               {
               if(elem.userId == this.user.id && elem.jobId == this.id)
@@ -80,11 +89,9 @@ export class WorkDetailsComponent implements OnInit {
               if(elem.userId == this.user.id && elem.jobId == this.id &&  elem.cv != this.user.cv)
                 this.canReapply = true;
               }
-            })
+            })*/
           });
         }
-        else
-        this.alreadyApplied = true;
         });
   }
   getCompanyDetails(id: any){

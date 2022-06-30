@@ -1,8 +1,6 @@
 <link rel="stylesheet"
           href=
 "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
 <main class="main">
     <div class="page-left">
         <div class="section" (click)="sectionOne()">
@@ -31,7 +29,7 @@
 
         <div class="section" (click)="sectionThree()">
             <div class="row">
-                <div class="column">
+                <div class="column" style="flex-basis:50%">
                     <h1>Account security</h1>
                     <h2>Email and password</h2>
                 </div>
@@ -253,8 +251,8 @@
                             <div class="row">
                               <div class="column">
                                 <a><i class='fa fa-clock-o' style="min-width:30px;"></i>{{row.jobType}}</a>
-                                <a><i class="fa fa-map-marker-alt" style="min-width:30px"></i>{{row.address}}</a>
-                                <a><i class="far fa-lightbulb" style="min-width:30px"></i>{{row.experience}} </a>
+                                <a><i class="fa fa-map-marker" style="min-width:30px"></i>{{row.address}}</a>
+                                <a><i class="fa fa-lightbulb-o" style="min-width:30px"></i>{{row.experience}} </a>
                               </div>
                             </div>
                           </div>
@@ -314,7 +312,7 @@
                     <div style="padding-bottom:2rem">
                         <button mat-button (click)="removeContact(row.id)"><i class="fa fa-trash" style="padding-right:10px"></i>Delete</button>
                         <button mat-button *ngIf="filterResolved == false" (click)="changeResolved(row)"><i class="fa fa-check-square" style="padding-right:10px; color:green"></i>Mark as resolved</button>
-                        <button mat-button *ngIf="filterResolved == true" (click)="changeResolved(row)"><i class="fas fa-flag" style="padding-right:10px; color:red"></i>Mark as unresolved</button>
+                        <button mat-button *ngIf="filterResolved == true" (click)="changeResolved(row)"><i class="fa fa-flag" style="padding-right:10px; color:red"></i>Mark as unresolved</button>
                     </div>
                     
                 </div>

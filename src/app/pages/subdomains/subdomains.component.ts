@@ -12,6 +12,7 @@ export class SubdomainsComponent implements OnInit {
   ngOnInit(): void {
     sessionStorage.removeItem('jobId');
     sessionStorage.removeItem('companyId');
+    sessionStorage.removeItem('workId');
   }
 
 }

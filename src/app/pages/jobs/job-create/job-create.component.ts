@@ -36,7 +36,6 @@ export class JobCreateComponent implements OnInit {
               });
               
   constructor(
-    private activatedRoute:ActivatedRoute,
     private router:Router,
     private service: JobsService,
     private authService: AuthService,
@@ -46,6 +45,9 @@ export class JobCreateComponent implements OnInit {
   ngOnInit(): void {
     this.getCompanies();
     this.getDomains();
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
+    sessionStorage.removeItem('workId');
   }
   cancel(){
     this.router.navigate(['/jobs']);

@@ -67,6 +67,7 @@ export class UserEditComponent implements OnInit {
   ngOnInit(): void {
     sessionStorage.removeItem('jobId');
     sessionStorage.removeItem('companyId');
+    sessionStorage.removeItem('workId');
     this.activatedRoute.params.subscribe((params: any) => {
       this.id = params['id'];
       console.log(this.id);  
@@ -81,7 +82,7 @@ getUserDetails(id:any){
     this.User = data;
     this.CVpreview = data.cv;
     this.oldpasswordHash = data.passwordHash;
-    this.formData.append('Role', data.role);
+    this.formData.set('Role', data.role);
   })
 }
 goToProfile(id:any){
@@ -94,7 +95,8 @@ save2(event:any){
   }
 }
 save(){
-  if(this.form.invalid || this.error)
+  console.log(this.form.controls);
+  if(this.form.invalid)
   {
     this.error = "You have invalid fields.";
     console.log(this.error);
@@ -106,22 +108,34 @@ save(){
     if((this.admin && this.admin.id == this.id) || (sessionStorage.getItem('User') && JSON.parse(sessionStorage.getItem('User') || "")))
       this.authService.name.next(this.form.controls['firstName'].value.charAt(0).toUpperCase() + this.form.controls['firstName'].value.slice(1));
   //fetch data back
-  this.formData.append('Id', this.id);
-  this.formData.append('FirstName', this.form.controls['firstName'].value.charAt(0).toUpperCase() + this.form.controls['firstName'].value.slice(1));
-  this.formData.append('LastName', this.form.controls['lastName'].value.charAt(0).toUpperCase() + this.form.controls['lastName'].value.slice(1));
+  this.formData.set('Id', this.id);
+  this.formData.set('FirstName', this.form.controls['firstName'].value.charAt(0).toUpperCase() + this.form.controls['firstName'].value.slice(1));
+  this.formData.set('LastName', this.form.controls['lastName'].value.charAt(0).toUpperCase() + this.form.controls['lastName'].value.slice(1));
+
   if(this.form.controls['occupation'].value)
-    this.formData.append('Occupation', this.form.controls['occupation'].value.charAt(0).toUpperCase() + this.form.controls['occupation'].value.slice(1));
+    this.formData.set('Occupation', this.form.controls['occupation'].value.charAt(0).toUpperCase() + this.form.controls['occupation'].value.slice(1));
+  else
+    this.formData.set('Occupation', '');
+
   if(this.form.controls['residence'].value)
-    this.formData.append('Residence', this.form.controls['residence'].value.charAt(0).toUpperCase() + this.form.controls['residence'].value.slice(1));
+    this.formData.set('Residence', this.form.controls['residence'].value.charAt(0).toUpperCase() + this.form.controls['residence'].value.slice(1));
+  else
+    this.formData.set('Residence', '');
+
   if(this.form.controls['studies'].value)
-    this.formData.append('Studies', this.form.controls['studies'].value.charAt(0).toUpperCase() + this.form.controls['studies'].value.slice(1));
-  this.formData.append('Email', this.form.controls['email'].value);
-  this.formData.append('OldPasswordHash', this.oldpasswordHash);
+    this.formData.set('Studies', this.form.controls['studies'].value.charAt(0).toUpperCase() + this.form.controls['studies'].value.slice(1));
+  else
+    this.formData.set('Studies', '');
+
+  this.formData.set('Email', this.form.controls['email'].value);
+  console.log(this.formData.get('Email'))
+  this.formData.set('OldPasswordHash', this.oldpasswordHash);
 
   if(this.form.controls['photo'].value != "../../../assets/images/profilePhoto.png") //photo exists
       this.formData.set('Photo', this.form.controls['photo'].value);
   else
     this.formData.set('Photo', '');
+    
   if(this.CVpreview != '' && this.CVpreview != null)
     this.formData.set('CV', this.CVpreview);
   else
@@ -135,7 +149,7 @@ save(){
       if(this.form.controls['newpassword'].value == this.form.controls['newpassword2'].value)
         {
           if(bcrypt.compareSync(this.form.controls['oldpassword'].value, this.oldpasswordHash))
-            this.formData.append('password', this.form.controls['newpassword'].value);
+            this.formData.set('password', this.form.controls['newpassword'].value);
           else{
             this.error = "Old password incorrect."}}
       else
@@ -147,7 +161,7 @@ save(){
     else if(this.admin){
       if(this.form.controls['newpassword'].value && this.form.controls['newpassword2'].value){
         if(this.form.controls['newpassword'].value == this.form.controls['newpassword2'].value)
-          this.formData.append('password', this.form.controls['newpassword'].value);
+          this.formData.set('password', this.form.controls['newpassword'].value);
           else
             this.error = "The new password fields must match."
       }
@@ -157,8 +171,8 @@ save(){
   }
   else
   {
-    this.formData.append('Password', this.oldpasswordHash);
-    this.formData.append('OldPasswordHash', this.oldpasswordHash);
+    this.formData.set('Password', this.oldpasswordHash);
+    this.formData.set('OldPasswordHash', this.oldpasswordHash);
   }
   if(!this.error){
     this.service.saveUser(this.id, this.formData).subscribe((data)=>{

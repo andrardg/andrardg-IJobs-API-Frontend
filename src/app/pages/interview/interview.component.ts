@@ -54,13 +54,21 @@ export class InterviewComponent implements OnInit {
   ngOnInit(): void {
     sessionStorage.removeItem('jobId');
     sessionStorage.removeItem('companyId');
+    sessionStorage.removeItem('workId');
     if (sessionStorage.getItem("Admin") != null)
       this.admin = JSON.parse(sessionStorage.getItem('Admin') || "");
-    if(this.Company)
-      this.selectedCompany = this.Company;
-      if(!this.comp)
-        this.getAllCompanies();
+    //if(this.Company){
+    //  this.filterByCompanyId = this.id;
+    //  this.selectedCompany = this.Company;
+    //}
+    this.getAllCompanies();
     this.getAllInterviews();
+  }
+  getCompany(id:any){
+    this.service.getCompanyDetails(id).subscribe(data=>{
+      this.Company=data;
+      console.log(this.Company);
+    });
   }
   getAllInterviews(){
     this.interviewsService.getInterviews().subscribe(data =>{
@@ -85,10 +93,13 @@ export class InterviewComponent implements OnInit {
     this.companyService.getCompanies().subscribe(data=>{
       this.CompanyList = data;
       this.CompanyList = this.CompanyList.sort((a,b) => a.name!.localeCompare(b.name!));
+      this.Company = this.CompanyList.filter( x=> x.id == this.id)[0];
     })
   }
   filter(){
     this.interviews = this.interviewsList;
+    if(this.comp)
+      this.filterByCompanyId = this.id;
     if(this.filterByCompanyId == 'All' || this.filterByCompanyId == '')
     {
       this.filterByJobId = 'All';
@@ -97,6 +108,8 @@ export class InterviewComponent implements OnInit {
   else{
     this.interviews = this.interviews.filter(x => x.application?.job?.companyId == this.filterByCompanyId);
     this.selectedCompany = this.CompanyList.filter( x=> x.id == this.filterByCompanyId)[0];
+    this.selectedCompany.jobs = this.selectedCompany.jobs.sort((a,b) => a.jobTitle!.localeCompare(b.jobTitle!));
+    this.Company = this.CompanyList.filter( x=> x.id == this.filterByCompanyId)[0];
     }
 
   if(this.filterByJobId != 'All' && this.filterByJobId != '')
@@ -180,9 +193,15 @@ export class InterviewComponent implements OnInit {
     console.log(id);
     this.router.navigate(['/users', id]);
   }  
-  getJobDetails(id: any){
+  getCompanyDetails(id: any){
     console.log(id);
-    this.router.navigate(['/jobs', id]);
+    this.router.navigate(['/companies', id]);
+  }  
+  getJobDetails(row: any){
+    if(row.job.workType == false)
+    this.router.navigate(['/jobs', row.job.id]);
+  else if(row.job.workType == true)
+    this.router.navigate(['/work', row.job.id]);
   }
   getSafeUrl(file:string){
     return this.fileService.getSafeUrl(file);

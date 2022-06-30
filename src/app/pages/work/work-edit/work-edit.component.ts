@@ -42,6 +42,7 @@ export class WorkEditComponent implements OnInit {
                 experience: new FormControl('', [Validators.required]),
                 address: new FormControl('', [Validators.required]),
                 companyId: new FormControl(''),
+                userId: new FormControl(''),
                 domain: new FormControl(''),
                 subdomain: new FormControl('', [Validators.required]),
               });
@@ -62,6 +63,9 @@ export class WorkEditComponent implements OnInit {
       console.log(this.id);
     });
 
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
+    sessionStorage.removeItem('workId');
     this.getJobDetails(this.id);
     this.getCompanies();
     this.getUsers();
@@ -79,6 +83,8 @@ export class WorkEditComponent implements OnInit {
       this.form.patchValue({address: this.Job.address});
       this.form.patchValue({experience: this.Job.experience});
       this.form.patchValue({salary: this.Job.salary});
+      this.form.patchValue({domain: this.Job.subdomain?.domainId});
+      this.form.patchValue({subdomain: this.Job.subdomainId});
     });
   }
   cancel(){
@@ -91,7 +97,10 @@ export class WorkEditComponent implements OnInit {
       this.error = "Salary has to be a number.";
       return;
     }
-
+    if(this.ownerIsCompany == true)
+      this.form.patchValue({userId: ''})
+    else
+      this.form.patchValue({companyId: ''})
     if(this.form.invalid || (this.admin && this.form.controls["companyId"].value=='' && this.form.controls["userId"].value=='')){
       console.log("Edit Job error");
       this.error = 'You cannot register empty fields. ';
@@ -101,7 +110,6 @@ export class WorkEditComponent implements OnInit {
       delete this.Job.subdomain;
       delete this.Job.applications;
       delete this.Job.user;
-      this.Job.userId;
       this.Job.jobTitle = this.form.controls['jobTitle'].value.charAt(0).toUpperCase() + this.form.controls['jobTitle'].value.slice(1);
       this.Job.description = this.form.controls['description'].value.charAt(0).toUpperCase() + this.form.controls['description'].value.slice(1);
       this.Job.salary = this.form.controls['salary'].value;
@@ -110,13 +118,15 @@ export class WorkEditComponent implements OnInit {
       this.Job.address = this.form.controls['address'].value.charAt(0).toUpperCase() + this.form.controls['address'].value.slice(1);
       this.Job.open = true;
 
-          this.Job.open = false;
-
       if(this.admin)
-      if(this.form.controls['companyId'].value != '')
+      if(this.form.controls['companyId'].value != ''){
         this.Job.companyId = this.form.controls['companyId'].value;
-      else if(this.form.controls['userId'].value != '')
+        delete this.Job.userId;
+      }
+      else if(this.form.controls['userId'].value != ''){
         this.Job.userId = this.form.controls['userId'].value;
+        delete this.Job.companyId;
+      }
       this.Job.subdomainId = this.form.controls['subdomain'].value;
       console.log(this.Job);
       this.service.saveJob(this.Job).subscribe((data)=>{
@@ -146,16 +156,9 @@ export class WorkEditComponent implements OnInit {
   getUsers(){
     this.userService.getUsers().subscribe((data: User[])=>{
       this.UserList=data;
+      this.UserList = this.UserList.filter( x=> x.role=='1');
       this.UserList = this.UserList.sort((a,b) => a.firstName!.localeCompare(b.firstName!));
     })
-  }
-  updateCompany(e: any){
-    this.form.patchValue({userId: ""});
-    this.form.patchValue({companyId: e.value});
-  }
-  updateUser(e: any){
-    this.form.patchValue({userId: e.value});
-    this.form.patchValue({companyId: ""});
   }
   getDomains(){
     this.domainService.getDomains().subscribe(data=>{

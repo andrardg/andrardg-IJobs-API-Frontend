@@ -61,7 +61,7 @@ export class JobEditComponent implements OnInit {
       this.id = params['id'];
       console.log(this.id);
     });
-
+    sessionStorage.removeItem('companyId');
     this.getJobDetails(this.id);
     this.getCompanies();
     this.getDomains();
@@ -78,6 +78,9 @@ export class JobEditComponent implements OnInit {
       this.form.patchValue({address: this.Job.address});
       this.form.patchValue({experience: this.Job.experience});
       this.form.patchValue({salary: this.Job.salary});
+      this.form.patchValue({companyId: this.Job.companyId});
+      this.form.patchValue({domain: this.Job.subdomain?.domainId});
+      this.form.patchValue({subdomain: this.Job.subdomainId});
       if(this.Job.open == true)
         this.form.patchValue({open: "Yes"});
         else

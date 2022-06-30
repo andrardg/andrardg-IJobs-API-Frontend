@@ -29,6 +29,7 @@ export class InviteDetailsComponent implements OnInit {
   ngOnInit(): void {
     sessionStorage.removeItem('jobId');
     sessionStorage.removeItem('companyId');
+    sessionStorage.removeItem('workId');
     if (sessionStorage.getItem('Admin'))
       this.admin = JSON.parse(sessionStorage.getItem('Admin') || "")
     //else if (sessionStorage.getItem('User'))

@@ -105,6 +105,77 @@ Font Awesome Icon brain Icon | fas fa brain | HTML, CSS
             </div>
         </div>
 
+        <button mat-button [ngClass]="{'selected': section == '5'}" (click)="sectionFive()"> <i class="fa fa-briefcase" style="min-width:50px;"></i>Work Ads</button>
+        <div *ngIf="section == 5" style="width:90%; padding-left:40px">
+            <div class="column">
+                <div class="row">
+                    <h2> Job Duration</h2>
+                    <div class="list">
+                        <select [(ngModel)]="jobTypesFilter" class="select-picker">
+                            <option>All</option>
+                            <option *ngFor = "let item of jobTypesWork" [value]="item">
+                              {{item}}
+                            </option>
+                            <i class='fa fa-angle-down'></i>
+                          </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <h2> Experience Level</h2>
+                    <div class="list">
+                        <select [(ngModel)]="experienceFilter" class="select-picker">
+                            <option>All</option>
+                            <option *ngFor = "let item of experienceWork" [value]="item">
+                              {{item}}
+                            </option>
+                            <i class='fa fa-angle-down'></i>
+                          </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <h2>Pay</h2>
+                    <input class="select-picker" placeholder="0" numbersOnly style="width:97%" [(ngModel)]="salaryFilter">
+                    <p fxLayoutAlign="center center" style="color: red;" *ngIf="error" class="alert alert-danger">{{error}}</p>
+                </div>
+                <div class="row">
+                    <h2>Domain</h2>
+                    <div class="list">
+                        <select [(ngModel)]="domainFilter" class="select-picker" (click)="getSubdomains()">
+                          <option>All</option>
+                          <option *ngFor = "let item of DomainList" [value]="item.id">
+                            {{item.name}}
+                          </option>
+                          <i class='fa fa-angle-down'></i>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" *ngIf="domainFilter != 'All' && domainFilter != '' && SubdomainList[0].domain!.name != 'Other'">
+                    <h2>Subdomain</h2>
+                    <div class="list">
+                      <div *ngIf="domainFilter != 'All'">
+                        <select [(ngModel)]="subdomainFilter" class="select-picker">
+                          <option>All</option>
+                          <option *ngFor = "let item of SubdomainList" [value]="item.id">
+                            {{item.name}}
+                          </option>
+                          <i class='fa fa-angle-down'></i>
+                        </select>
+                      </div>
+          
+                      <div *ngIf="domainFilter == 'All'">
+                        <select [(ngModel)]="subdomainFilter" class="select-picker">
+                          <option>All</option>
+                          <i class='fa fa-angle-down'></i>
+                        </select>
+                      </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:1rem">
+                    <button mat-raised-button class="buttonDone" (click)="doneJob()">Done</button>
+                </div>
+            </div>
+        </div>
+
         <button mat-button [ngClass]="{'selected': section == '4'}" (click)="sectionFour()"> <i class="fas fa-user-circle" style="min-width:50px;"></i>People</button>
         <div *ngIf="section == 4" style="width:90%; padding-left:40px">
             <div class="column">
@@ -229,6 +300,50 @@ Font Awesome Icon brain Icon | fas fa brain | HTML, CSS
 
 
             <div class="container">
+                <h1>Work Ads</h1>
+                <div *ngIf="WorkList.length > 0">
+                    <div *ngFor="let row of WorkShortList">
+                        <div class="object">
+                            <div class="row">
+                                <div class="column" style="cursor: pointer">
+                                    <div *ngIf="row.company && row.company!.photo != null">
+                                        <img (click)="getJobDetails(row.id)" src="{{row.company!.photo}}" width="100" height="100" style="object-fit: cover;" />
+                                    </div>
+                                    <div *ngIf="row.user && row.user!.photo != null">
+                                        <img (click)="getJobDetails(row.id)" src="{{row.user!.photo}}" width="100" height="100" style="object-fit: cover;" />
+                                    </div>
+                                    <div *ngIf="(row.user && row.user!.photo == null) || (row.company && row.company!.photo == null)">
+                                        <img (click)="getJobDetails(row.id)" src="../../../assets/images/work.jpg" width="100" height="100" style="object-fit: cover;" />
+                                    </div>
+                                </div>
+                                <div class="column" style="flex-basis: 70%;">
+                                    <div class="title">
+                                        <a (click)="getJobDetails(row.id)">{{row.jobTitle}}</a>
+                                    </div>
+                                    <div class="row">
+                                        <div class="column">
+                                            <a *ngIf="row.company"><i class="fa fa-institution" style="min-width:50px;"></i>{{row.company!.name}}</a>
+                                            <a *ngIf="row.user"><i class="far fa-address-card" style="min-width:50px;"></i>{{row.user!.firstName}} {{row.user!.lastName}}</a>
+                                            <a><i class='fa fa-clock-o' style="min-width:50px;"></i>{{row.jobType}}</a>
+                                            <a><i class="far fa-lightbulb" style="min-width:50px"></i>{{row.experience}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div *ngIf="WorkList.length > 3">
+                        <button mat-button class="button2" (click)="sectionFive()">See all</button>
+                    </div>
+                </div>
+                <div *ngIf="WorkList.length == 0">
+                    <h2> No work ads to show.</h2>
+                </div>
+            </div>
+
+
+            <div class="container">
                 <h1>People</h1>
                 <div *ngIf="UserList.length > 0">
                     <div *ngFor="let row of UserShortList">
@@ -337,6 +452,44 @@ Font Awesome Icon brain Icon | fas fa brain | HTML, CSS
                                 <div class="row">
                                     <div class="column">
                                         <a><i class="fa fa-institution" style="min-width:50px;"></i>{{row.company!.name}}</a>
+                                        <a><i class='fa fa-clock-o' style="min-width:50px;"></i>{{row.jobType}}</a>
+                                        <a><i class="far fa-lightbulb" style="min-width:50px"></i>{{row.experience}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="Jobs.length == 0">
+                <h2 class="no"> No jobs to show.</h2>
+            </div>
+        </div>
+
+        <div *ngIf="section == 5">
+            <div *ngIf="WorkList.length > 0">
+                <div *ngFor="let row of Jobs">
+                    <div class="object2">
+                        <div class="row">
+                            <div class="column" style="cursor: pointer">
+                                <div *ngIf="row.company && row.company!.photo != null">
+                                    <img (click)="getJobDetails(row.id)" src="{{row.company!.photo}}" width="100" height="100" style="object-fit: cover;" />
+                                </div>
+                                <div *ngIf="row.user && row.user!.photo != null">
+                                    <img (click)="getJobDetails(row.id)" src="{{row.user!.photo}}" width="100" height="100" style="object-fit: cover;" />
+                                </div>
+                                <div *ngIf="(row.user && row.user!.photo == null) || (row.company && row.company!.photo == null)">
+                                    <img (click)="getJobDetails(row.id)" src="../../../assets/images/work.jpg" width="100" height="100" style="object-fit: cover;" />
+                                </div>
+                            </div>
+                            <div class="column" style="flex-basis: 70%;">
+                                <div class="title">
+                                    <a (click)="getJobDetails(row.id)">{{row.jobTitle}}</a>
+                                </div>
+                                <div class="row">
+                                    <div class="column">
+                                        <a *ngIf="row.company"><i class="fa fa-institution" style="min-width:50px;"></i>{{row.company!.name}}</a>
+                                        <a *ngIf="row.user"><i class="far fa-address-card" style="min-width:50px;"></i>{{row.user!.firstName}} {{row.user!.lastName}}</a>
                                         <a><i class='fa fa-clock-o' style="min-width:50px;"></i>{{row.jobType}}</a>
                                         <a><i class="far fa-lightbulb" style="min-width:50px"></i>{{row.experience}}</a>
                                     </div>

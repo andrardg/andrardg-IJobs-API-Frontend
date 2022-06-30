@@ -24,6 +24,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
+    height:max-content;
     }
     .column {
     display: flex;
@@ -146,7 +147,7 @@
     padding-left: 2rem;
     padding-top:15px;
     font-size: 14px;
-    text-decoration: none;
+    text-decoration: none!important;
     color: inherit;
     }
     .job{
@@ -211,6 +212,7 @@
       margin-top:15px;
       width:80%;
       border:1px solid grey;
+      height:max-content;
       background-color: white;
     }
     .interview input{

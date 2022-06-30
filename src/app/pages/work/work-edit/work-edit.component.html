@@ -81,7 +81,7 @@
         </div>
     </div>
 
-    <div *ngIf="admin" class="panel-body">
+    <div *ngIf="admin" class="primary" style="padding-top:10px">
             
         <div class="form-group" style="padding-left: 2rem;padding-bottom:6px; font-size:18px">
             <mat-checkbox [checked]="ownerIsCompany" (change)="ownerIsCompany = !ownerIsCompany">Company</mat-checkbox>
@@ -89,7 +89,7 @@
         </div>
         <div class="form-group">
             <div *ngIf="ownerIsCompany == true">
-                <label class="col-sm-2 control-label" for="companyId">Company*</label>
+                <label class="col-sm-2 control-label" for="companyId">Company</label>
                 <select id="companyId" name="companyId" formControlName= "companyId" class="select-picker">
                     <option disabled selected value> -- select an option -- </option>
                     <option *ngFor = "let item of CompanyList" [value]="item.id">
@@ -98,7 +98,7 @@
                 </select>
             </div>
             <div *ngIf="ownerIsCompany == false">
-                <label class="col-sm-2 control-label" for="companyId">User*</label>
+                <label class="col-sm-2 control-label" for="companyId">User</label>
                 <select id="userId" name="userId" formControlName= "userId" class="select-picker">
                     <option disabled selected value> -- select an option -- </option>
                     <option *ngFor = "let item of UserList" [value]="item.id">
@@ -113,7 +113,7 @@
         <div class="panel-body">
             <div class="form-group">
                 <h1>Place the job in a category</h1>
-                <label class="col-sm-2 control-label">Domain*</label>
+                <label class="col-sm-2 control-label">Domain</label>
                 <select class="select-picker" (change)="changeDomain($event)">
                     <option disabled selected value> -- select an option -- </option>
                     <option *ngFor = "let item of DomainList" [value]="item.id">

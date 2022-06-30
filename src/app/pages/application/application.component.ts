@@ -69,6 +69,7 @@ export class ApplicationComponent implements OnInit {
   ngOnInit(): void {
     sessionStorage.removeItem('jobId');
     sessionStorage.removeItem('companyId');
+    sessionStorage.removeItem('workId');
     if (sessionStorage.getItem("Admin") != null)
       this.admin = JSON.parse(sessionStorage.getItem('Admin') || "");
 
@@ -220,10 +221,8 @@ export class ApplicationComponent implements OnInit {
       this.interviewsList = data;
       if(this.comp)
         this.interviewsList = this.interviewsList.filter( data => data.application?.job?.companyId == this.id);
-      else if(this.user && this.seeUserApplication == true)
-      this.interviewsList = this.interviewsList.filter( data => data.application?.job?.userId == this.id);
-      else if(this.user && this.seeUserApplication == false)
-        this.interviewsList = this.interviewsList.filter( data => data.application?.userId == this.id);
+      else if(this.user)
+        this.interviewsList = this.interviewsList.filter( data => data.application?.job?.userId == this.id || data.application?.userId == this.id);
         
       this.interviews = this.interviewsList;
       if(this.newInterview.applicationId != ''){
@@ -254,6 +253,8 @@ export class ApplicationComponent implements OnInit {
         alert("The process has been stopped");
       }
     if(keepGoing == true){
+      if(app.status == 'Pending' && this.schedule.id != '')
+        app.status = 'Interview stage';
       this.applicationsService.saveApplication(app).subscribe(data =>{
         console.log('Application status updated successfully');
         alert('Application status updated successfully');
@@ -281,6 +282,7 @@ export class ApplicationComponent implements OnInit {
   }
   
   seeInterviewTrue(app:any){
+    console.log(app.id);
     this.seeInterview.applicationId = app.id;
     this.getInterviewsForApplication(app.id);
   }

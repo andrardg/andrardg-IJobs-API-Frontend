@@ -10,6 +10,9 @@ export class AboutComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
+    sessionStorage.removeItem('workId');
   }
 
 }

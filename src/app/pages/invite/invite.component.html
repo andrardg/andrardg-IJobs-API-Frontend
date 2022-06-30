@@ -17,7 +17,7 @@
     </div>
 
 
-    <div *ngIf="admin" style="height:14rem;width:100%">
+    <div *ngIf="admin" style="height:15rem;width:100%">
         <mat-checkbox [checked]="ownerIsCompany" (change)="ownerIsCompany = !ownerIsCompany">Posted by a company</mat-checkbox>
         <mat-checkbox style="padding-left:20px" [checked]="!ownerIsCompany" (change)="ownerIsCompany = !ownerIsCompany">Posted by a user</mat-checkbox>
         <div *ngIf="ownerIsCompany == true">

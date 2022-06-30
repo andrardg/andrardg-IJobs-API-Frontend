@@ -49,6 +49,7 @@ export class TutorialsComponent implements OnInit {
   ngOnInit(): void {
     sessionStorage.removeItem('jobId');
     sessionStorage.removeItem('companyId');
+    sessionStorage.removeItem('workId');
     
     this.activatedRoute.params.subscribe((params: any) => {
       //this.getTutorials();

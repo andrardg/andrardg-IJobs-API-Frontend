@@ -20,6 +20,9 @@ export class ContactComponent implements OnInit {
   constructor(private service: ContactService) { }
 
   ngOnInit(): void {
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
+    sessionStorage.removeItem('workId');
   }
   submit(){
     if(this.myForm.invalid){

@@ -39,6 +39,7 @@ export class WorkComponent implements OnInit {
   ngOnInit(): void {
     sessionStorage.removeItem('jobId');
     sessionStorage.removeItem('companyId');
+    sessionStorage.removeItem('workId');
     this.getJobList();
     this.getDomains();
   }
@@ -46,7 +47,8 @@ export class WorkComponent implements OnInit {
     this.service.getWork().subscribe(data=>{
       console.log(data);
       this.JobList=data;
-      this.Jobs = data;
+      this.JobList = this.JobList.filter( x=> x.user || (x.company && x.company.verifiedAccount == true))
+      this.Jobs = this.JobList;
     });
   }
   getJobDetails(id: any){

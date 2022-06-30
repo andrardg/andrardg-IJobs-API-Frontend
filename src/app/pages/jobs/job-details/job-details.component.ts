@@ -23,7 +23,7 @@ export class JobDetailsComponent implements OnInit {
   public id: any;
   editDeleteRights : boolean = false;
   showPrevious: any = false;
-  alreadyApplied: boolean = false;
+  alreadyApplied: boolean = true;
   canReapply: boolean = false;
   currentApp : any;
   user:any;
@@ -46,28 +46,29 @@ export class JobDetailsComponent implements OnInit {
       this.id = params['id'];
       console.log(this.id);
     });
+    sessionStorage.removeItem('workId');
     if(sessionStorage.getItem('companyId'))
       this.showPrevious = sessionStorage.getItem('companyId');
-    this.getJobDetails(this.id);
     if(sessionStorage.getItem('User'))
       {
         this.user = JSON.parse(sessionStorage.getItem('User') || "")
         this.userService.getUserDetails(this.user.id).subscribe(data => {
           this.user = data;
-          this.applicationService.getApplications().subscribe(data =>{
-          for(var elem of data)
-            {
-            if(elem.userId == this.user.id && elem.jobId == this.id)
-              {
-                this.alreadyApplied = true;
-                this.currentApp = elem;
-              }
-            if(elem.userId == this.user.id && elem.jobId == this.id &&  elem.cv != this.user.cv)
-              this.canReapply = true;
+          var ok = 1;
+          this.user.applications.forEach((element: { jobId: any; cv: any; }) => {
+            if(element.jobId == this.id){
+              this.currentApp = element;
+              if(element.cv != this.user.cv)
+                this.canReapply = true;
+                ok = 0;
             }
-          })
+          });
+          if(ok == 1)
+            this.alreadyApplied = false;
         });
     }
+    
+    this.getJobDetails(this.id);
   }
 
   getJobDetails(id:any){

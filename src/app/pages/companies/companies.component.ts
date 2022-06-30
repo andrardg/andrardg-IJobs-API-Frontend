@@ -27,6 +27,7 @@ export class CompaniesComponent implements OnInit {
   ngOnInit(): void {
     sessionStorage.removeItem('jobId');
     sessionStorage.removeItem('companyId');
+    sessionStorage.removeItem('workId');
     this.getCompanies();
   }
 

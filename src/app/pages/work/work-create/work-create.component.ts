@@ -53,6 +53,9 @@ export class WorkCreateComponent implements OnInit {
     this.getCompanies();
     this.getUsers();
     this.getDomains();
+    sessionStorage.removeItem('jobId');
+    sessionStorage.removeItem('companyId');
+    sessionStorage.removeItem('workId');
   }
   cancel(){
     this.router.navigate(['/work']);
@@ -130,6 +133,7 @@ export class WorkCreateComponent implements OnInit {
   getUsers(){
     this.userService.getUsers().subscribe(data=>{
       this.UserList=data;
+      this.UserList = this.UserList.filter( x=> x.role == '1');
       this.UserList = this.UserList.sort((a,b) => a.firstName!.localeCompare(b.firstName!));
     
     })

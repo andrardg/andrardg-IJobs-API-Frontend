@@ -85,6 +85,8 @@ width:85%;
 height:11rem;
 //margin-left:15%;
 padding: 16px;
+text-decoration: none!important;
+color: inherit;
 cursor: pointer;
 background-color: white;
 border-radius: 5px;
@@ -105,6 +107,6 @@ text-align: left;
 padding-left: 2rem;
 padding-top:15px;
 font-size: 14px;
-text-decoration: none;
+text-decoration: none!important;
 color: inherit;
 }
