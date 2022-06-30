@@ -22,6 +22,7 @@ export class UserDetailComponent implements OnInit {
   admin = sessionStorage.getItem('Admin');
   user:any;
   company:any;
+  showPrevious: any = false;
 
   constructor(
     private activatedRoute:ActivatedRoute,
@@ -39,6 +40,9 @@ export class UserDetailComponent implements OnInit {
     console.log(this.id);
   });
   this.getUserDetails(this.id);
+  if(sessionStorage.getItem('workId'))
+  this.showPrevious = sessionStorage.getItem('workId');
+
   if (sessionStorage.getItem('User') != null)
     this.user = JSON.parse(sessionStorage.getItem('User') || "")
   else if (sessionStorage.getItem('Company') != null)
@@ -72,8 +76,13 @@ export class UserDetailComponent implements OnInit {
   invite(){
     this.dialog.open(InviteComponent,{
       data : {
-        userId : this.id
+        userId : this.id,
+        User: this.User
       }
     });
+  }
+  back(){
+    //sessionStorage.removeItem('companyId');
+    this.router.navigate(['work/' + this.showPrevious]);
   }
 }

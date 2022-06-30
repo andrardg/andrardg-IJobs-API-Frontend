@@ -19,7 +19,10 @@
             </div>
             
         </div>
-        <div *ngIf="selectedDomain.name != ''">
+        <div class="selection" *ngIf="selectedDomain.name=='Other'">
+            {{selectedDomain.name}}
+        </div>
+        <div *ngIf="selectedDomain.name != '' && selectedDomain.name!='Other'">
             <div class="selection" routerLink="/tutorials/{{selectedDomain.id}}">{{selectedDomain.name}}</div>
             <div *ngFor="let row of SubdomainList" style="margin-left: 10px">
                 <i class="fas fa-edit" *ngIf="admin && newSubdomain.id != row.id"(click)="editSubdomainTrue(row)"></i>

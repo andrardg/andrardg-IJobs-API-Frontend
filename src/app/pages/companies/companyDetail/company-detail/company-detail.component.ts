@@ -21,7 +21,8 @@ export class CompanyDetailComponent implements OnInit {
   public id: any;
   public section:any = 1;
   editDeleteRights : boolean = false;
-  showPrevious: boolean = false;
+  showPrevious: any = false;
+  previousIsJob: boolean = true;
 
   constructor(
     private activatedRoute:ActivatedRoute,
@@ -36,9 +37,13 @@ export class CompanyDetailComponent implements OnInit {
       this.id = params['id'];
       console.log(this.id);
     });
-    if(sessionStorage.getItem('jobId')!=null)
-      this.showPrevious = true;
-    this.getCompanyDetails(this.id);
+    if(sessionStorage.getItem('jobId'))
+      this.showPrevious = sessionStorage.getItem('jobId');
+    if(sessionStorage.getItem('workId'))
+      this.showPrevious = sessionStorage.getItem('workId');{
+        this.previousIsJob = false;
+        this.getCompanyDetails(this.id);
+      }
   }
 
   getCompanyDetails(id:any){
@@ -64,8 +69,11 @@ export class CompanyDetailComponent implements OnInit {
     this.router.navigate(['/companies/edit', id]);
   }
   back(){
-    sessionStorage.removeItem('companyId');
-    this.router.navigate(['jobs/' + sessionStorage.getItem('jobId')]);
+    //sessionStorage.removeItem('companyId');
+    if(this.previousIsJob == true)
+      this.router.navigate(['jobs/' + this.showPrevious]);
+    else
+      this.router.navigate(['work/' + this.showPrevious]);
   }
   logout() {
     this.authService.logout();

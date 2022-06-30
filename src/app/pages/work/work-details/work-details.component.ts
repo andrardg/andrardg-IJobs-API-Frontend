@@ -48,6 +48,7 @@ export class WorkDetailsComponent implements OnInit {
       this.id = params['id'];
       console.log(this.id);
     });
+
     if(sessionStorage.getItem('companyId')!=null || sessionStorage.getItem('userId')!=null)
       this.showPrevious = true;
     
@@ -63,7 +64,7 @@ export class WorkDetailsComponent implements OnInit {
           this.editDeleteRights = true;
         }
 
-        if(this.user.id != this.Job.userId){
+        if(this.user && this.user.id != this.Job.userId){
           this.userService.getUserDetails(this.user.id).subscribe(data => {
             this.user = data;
             console.log(this.user);

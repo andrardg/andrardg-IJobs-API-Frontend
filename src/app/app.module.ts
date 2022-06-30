@@ -78,6 +78,9 @@ import { WorkDetailsComponent } from './pages/work/work-details/work-details.com
 import { WorkEditComponent } from './pages/work/work-edit/work-edit.component';
 import { ApplicationComponent } from './pages/application/application.component';
 import { InterviewComponent } from './pages/interview/interview.component';
+import { TermsComponent } from './pages/terms/terms.component';
+import { AboutComponent } from './pages/about/about.component';
+import { ContactComponent } from './pages/contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -112,7 +115,10 @@ import { InterviewComponent } from './pages/interview/interview.component';
     WorkDetailsComponent,
     WorkEditComponent,
     ApplicationComponent,
-    InterviewComponent
+    InterviewComponent,
+    TermsComponent,
+    AboutComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,

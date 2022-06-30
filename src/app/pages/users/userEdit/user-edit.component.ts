@@ -17,6 +17,8 @@ import { FileService } from 'app/services/file.service';
 import { Domain } from 'app/classes/domain';
 import { Subdomain } from 'app/classes/subdomain';
 import { DomainService } from 'app/services/domain.service';
+import { ContactService } from 'app/services/contact.service';
+import { Contact } from 'app/classes/contact';
 
 @Component({
   selector: 'app-user-edit',
@@ -48,16 +50,19 @@ export class UserEditComponent implements OnInit {
   public formData= new FormData();
   public section:any = 0;
   public error: boolean | string = false;
+  ContactList: Array<Contact> = [];
+  Contacts: Array<Contact> = [];
+  filterResolved: boolean = false;
+  updateContact = new Contact();
+  seeMore:boolean = false;
 
   constructor(
     private activatedRoute:ActivatedRoute,
     private router:Router,
     private service: UsersService,
     private authService: AuthService,
-    private applicationsService: ApplicationService,
-    private interviewsService: InterviewService,
     private fileService: FileService,
-    private domainService: DomainService) { }
+    private contactService: ContactService) { }
 
   ngOnInit(): void {
     sessionStorage.removeItem('jobId');
@@ -205,8 +210,14 @@ sectionSeven(){
   this.cancel();
   this.section = 7;
 }
+sectionEight(){
+  this.cancel();
+  this.section = 8;
+  this.getContacts();
+}
 cancel(){
   this.getUserDetails(this.id);
+  this.updateContact = new Contact();
   this.formData.delete;
   this.section = 0;
   this.error = "";
@@ -307,5 +318,45 @@ getCV(cv: any){
 }
 downloadCV(cv: any){
   this.fileService.downloadPdf(cv, this.User.firstName + '-' + this.User.lastName + '-' + 'CV')
+}
+getContacts(){
+  this.contactService.getContacts().subscribe(data=>{
+    this.ContactList = data;
+    if(this.filterResolved == false)
+      this.Contacts = this.ContactList.filter( x=> x.resolved == false)
+    else
+      this.Contacts = this.ContactList.filter( x=> x.resolved == true)
+    
+    let textRow= this.Contacts[0].message.split('\n');
+    console.log(this.Contacts);
+    console.log(textRow);
+  })
+}
+removeContact(id:any){
+  this.contactService.removeContact(id).subscribe(data=>{
+    console.log("Deleted successfully");
+    this.getContacts();
+    alert("Deleted successfully");
+  })
+}
+changeResolved(row:any){
+  if(row.resolved == true)
+    row.resolved = false;
+  else
+    row.resolved = true;
+  this.contactService.saveContact(row).subscribe(data=>{
+    console.log("Updated successfully");
+    this.getContacts();
+    if(row.resolved == true)
+      alert("Successfully marked as resolved");
+    else
+      alert("Successfully marked as unresolved");
+  })
+}
+filter(){
+  if(this.filterResolved == true)
+    this.Contacts = this.ContactList.filter( x=> x.resolved == true);
+  else
+    this.Contacts = this.ContactList.filter( x=> x.resolved == false);
 }
 }

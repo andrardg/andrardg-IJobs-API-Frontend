@@ -84,6 +84,7 @@ export class WorkComponent implements OnInit {
       this.DomainList = data;
       console.log(data);
       this.DomainList = this.DomainList.filter( x => x.subdomains!.length > 0);
+      this.DomainList = this.DomainList.sort((a,b) => a.name.localeCompare(b.name));
       console.log(this.DomainList);
     },
     error =>{
@@ -93,6 +94,7 @@ export class WorkComponent implements OnInit {
   getSubdomains(){
     if(this.domainFilter != 'All')
       this.SubdomainList = this.DomainList.filter(x => x.id == this.domainFilter)[0].subdomains!;
+    this.SubdomainList = this.SubdomainList.sort((a,b) => a.name.localeCompare(b.name));
     console.log(this.SubdomainList);
     console.log(this.domainFilter);
   }

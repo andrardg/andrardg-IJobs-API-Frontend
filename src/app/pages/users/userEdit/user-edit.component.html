@@ -80,12 +80,26 @@
           
               </div>
         </div>
+
         <div class="section" (click)="sectionSix()">
             <div class="row">
                 <div class="column" style="flex-basis: 90%;">
                     <h1>Recruitment invitations</h1>
                     <h2 *ngIf="admin">Manage all the invitations</h2>
                     <h2 *ngIf="!admin">Manage invitations received</h2>
+                </div>
+                <div class="column" style="text-align: right;">
+                    <i class='fa fa-angle-right' style='font-size:20px'></i>
+                </div>
+          
+              </div>
+        </div>
+
+        <div class="section" (click)="sectionEight()" *ngIf="admin">
+            <div class="row">
+                <div class="column" style="flex-basis: 90%;">
+                    <h1>Requests</h1>
+                    <h2>Manage and resolve the requests</h2>
                 </div>
                 <div class="column" style="text-align: right;">
                     <i class='fa fa-angle-right' style='font-size:20px'></i>
@@ -265,6 +279,48 @@
             </div>
             <div *ngIf="section == 6">
                 <app-invite-details [id]="id"></app-invite-details>
+            </div>
+
+            <div *ngIf="section == 8" style="padding-bottom:4rem">
+                <div class="tabs">
+                    <button *ngIf="filterResolved == false" mat-raised-button>Unresolved requests</button>
+                    <button *ngIf="filterResolved == true" (click)="filterResolved = false; filter()" mat-button>Unresolved requests</button>
+                    <button *ngIf="filterResolved == true" mat-raised-button>Resolved requests</button>
+                    <button *ngIf="filterResolved == false" (click)="filterResolved = true; filter()" mat-button>Resolved requests</button>
+                </div>
+
+                <div *ngFor="let row of Contacts">
+                    <div class="contact" *ngIf="Contacts.length > 0">
+                        <div class="row">
+                            <h1 style="font-size: 20px;">{{row.title}}</h1>
+                            <h1 style="font-size: 18px;">{{row.email}}</h1>
+                            <div class="description">
+                                <mat-card-content style="white-space: pre-wrap;">
+                                    <div *ngFor="let textRow of row.message.split('\n'); let i = index">
+                                        <div *ngIf="(i<=5 && seeMore==false) || seeMore==true">
+                                            {{textRow}}
+                                        </div>
+                                    </div>
+                                </mat-card-content>
+                                <div *ngIf="row.message.split('\n').length>5 && seeMore == false">
+                                    <button mat-stroked-button (click)="seeMore = !seeMore">See more</button>
+                                </div>
+                                <div *ngIf="row.message.split('\n').length>5 && seeMore == true">
+                                    <button mat-stroked-button (click)="seeMore = !seeMore">See less</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding-bottom:2rem">
+                        <button mat-button (click)="removeContact(row.id)"><i class="fa fa-trash" style="padding-right:10px"></i>Delete</button>
+                        <button mat-button *ngIf="filterResolved == false" (click)="changeResolved(row)"><i class="fa fa-check-square" style="padding-right:10px; color:green"></i>Mark as resolved</button>
+                        <button mat-button *ngIf="filterResolved == true" (click)="changeResolved(row)"><i class="fas fa-flag" style="padding-right:10px; color:red"></i>Mark as unresolved</button>
+                    </div>
+                    
+                </div>
+                <div *ngIf="Contacts.length == 0">
+                    <h2>No unresolved requests to show.</h2>
+                </div>
             </div>
         </div>
     </div>

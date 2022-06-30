@@ -1,5 +1,5 @@
 <div class="main">
-    <div *ngIf="company"  style="height:8rem; width:100%">
+    <div *ngIf="company || user"  style="height:8rem; width:100%">
         <div *ngIf="availableJobs.length">
             <h1>Select a job</h1>
             <select [(ngModel)]="selectedJob" class="select-picker width50">
@@ -11,29 +11,56 @@
             </select>
         </div>
         <div *ngIf="!availableJobs.length">
-            <h1 style="text-align:center;">You have invited this person to all the job recruitment processes already.</h1>
+            <h1 *ngIf="company" style="text-align:center;">You have invited this person to all the job and work ad recruitment processes or they have already applied.</h1>
+            <h1 *ngIf="user" style="text-align:center;">You have invited this person to all the work ad recruitment processes or they have already applied.</h1>
         </div>
     </div>
 
 
     <div *ngIf="admin" style="height:14rem;width:100%">
-        <h1>Select a company</h1>
-        <select class="select-picker" (change)="changeCompany($event)">
-            <option *ngFor = "let item of CompanyList" [value]="item.id">
-                {{item.name}}
-            </option>
-        </select>
-        <div *ngIf="selectedCompany">
-            <div *ngIf="availableJobs.length">
-                <h1>Select a job</h1>
-                <select [(ngModel)]="selectedJob" class="select-picker">
-                    <option *ngFor = "let item of availableJobs" [value]="item.id">
-                        {{item.jobTitle}}
-                    </option>
-                </select>
+        <mat-checkbox [checked]="ownerIsCompany" (change)="ownerIsCompany = !ownerIsCompany">Posted by a company</mat-checkbox>
+        <mat-checkbox style="padding-left:20px" [checked]="!ownerIsCompany" (change)="ownerIsCompany = !ownerIsCompany">Posted by a user</mat-checkbox>
+        <div *ngIf="ownerIsCompany == true">
+            <h1>Select a company</h1>
+            <select class="select-picker" (change)="changeCompany($event)">
+                <option *ngFor = "let item of CompanyList" [value]="item.id">
+                    {{item.name}}
+                </option>
+            </select>
+            <div *ngIf="selectedCompany">
+                <div *ngIf="availableJobs.length">
+                    <h1>Select a job</h1>
+                    <select [(ngModel)]="selectedJob" class="select-picker">
+                        <option *ngFor = "let item of availableJobs" [value]="item.id">
+                            {{item.jobTitle}}
+                        </option>
+                    </select>
+                </div>
+                <div *ngIf="!availableJobs.length">
+                    <h1>No more jobs to invite to.</h1>
+                </div>
             </div>
-            <div *ngIf="!availableJobs.length">
-                <h1>No more jobs to invite to.</h1>
+        </div>
+
+        <div *ngIf="ownerIsCompany == false">
+            <h1>Select a user</h1>
+            <select class="select-picker" (change)="changeUser($event)">
+                <option *ngFor = "let item of UserList" [value]="item.id">
+                    {{item.firstName}} {{item.lastName}} {{item.id}}
+                </option>
+            </select>
+            <div *ngIf="selectedUser">
+                <div *ngIf="availableJobs.length">
+                    <h1>Select a job</h1>
+                    <select [(ngModel)]="selectedJob" class="select-picker">
+                        <option *ngFor = "let item of availableJobs" [value]="item.id">
+                            {{item.jobTitle}}
+                        </option>
+                    </select>
+                </div>
+                <div *ngIf="!availableJobs.length">
+                    <h1>No more jobs to invite to.</h1>
+                </div>
             </div>
         </div>
     </div>

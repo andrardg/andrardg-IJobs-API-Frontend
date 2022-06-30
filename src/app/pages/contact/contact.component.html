@@ -1,0 +1,27 @@
+<div class="main">
+    <div class="container">
+        <h5 style="text-align:center; padding-bottom:2rem">Contact Us</h5>
+        <br>
+        <br>
+
+        <form fxLayout="column" class="contact-form center-of-screen" [formGroup]="myForm" (ngSubmit)="submit()">
+            
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email">
+            </mat-form-field>
+        
+            <mat-form-field>
+                <mat-label>Title</mat-label>
+                <input matInput formControlName = "title">
+            </mat-form-field>
+            
+            <textarea rows="10" placeholder="Type your message here." formControlName="message"></textarea>
+        
+            <p fxLayoutAlign="center center" style="color: red; width:80%; margin-left:10%;" *ngIf="error" class="alert alert-danger">{{error}}</p>
+
+            <button mat-raised-button type="submit" class ="submit center-of-screen">Send request</button>
+
+        </form>
+    </div>
+</div>

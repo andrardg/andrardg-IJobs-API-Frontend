@@ -5,9 +5,11 @@ import { AdminCompanyGuard } from './guards/admin-company.guard';
 import { AdminUserGuard } from './guards/admin-user.guard';
 import { AuthGuard } from './guards/auth.guard';
 import { SessionGuard } from './guards/session.guard';
+import { AboutComponent } from './pages/about/about.component';
 import { CompaniesComponent } from './pages/companies/companies.component';
 import { CompanyDetailComponent } from './pages/companies/companyDetail/company-detail/company-detail.component';
 import { CompanyEditComponent } from './pages/companies/companyEdit/company-edit/company-edit.component';
+import { ContactComponent } from './pages/contact/contact.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { DomainsComponent } from './pages/domains/domains.component';
 import { JobCreateComponent } from './pages/jobs/job-create/job-create.component';
@@ -20,6 +22,7 @@ import { RegisterCompanyComponent } from './pages/register-company/register-comp
 import { RegisterComponent } from './pages/register/register.component';
 import { SearchComponent } from './pages/search/search.component';
 import { SubdomainsComponent } from './pages/subdomains/subdomains.component';
+import { TermsComponent } from './pages/terms/terms.component';
 import { TutorialsComponent } from './pages/tutorials/tutorials.component';
 import { UserDetailComponent } from './pages/users/user-detail/user-detail.component';
 import { UserEditComponent } from './pages/users/userEdit/user-edit.component';
@@ -163,6 +166,18 @@ const routes: Routes = [
     path:'work/edit/:id',
     component: WorkEditComponent,
     canActivate: [AuthGuard, SessionGuard],
+  },
+  {
+    path:'terms&conditions',
+    component: TermsComponent,
+  },
+  {
+    path:'about',
+    component: AboutComponent,
+  },
+  {
+    path:'contact',
+    component: ContactComponent,
   },
 ];
 

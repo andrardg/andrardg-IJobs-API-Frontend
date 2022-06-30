@@ -3,9 +3,13 @@
         <div *ngFor="let inv of invitesList">
             <div class="invite">
                 <div class="row">
-                    <h1 *ngIf="user" routerLink="/jobs/{{inv.jobId}}">{{inv.job!.company!.name}} has invited you to join their recruitment process for the {{inv.job!.jobTitle}} position.</h1>
+                    <h1 *ngIf="user && inv.job!.company && inv.job!.workType==false" routerLink="/jobs/{{inv.jobId}}">{{inv.job!.company!.name}} has invited you to join their recruitment process for the {{inv.job!.jobTitle}} position.</h1>
+                    <h1 *ngIf="user && inv.job!.company && inv.job!.workType==true" routerLink="/work/{{inv.jobId}}">{{inv.job!.company!.name}} has invited you to join their recruitment process for the {{inv.job!.jobTitle}} position.</h1>
+                    <h1 *ngIf="user && inv.job!.user" routerLink="/work/{{inv.jobId}}">{{inv.job!.user!.firstName}} {{inv.job!.user!.lastName}} has invited you to join their recruitment process for the {{inv.job!.jobTitle}} position.</h1>
                     <h1 *ngIf="company" routerLink="/users/{{inv.userId}}">You have invited {{inv.user!.firstName}} {{inv.user!.lastName}} to join your recruitment process for the {{inv.job!.jobTitle}} position.</h1>
-                    <h1 *ngIf="admin" routerLink="/jobs/{{inv.jobId}}">{{inv.user!.firstName}} {{inv.user!.lastName}} has invited you to join their recruitment process for the {{inv.job!.jobTitle}} position.</h1>
+                    <h1 *ngIf="admin && inv.job!.user" routerLink="/work/{{inv.jobId}}">{{inv.job!.user!.firstName}} {{inv.job!.user!.lastName}} has invited {{inv.user!.firstName}} {{inv.user!.lastName}} to join their recruitment process for the {{inv.job!.jobTitle}} position.</h1>
+                    <h1 *ngIf="admin && inv.job!.company && inv.job!.workType==false" routerLink="/jobs/{{inv.jobId}}">{{inv.job!.company!.name}} has invited {{inv.user!.firstName}} {{inv.user!.lastName}} to join their recruitment process for the {{inv.job!.jobTitle}} position.</h1>
+                    <h1 *ngIf="admin && inv.job!.company && inv.job!.workType==true" routerLink="/work/{{inv.jobId}}">{{inv.job!.company!.name}} has invited {{inv.user!.firstName}} {{inv.user!.lastName}} to join their recruitment process for the {{inv.job!.jobTitle}} position.</h1>
                 </div>
             </div>
             <div class="buttons">

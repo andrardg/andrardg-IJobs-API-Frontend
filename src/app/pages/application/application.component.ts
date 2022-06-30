@@ -56,7 +56,6 @@ export class ApplicationComponent implements OnInit {
   ownerIsCompany: boolean = true;
 
   constructor(
-    private activatedRoute:ActivatedRoute,
     private router:Router,
     private service: CompaniesService,
     private usersService: UsersService,
@@ -64,7 +63,6 @@ export class ApplicationComponent implements OnInit {
     private companyService: CompaniesService,
     private interviewsService : InterviewService,
     private domainService: DomainService,
-    private sanitizer: DomSanitizer,
     private fileService: FileService) {
     }
 

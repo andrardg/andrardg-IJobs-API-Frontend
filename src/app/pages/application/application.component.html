@@ -4,7 +4,7 @@
     <button *ngIf="myJobs" (click)="myJobsTrue()" mat-raised-button>Applications for my web ads</button>
     <button *ngIf="!myJobs" (click)="myJobsTrue()" mat-button>Applications for my web ads</button>
 </div>
-<div class="form-group" style="padding-bottom:6px; font-size:18px" *ngIf="!comp && myJobs == false">
+<div class="form-group" style="padding-bottom:6px; font-size:18px" *ngIf="(!comp && !Company) && myJobs == false">
     <mat-checkbox [checked]="ownerIsCompany" (change)="ownerIsCompany = !ownerIsCompany; filterByJobId=''; filter()">Posted by a company</mat-checkbox>
     <mat-checkbox style="padding-left:20px" [checked]="!ownerIsCompany" (change)="ownerIsCompany = !ownerIsCompany;filterByJobId=''; filter()">Posted by a user</mat-checkbox>
 </div>

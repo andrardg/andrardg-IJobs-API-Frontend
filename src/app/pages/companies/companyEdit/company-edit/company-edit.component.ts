@@ -148,13 +148,16 @@ export class CompanyEditComponent implements OnInit {
     });
   }
   save(){
-    if(this.form.invalid || this.error){
+    console.log(this.form.controls['newpassword'].value, this.form.controls['newpassword2'].value)
+    if(this.form.invalid){
       if(this.section == 1)
       this.error = "You cannot save an empty company name.";
       else if(this.section == 2)
-      this.error = "All passwords must have at least 8 characters.";
-      
-    //this.error = "You have invalid fields."
+        if(this.form.controls['email'].invalid)
+          this.error = 'The email has wrong format.';
+        else
+          this.error = "All passwords must have at least 8 characters.";
+
     }
     else{
       this.error = "";
@@ -167,37 +170,42 @@ export class CompanyEditComponent implements OnInit {
     words = words.join(" ");
     if(this.Company.name != words && this.comp)
       this.authService.name.next(words);
-    this.formData.append('Name', words);
-    this.formData.append('Email', this.form.controls['email'].value);
-    this.formData.delete('Description');
-    this.formData.append('Description', this.form.controls['description'].value);
+    this.formData.set('Name', words);
+    if(this.form.controls['description'].value)
+      this.formData.set('Description', this.form.controls['description'].value[0].toUpperCase() + this.form.controls['description'].value.slice(1));
+    else
+      this.formData.set('Description', '');
 
-    var words = this.form.controls['address'].value.split(" ");
-    for(var i=0 ; i<words.length ;i++)
-      words[i]= words[i][0].toUpperCase()+words[i].substring(1);
-    words = words.join(" ");
-    this.formData.append('Address', words);
-    this.formData.append('Email', this.form.controls['email'].value);
-    this.formData.append('OldPasswordHash', this.oldpasswordHash);
+    if(this.form.controls['address'].value){
+      var words = this.form.controls['address'].value.split(" ");
+      for(var i=0 ; i<words.length ;i++)
+        words[i]= words[i][0].toUpperCase()+words[i].substring(1);
+      words = words.join(" ");
+      this.formData.set('Address', words);
+    }
+    else
+      this.formData.set('Address', '');
+    this.formData.set('Email', this.form.controls['email'].value);
+    this.formData.set('OldPasswordHash', this.oldpasswordHash);
     if(this.admin && this.form.controls['verifiedAccount'].value == "Yes")
     {
-      this.formData.append('VerifiedAccount', "true");
-      this.formData.append('Role', "2");
+      this.formData.set('VerifiedAccount', "true");
+      this.formData.set('Role', "2");
     }
     else if(this.admin)
     {
-      this.formData.append('VerifiedAccount', "false");
-      this.formData.append('Role', "1");
+      this.formData.set('VerifiedAccount', "false");
+      this.formData.set('Role', "1");
     }
     else{
-      this.formData.append('VerifiedAccount', String(this.Company.verifiedAccount));
-      this.formData.append('Role', this.Company.role!);
+      this.formData.set('VerifiedAccount', String(this.Company.verifiedAccount));
+      this.formData.set('Role', this.Company.role!);
     }
 
     if(this.form.controls['photo'].value != "../../../assets/images/companyProfilePhoto.png") //photo exists
-      {
-        this.formData.append('Photo', this.form.controls['photo'].value);
-      }
+        this.formData.set('Photo', this.form.controls['photo'].value);
+    else
+      this.formData.set('Photo', '');
         
     if(this.section == 2){
       if(!this.admin){
@@ -206,7 +214,7 @@ export class CompanyEditComponent implements OnInit {
             if(this.form.controls['newpassword'].value == this.form.controls['newpassword2'].value)
               {
               if(bcrypt.compareSync(this.form.controls['oldpassword'].value, this.oldpasswordHash))
-                this.formData.append('password', this.form.controls['newpassword'].value);
+                this.formData.set('password', this.form.controls['newpassword'].value);
               else{
                 this.error = "Old password incorrect."}}
             else
@@ -219,7 +227,7 @@ export class CompanyEditComponent implements OnInit {
         if(this.form.controls['newpassword'].value && this.form.controls['newpassword2'].value)
         {
           if(this.form.controls['newpassword'].value == this.form.controls['newpassword2'].value)
-            this.formData.append('password', this.form.controls['newpassword'].value);
+            this.formData.set('password', this.form.controls['newpassword'].value);
           else
             this.error = "The new password fields must match."
         }
@@ -229,8 +237,8 @@ export class CompanyEditComponent implements OnInit {
     }
     else
     {
-      this.formData.append('Password', this.oldpasswordHash);
-      this.formData.append('OldPasswordHash', this.oldpasswordHash);
+      this.formData.set('Password', this.oldpasswordHash);
+      this.formData.set('OldPasswordHash', this.oldpasswordHash);
     }
 
     if(!this.error){

@@ -37,7 +37,8 @@
                 <a>{{Job.company!.name}}</a>
               </div>
               <a><i class="fa fa-envelope" style="min-width:30px"></i>{{Job.company!.email}}</a>
-              <a><i class="fas fa-map-marker-alt" style="min-width:30px"></i>{{Job.company!.address}}</a>
+              <a *ngIf="Job.company!.address"><i class="fas fa-map-marker-alt" style="min-width:30px"></i>{{Job.company!.address}}</a>
+              <a *ngIf="!Job.company!.address"><i class="fas fa-map-marker-alt" style="min-width:30px"></i>- -</a>
             </div>
         </div>
     </mat-card>

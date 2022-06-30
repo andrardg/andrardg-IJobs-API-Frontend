@@ -22,7 +22,7 @@ export class JobDetailsComponent implements OnInit {
   Company = new Company();
   public id: any;
   editDeleteRights : boolean = false;
-  showPrevious: boolean = false;
+  showPrevious: any = false;
   alreadyApplied: boolean = false;
   canReapply: boolean = false;
   currentApp : any;
@@ -46,8 +46,8 @@ export class JobDetailsComponent implements OnInit {
       this.id = params['id'];
       console.log(this.id);
     });
-    if(sessionStorage.getItem('companyId')!=null)
-      this.showPrevious = true;
+    if(sessionStorage.getItem('companyId'))
+      this.showPrevious = sessionStorage.getItem('companyId');
     this.getJobDetails(this.id);
     if(sessionStorage.getItem('User'))
       {
@@ -105,8 +105,8 @@ export class JobDetailsComponent implements OnInit {
     this.router.navigate(['/jobs/edit', id]);
   }
   back(){
-    sessionStorage.removeItem('jobId');
-    this.router.navigate(['companies/' + sessionStorage.getItem('companyId')]);
+    //sessionStorage.removeItem('jobId');
+    this.router.navigate(['companies/' + this.showPrevious]);
   }
   logout() {
     this.authService.logout();

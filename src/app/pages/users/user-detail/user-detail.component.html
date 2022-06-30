@@ -4,9 +4,12 @@
         <div *ngIf="admin || ( user && user.id == id)" style="text-align:right; margin-bottom:10px;">
             <button mat-raised-button (click)="editUser()">Edit profile</button>
         </div>
-        <div *ngIf="admin || (company && company.role == 2)" style="text-align:right">
+        <div *ngIf="admin || (company && company.role == 2) || user" style="text-align:right">
             <button mat-raised-button (click)="invite()">Invite to recruitment process</button>
 
+        </div>
+        <div *ngIf="showPrevious" style="text-align:left;margin-left:30%;">
+            <button mat-stroked-button (click)="back()">Back</button>
         </div>
         <div class="container">
             <div class="column" style="width:100%;">

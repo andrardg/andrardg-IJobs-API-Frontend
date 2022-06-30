@@ -26,7 +26,7 @@ export class WorkEditComponent implements OnInit {
   ownerIsCompany:boolean = true;
   public id: any; 
   public hide: boolean = true; //for the password
-  JobTypes:any=["Full-Time", "Part-Time", "Internship", "Volunteering"];
+  JobTypes:Array<string> = ["One day", "A few days", "Weekly", "Monthly", "Regularly"];
   Experience:any=["Entry Level", "Junior Level", "Mid-Senior Level", "Senior Level", "Associate", "Director"]
   Vacant:any=["Yes", "No"];
   CompanyList:Array<Company> = [];
@@ -41,7 +41,6 @@ export class WorkEditComponent implements OnInit {
                 jobType: new FormControl('', [Validators.required]),
                 experience: new FormControl('', [Validators.required]),
                 address: new FormControl('', [Validators.required]),
-                open: new FormControl('', [Validators.required]),
                 companyId: new FormControl(''),
                 domain: new FormControl(''),
                 subdomain: new FormControl('', [Validators.required]),

@@ -4,8 +4,10 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Company } from 'app/classes/company';
 import { Invite } from 'app/classes/invite';
 import { Job } from 'app/classes/job';
+import { User } from 'app/classes/user';
 import { CompaniesService } from 'app/services/companies.service';
 import { InviteService } from 'app/services/invite.service';
+import { UsersService } from 'app/services/users.service';
 
 @Component({
   selector: 'app-invite',
@@ -15,18 +17,26 @@ import { InviteService } from 'app/services/invite.service';
 export class InviteComponent implements OnInit {
 
   userId:any;
+  User = new User();
+
   company:any;
+  user:any;
   selectedCompany:any;
   selectedJob:any;
+  selectedUser:any;
   CompanyList: Array<Company> = [];
+  UserList : Array<User> = [];
   InvitesList: Array<Invite> = [];
   admin = sessionStorage.getItem('Admin');
   availableJobs:Array<Job> = [];
+  ownerIsCompany:boolean = true;
   
   constructor(private service: InviteService,
     private companyService: CompaniesService,
+    private userService: UsersService,
     @Inject(MAT_DIALOG_DATA) public data:any) {
       this.userId = data.userId;
+      this.User = data.User;
      }
 
   ngOnInit(): void {
@@ -34,8 +44,12 @@ export class InviteComponent implements OnInit {
     sessionStorage.removeItem('companyId');
     if(sessionStorage.getItem("Company")!= null)
       this.getCurrentCompany();
-    else if(sessionStorage.getItem("Admin")!= null)
+    else if(sessionStorage.getItem("Admin")!= null){
       this.getCompanies();
+      this.getUsers();
+    }
+    else if(sessionStorage.getItem("User")!= null)
+      this.getCurrentUser();
   }
   getCurrentCompany(){
     var id = JSON.parse(sessionStorage.getItem('Company') || "").id;
@@ -46,12 +60,26 @@ export class InviteComponent implements OnInit {
       this.getInvites(this.company);
     })
   }
+  getCurrentUser(){
+    var id = JSON.parse(sessionStorage.getItem('User') || "").id;
+    this.userService.getUserDetails(id).subscribe(data=>{
+      this.user = data;
+      this.availableJobs = this.user.jobs;
+      console.log(data);
+      this.getInvites(this.user);
+    })
+  }
   getCompanies(){
     this.companyService.getCompanies().subscribe(data=>{
       this.CompanyList = data;
       this.CompanyList = this.CompanyList.filter( x=> x.verifiedAccount == true);
       console.log(this.CompanyList);
     });
+  }
+  getUsers(){
+    this.userService.getUsers().subscribe(data=>{
+      this.UserList = data;
+    })
   }
   getInvites(company:any){
     this.service.getInvites().subscribe(data=>{
@@ -63,6 +91,10 @@ export class InviteComponent implements OnInit {
           this.availableJobs = this.availableJobs.filter(x => x.id != element.jobId)
       });
       this.availableJobs = this.availableJobs.filter( x=> x.open == true)
+      this.User.applications!.forEach(element => {
+        if(element.userId == this.userId)
+        this.availableJobs = this.availableJobs.filter(x => x.id != element.jobId)
+      });
       console.log(this.availableJobs);
     });
   }
@@ -83,5 +115,11 @@ export class InviteComponent implements OnInit {
     console.log(this.selectedCompany);
     this.getInvites(this.selectedCompany);
     this.availableJobs = this.selectedCompany.jobs;
+  }
+  changeUser(event:any){console.log(event.target.value);
+    this.selectedUser = this.UserList.filter(x => x.id == event.target.value)[0];
+    console.log(this.selectedUser);
+    this.getInvites(this.selectedUser);
+    this.availableJobs = this.selectedUser.jobs;
   }
 }

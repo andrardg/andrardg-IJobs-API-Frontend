@@ -36,7 +36,7 @@ export class RegisterComponent implements OnInit {
       if(this.myForm.controls['email'].invalid)
         this.error = 'The email has wrong format.';
       else if(this.myForm.controls['password'].invalid)
-        this.error = 'The password must have at least 8 characters';
+        this.error = 'The password must have at least 8 characters.';
       else
         this.error = 'You cannot register empty fields.'
       return;
