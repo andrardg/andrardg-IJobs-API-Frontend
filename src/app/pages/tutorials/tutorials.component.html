@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
 <main class="main">
     <div class="page-left">
-        <button mat-raised-button class="seeAll" (click)="seeAll()">See All</button>
+        <button mat-button class="seeAll" (click)="seeAll()">See All</button>
         <div *ngIf="DomainList.length > 0 && selectedDomain.name == ''">
             <div *ngFor="let row of DomainList">
                 <i class="fas fa-edit" *ngIf="admin && newDomain.id != row.id"(click)="editDomainTrue(row)"></i>
@@ -20,11 +20,14 @@
             
         </div>
         <div *ngIf="selectedDomain.name != ''">
-            <div class="selection">{{selectedDomain.name}}</div>
+            <div class="selection" routerLink="/tutorials/{{selectedDomain.id}}">{{selectedDomain.name}}</div>
             <div *ngFor="let row of SubdomainList" style="margin-left: 10px">
                 <i class="fas fa-edit" *ngIf="admin && newSubdomain.id != row.id"(click)="editSubdomainTrue(row)"></i>
-                <button mat-button *ngIf="selectedSubdomain != row && newSubdomain.id != row.id" (click)="selectedSubdomainId(row.id)">{{row.name}}</button>
-                <button mat-button *ngIf="selectedSubdomain == row && newSubdomain.id != row.id" class="button3" (click)="selectedSubdomainId(row.id)">{{row.name}}</button>
+                <button mat-button *ngIf="selectedSubdomain != row && newSubdomain.id != row.id && !admin" (click)="selectedSubdomainId(row.id)">&bull; {{row.name}}</button>
+                <button mat-button *ngIf="selectedSubdomain == row && newSubdomain.id != row.id && !admin" class="button3" (click)="selectedSubdomainId(row.id)">&bull; {{row.name}}</button>
+
+                <button mat-button *ngIf="selectedSubdomain != row && newSubdomain.id != row.id && admin" (click)="selectedSubdomainId(row.id)">{{row.name}}</button>
+                <button mat-button *ngIf="selectedSubdomain == row && newSubdomain.id != row.id && admin" class="button3" (click)="selectedSubdomainId(row.id)">{{row.name}}</button>
                 <input *ngIf="admin && newSubdomain.id == row.id" placeholder="{{newSubdomain.name}}" [(ngModel)]="newSubdomain.name" type="text">
 
                 <i class="fas fa-trash" *ngIf="admin && newSubdomain.id == row.id" style="padding-left:10px" (click)="deleteSubdomain(row.id)"></i>
@@ -50,7 +53,7 @@
         </div>
     <div class="page-right">
         <div *ngIf="Tutorials.length > 0" width="100%" height="100%">
-            <div *ngFor="let row of Tutorials">
+            <div *ngFor="let row of Tutorials" style="padding-bottom:2rem">
                 <iframe width="560" height="315" [src]=getSafeUrl(row.link) frameborder="0" allowfullscreen></iframe>
                 <i class="fas fa-trash" *ngIf="admin" style="padding-left:10px" (click)="deleteTutorial(row.id)"></i>
             </div>

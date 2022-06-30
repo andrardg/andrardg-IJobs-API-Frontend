@@ -17,6 +17,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Job } from 'app/classes/job';
 import { FileService } from 'app/services/file.service';
 import { User } from 'app/classes/user';
+import { InviteService } from 'app/services/invite.service';
+import { Invite } from 'app/classes/invite';
 
 @Component({
   selector: 'app-company-edit',
@@ -35,7 +37,7 @@ export class CompanyEditComponent implements OnInit {
                 name: new FormControl('', [Validators.required]),
                 photo: new FormControl(''),
                 email: new FormControl('', [Validators.required, Validators.email]),
-                oldpassword: new FormControl('', [Validators.minLength(8)]),
+                oldpassword: new FormControl(''),
                 newpassword: new FormControl('', [Validators.minLength(8)]),
                 newpassword2: new FormControl('',[Validators.minLength(8)]),
                 address: new FormControl(''),
@@ -49,9 +51,6 @@ export class CompanyEditComponent implements OnInit {
   public formData= new FormData();
   showPrevious: boolean = false;
 
-  applicationsList : Array<Application> = [];
-  interviewsList : Array<Interview> = [];
-  interviews : Array<Interview> = [];
   isOnline:string = '';
   editInterview : boolean = false;
   jobs:any;
@@ -63,10 +62,9 @@ export class CompanyEditComponent implements OnInit {
     private service: CompaniesService,
     private authService: AuthService,
     private applicationsService : ApplicationService,
-    private interviewsService : InterviewService,
-    private previousRouteService: PreviousRouteService,
-    private sanitizer: DomSanitizer,
-    private fileService: FileService) { }
+    private jobsService : JobsService,
+    private invitesService : InviteService,
+    private previousRouteService: PreviousRouteService,) { }
 
   ngOnInit(): void {
     sessionStorage.removeItem('jobId');
@@ -112,6 +110,43 @@ export class CompanyEditComponent implements OnInit {
         this.save();
     }
   }
+  deleteApplications(){
+    this.applicationsService.getApplications().subscribe(data =>{
+      var aps : Array<Application> = [];
+      aps = data;
+      aps = aps.filter(x => x.job?.companyId == this.id);
+      aps.forEach(element => {
+        this.applicationsService.removeApplication(element.id).subscribe(data=>{
+          console.log("Application deleted successfully");
+        })
+      });
+    });
+  }
+  deleteInvites(){
+    this.invitesService.getInvites().subscribe(data =>{
+      var inv : Array<Invite> = [];
+      inv = data;
+      inv = inv.filter(x => x.job?.companyId == this.id);
+      inv.forEach(element => {
+        this.invitesService.removeInvite(element.id).subscribe(data=>{
+          console.log("Invite deleted successfully");
+        })
+      });
+    });
+  }
+  jobNotOpen(){
+    this.Company.jobs.forEach(element => {
+      element.open = false;
+      delete element.company;
+      delete element.invites;
+      delete element.user;
+      delete element.userId;
+      delete element.subdomain;
+      this.jobsService.saveJob(element).subscribe(data=>{
+        console.log("Job updated successfully");
+      })
+    });
+  }
   save(){
     if(this.form.invalid || this.error){
       if(this.section == 1)
@@ -155,8 +190,6 @@ export class CompanyEditComponent implements OnInit {
       this.formData.append('Role', "1");
     }
     else{
-      console.log(String(this.Company.verifiedAccount))
-      console.log(this.Company.role!)
       this.formData.append('VerifiedAccount', String(this.Company.verifiedAccount));
       this.formData.append('Role', this.Company.role!);
     }
@@ -203,6 +236,13 @@ export class CompanyEditComponent implements OnInit {
     if(!this.error){
       this.service.saveCompany(this.id, this.formData).subscribe((data)=>{
       console.log("Updated successfully");
+
+      if(this.formData.get('VerifiedAccount') == 'false' && this.formData.get('VerifiedAccount') != String(this.Company.verifiedAccount)){
+        this.deleteApplications();
+        this.deleteInvites();
+        this.jobNotOpen();
+      }
+
       this.cancel();
       alert("Updated successully");
       },
@@ -290,9 +330,11 @@ export class CompanyEditComponent implements OnInit {
     if (confirm('Are you sure you want to delete this account?')) {
       this.service.removeCompany(id).subscribe((data)=>{
         console.log("success");
-        this.logout();
+        if(!this.admin)
+          this.logout();
+        else
+          this.router.navigate(['/dashboard']);
       });
-      this.router.navigate(['/dashboard']);
     } else {
       // Do nothing!
       console.log('Not deleted');
@@ -318,11 +360,5 @@ export class CompanyEditComponent implements OnInit {
 deletePhoto(){
   this.form.patchValue({photo: "../../../assets/images/companyProfilePhoto.png"});
 }
-  getAllApplications(){
-    this.applicationsService.getApplications().subscribe(data =>{
-      this.applicationsList = data;
-      this.applicationsList = this.applicationsList.filter( data => data.job?.companyId == this.id);
-    });
-  }
 
 }

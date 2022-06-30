@@ -58,12 +58,16 @@ export class WorkDetailsComponent implements OnInit {
           var company = JSON.parse(sessionStorage.getItem('Company') || "")
         if(sessionStorage.getItem('User'))
           this.user = JSON.parse(sessionStorage.getItem('User') || "")
-        if(sessionStorage.getItem('Admin') || (company!=null && company.id == data.companyId) || (this.user!=null && this.user.id == data.userId))
+        if(sessionStorage.getItem('Admin') || (company!=null && company.id == data.companyId) || (this.user!=null && this.user.id == data.userId)){
+          this.alreadyApplied = true;
           this.editDeleteRights = true;
+        }
 
         if(this.user.id != this.Job.userId){
           this.userService.getUserDetails(this.user.id).subscribe(data => {
             this.user = data;
+            console.log(this.user);
+            console.log(this.Job)
             this.applicationService.getApplications().subscribe(data =>{
             for(var elem of data)
               {
@@ -81,7 +85,6 @@ export class WorkDetailsComponent implements OnInit {
         else
         this.alreadyApplied = true;
         });
-
   }
   getCompanyDetails(id: any){
     console.log(id);

@@ -7,13 +7,14 @@ import { Company } from 'app/classes/company';
 import { Domain } from 'app/classes/domain';
 import { Interview } from 'app/classes/interview';
 import { Subdomain } from 'app/classes/subdomain';
+import { User } from 'app/classes/user';
 import { ApplicationService } from 'app/services/application.service';
 import { AuthService } from 'app/services/auth.service';
 import { CompaniesService } from 'app/services/companies.service';
 import { DomainService } from 'app/services/domain.service';
 import { FileService } from 'app/services/file.service';
 import { InterviewService } from 'app/services/interview.service';
-import { PreviousRouteService } from 'app/services/previous-route.service';
+import { UsersService } from 'app/services/users.service';
 
 @Component({
   selector: 'app-application',
@@ -31,6 +32,9 @@ export class ApplicationComponent implements OnInit {
   filterByCompanyId : string = '';
   selectedCompany = new Company();
   filterByJobId :string = '';
+  filterByUserId : string = '';
+  selectedUser = new User();
+  UserList:Array<User> = [];
   schedule = new Application();
   seeRejected: boolean = false;
   interviewsList : Array<Interview> = [];
@@ -48,12 +52,14 @@ export class ApplicationComponent implements OnInit {
   domainFilter:any = 'All';
   SubdomainList:Array<Subdomain> = [];
   subdomainFilter : any = 'All';
+  myJobs: boolean = false;
+  ownerIsCompany: boolean = true;
 
   constructor(
     private activatedRoute:ActivatedRoute,
     private router:Router,
     private service: CompaniesService,
-    private authService: AuthService,
+    private usersService: UsersService,
     private applicationsService : ApplicationService,
     private companyService: CompaniesService,
     private interviewsService : InterviewService,
@@ -66,52 +72,95 @@ export class ApplicationComponent implements OnInit {
     sessionStorage.removeItem('jobId');
     sessionStorage.removeItem('companyId');
     if (sessionStorage.getItem("Admin") != null)
-      {
-        this.admin = JSON.parse(sessionStorage.getItem('Admin') || "");
-        if(this.admin.id == this.id)
-          this.getAllCompanies();
-      }
-    if(this.Company)
-      this.selectedCompany = this.Company;
+      this.admin = JSON.parse(sessionStorage.getItem('Admin') || "");
+
     this.getAllApplications();
     this.getAllInterviews();
+    this.getAllCompanies();
+    if(!this.comp){
+      this.getAllUsers();
+    }
+    else
+      this.getCompany(this.id);
     this.getDomains();
-
   }
   getAllApplications(){
     this.applicationsService.getApplications().subscribe(data =>{
       this.ApplicationList = data;
       if(this.comp || (this.admin && this.admin.id != this.id))
         this.ApplicationList = this.ApplicationList.filter( data => data.job?.companyId == this.id);
-      else if((this.user && this.seeUserApplication == true) || (this.admin && this.admin.id != this.id))
-        this.ApplicationList = this.ApplicationList.filter( data => data.job?.userId == this.id);
-      else if((this.user && this.seeUserApplication == false) || (this.admin && this.admin.id != this.id))
-        this.ApplicationList = this.ApplicationList.filter( data => data.userId == this.id);
-      this.applications = this.ApplicationList.filter(x=> x.status != 'Rejected');
-      console.log(this.ApplicationList)
+      
+      else if((this.user || this.User) && !this.admin)
+        this.ApplicationList = this.ApplicationList.filter( data => data.job?.userId == this.id || data.userId == this.id);
+      this.filter();
+      console.log(this.applications)
     });
   }
   getAllCompanies(){
     this.companyService.getCompanies().subscribe(data=>{
       this.CompanyList = data;
+      this.CompanyList = this.CompanyList.sort((a,b) => a.name!.localeCompare(b.name!));
+      this.Company = this.CompanyList.filter( x=> x.id == this.id)[0];
+    })
+  }
+  getCompany(id:any){
+    this.service.getCompanyDetails(id).subscribe(data=>{
+      this.Company=data;
+      console.log(this.Company);
+    });
+  }
+  getAllUsers(){
+    this.usersService.getUsers().subscribe(data=>{
+      this.UserList = data;
+      this.UserList = this.UserList.sort((a,b) => a.firstName!.localeCompare(b.firstName!));
     })
   }
   filter(){
-    console.log(this.filterByCompanyId, this.filterByJobId, this.domainFilter, this.subdomainFilter, this.seeRejected)
+    if(this.comp)
+      this.filterByCompanyId = this.id;
+    console.log(this.filterByCompanyId, this.filterByUserId, this.filterByJobId, this.domainFilter, this.subdomainFilter, this.seeRejected)
+
     this.applications = this.ApplicationList;
-    if(this.filterByCompanyId == 'All' || this.filterByCompanyId == '')
+    console.log(this.applications)
+    if(this.ownerIsCompany == true){
+      this.filterByUserId = '';
+      if(this.filterByCompanyId == 'All' || this.filterByCompanyId == '')
       {
+        this.applications = this.applications.filter(x => x.job?.companyId != null)
         this.filterByJobId = 'All';
         this.selectedCompany = new Company();
       }
-    if(this.filterByCompanyId != '' && this.filterByCompanyId != 'All'){
-      this.applications = this.applications.filter(x => x.job?.companyId == this.filterByCompanyId);
-      this.selectedCompany = this.CompanyList.filter( x=> x.id == this.filterByCompanyId)[0];
+      if(this.filterByCompanyId != '' && this.filterByCompanyId != 'All'){
+        this.applications = this.applications.filter(x => x.job?.companyId == this.filterByCompanyId);
+        this.selectedCompany = this.CompanyList.filter( x=> x.id == this.filterByCompanyId)[0];
+        this.Company = this.CompanyList.filter( x=> x.id == this.filterByCompanyId)[0];
+        this.selectedCompany.jobs = this.selectedCompany.jobs.sort((a,b) => a.jobTitle!.localeCompare(b.jobTitle!));
+      }
     }
+    else{
+      this.filterByCompanyId = '';
+      if(this.filterByUserId == 'All' || this.filterByUserId == '')
+      {
+        this.applications = this.applications.filter(x => x.job?.userId != null)
+        this.filterByJobId = 'All';
+        this.selectedUser = new User();
+      }
+      if(this.filterByUserId != '' && this.filterByUserId != 'All'){
+        this.applications = this.applications.filter(x => x.job?.userId == this.filterByUserId);
+        this.selectedUser = this.UserList.filter( x=> x.id == this.filterByUserId)[0];
+        this.User = this.UserList.filter( x=> x.id == this.filterByUserId)[0];
+        this.selectedUser.jobs = this.selectedUser.jobs!.sort((a,b) => a.jobTitle!.localeCompare(b.jobTitle!));
+      }
+    }
+
 
     if(this.filterByJobId != '' && this.filterByJobId != 'All')
       this.applications = this.applications.filter(x => x.jobId == this.filterByJobId);
 
+    if(this.myJobs == true && (this.user || this.User) && !this.admin)
+      this.applications = this.applications.filter( x=> x.job?.userId == this.id);
+    else if(this.myJobs == false && (this.user || this.User) && !this.admin)
+      this.applications = this.applications.filter( x=> x.userId == this.id);
       
     if(this.seeRejected == true)
       this.applications = this.applications.filter( x => x.status == 'Rejected');
@@ -128,28 +177,6 @@ export class ApplicationComponent implements OnInit {
     }
 
   }
-  getApplicationsForCompany(){
-    if(this.filterByCompanyId == 'All')
-      this.applications = this.ApplicationList;
-    else if(this.filterByCompanyId != ''){
-      this.applications = this.ApplicationList.filter(x => x.job?.companyId == this.filterByCompanyId);
-      this.selectedCompany = this.CompanyList.filter( x=> x.id == this.filterByCompanyId)[0];
-    }
-  }
-  getApplicationsForJob(){
-    console.log(this.filterByJobId);
-    this.schedule.id = '';
-    if(this.filterByJobId == 'All')
-      this.applications = this.ApplicationList;
-    else if(this.filterByJobId != '')
-      this.applications = this.ApplicationList.filter(x => x.jobId == this.filterByJobId);
-    if(this.seeRejected == true)
-      this.applications = this.applications.filter( x => x.status == 'Rejected');
-    else
-      this.applications = this.applications.filter( x => x.status != 'Rejected');
-    console.log(this.applications);
-  }
-
   getInterviewsForApplication(id:any){
     this.interviews = this.interviewsList.filter( x=> x.applicationId == id)
     console.log(this.interviews);
@@ -264,7 +291,7 @@ export class ApplicationComponent implements OnInit {
   }
   editInterviewTrue(intv:any){
     this.editInterview = true;
-    this.newInterview = intv;
+    this.newInterview = JSON.parse(JSON.stringify(intv));
     if(intv.isOnline == true)
       this.isOnline = 'Online';
     else
@@ -275,11 +302,14 @@ export class ApplicationComponent implements OnInit {
   }
   saveInterview(){
     delete this.newInterview.application;
-    if(!this.admin)
+    if(this.comp)
       this.newInterview.responseCompany = true;
     else
       this.newInterview.responseCompany = false;
-    this.newInterview.responseUser = false;
+    if(this.user)
+      this.newInterview.responseUser = true;
+    else
+      this.newInterview.responseUser = false;
     console.log(this.newInterview);
     this.interviewsService.saveInterview(this.newInterview).subscribe(data=>{
       console.log("Updated sucessfully");
@@ -305,7 +335,10 @@ export class ApplicationComponent implements OnInit {
   }
   confirm(interview:any){
     this.newInterview = interview;
-    this.newInterview.responseCompany = true;
+    if(this.comp)
+      this.newInterview.responseCompany = true;
+    else if(this.user)
+      this.newInterview.responseUser = true;
     delete this.newInterview.application;
     this.interviewsService.saveInterview(this.newInterview).subscribe(data=>{
       console.log("Updated sucessfully");
@@ -323,37 +356,30 @@ export class ApplicationComponent implements OnInit {
   }
   toggleSeeRejected(event:any){
     if(this.seeRejected == false && event.pointerId == 1)
-      {
         this.seeRejected = true;
-        this.applications = this.ApplicationList.filter( x => x.status == 'Rejected');
-        if(this.filterByCompanyId != '' && this.filterByCompanyId != 'All')
-          this.applications = this.applications.filter( x => x.job?.companyId == this.filterByCompanyId);
-        if(this.filterByJobId != '' && this.filterByJobId != 'All')
-          this.applications = this.applications.filter( x => x.jobId == this.filterByJobId);
-      }
     else if(event.pointerId == 1)
-    {
       this.seeRejected = false;
-      this.applications = this.ApplicationList.filter( x => x.status != 'Rejected');
-      if(this.filterByCompanyId != '' && this.filterByCompanyId != 'All')
-        this.applications = this.applications.filter( x => x.job?.companyId == this.filterByCompanyId);
-      if(this.filterByJobId != '' && this.filterByJobId != 'All')
-        this.applications = this.applications.filter( x => x.jobId == this.filterByJobId);
-    }
+    this.filter();
   }
   getUserDetails(id: any){
     console.log(id);
     this.router.navigate(['/users', id]);
   }  
-  getJobDetails(id: any){
+  getCompanyDetails(id: any){
     console.log(id);
-    this.router.navigate(['/jobs', id]);
+    this.router.navigate(['/companies', id]);
+  }  
+  getJobDetails(row: any){
+    if(row.job.workType == false)
+      this.router.navigate(['/jobs', row.job.id]);
+    else if(row.job.workType == true)
+      this.router.navigate(['/work', row.job.id]);
   }
   getSafeUrl(file:string){
     return this.fileService.getSafeUrl(file);
   }
   rejectInterview(interview:any){
-    if (confirm('By confirming, all of your interview for this job will be deleted and your application will be marked as rejected. Are you sure?')) {
+    if (confirm('By confirming, all of your interviews for this job will be deleted and your application will be marked as rejected. Are you sure?')) {
       var app = interview.application;
       app.status = 'Rejected';
       this.interviews = this.interviewsList;
@@ -362,6 +388,8 @@ export class ApplicationComponent implements OnInit {
       this.applicationsService.saveApplication(app).subscribe(data =>{
         alert("Application marked as rejected");
         console.log("Application marked as rejected");
+        this.getAllApplications();
+        this.getAllInterviews();
       })
     }
   }
@@ -369,19 +397,19 @@ export class ApplicationComponent implements OnInit {
 getDomains(){
   this.domainService.getDomains().subscribe(data=>{
     this.DomainList = data;
-    console.log(data);
     this.DomainList = this.DomainList.filter( x => x.subdomains!.length > 0);
-    console.log(this.DomainList);
+    this.DomainList = this.DomainList.sort((a,b) => a.name!.localeCompare(b.name!));
   },
   error =>{
     console.log(error);
   });
 }
 getSubdomains(){
-  if(this.domainFilter != 'All')
+  if(this.domainFilter != 'All'){
     this.SubdomainList = this.DomainList.filter(x => x.id == this.domainFilter)[0].subdomains!;
-  //console.log(this.SubdomainList);
-  //console.log(this.domainFilter);
+    this.SubdomainList = this.SubdomainList.sort((a,b) => a.name!.localeCompare(b.name!));
+    
+  }
 }
 doneFilter(){
   console.log(this.domainFilter, this.subdomainFilter);
@@ -397,5 +425,32 @@ doneFilter(){
     this.applications = this.applications.filter( x => x.status != 'Rejected');
   else
   this.applications = this.applications.filter( x => x.status == 'Rejected');
+}
+deleteApplication(app:any){
+  if (confirm('Are you sure you want to delete this application?')) {
+    this.applicationsService.removeApplication(app.id).subscribe(data=>{
+      console.log("Deleted successfully");
+      alert("Deleted successfully");
+      this.ApplicationList.splice(app,1);
+      this.applications.splice(app,1);
+    },error=>{
+      console.log(error);
+    })
+  }
+}
+myJobsFalse(){
+  this.myJobs = false;
+  this.ownerIsCompany = true;
+  this.filterByUserId = '';
+  this.filterByJobId = ''
+  this.filterByCompanyId = '';
+  this.filter();
+}
+myJobsTrue(){
+  this.myJobs = true;
+  this.ownerIsCompany = false;
+  this.filterByUserId = this.id;
+  this.filterByCompanyId = 'All';
+  this.filter();
 }
 }

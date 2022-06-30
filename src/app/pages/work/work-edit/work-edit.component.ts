@@ -93,7 +93,7 @@ export class WorkEditComponent implements OnInit {
       return;
     }
 
-    if(this.form.invalid){
+    if(this.form.invalid || (this.admin && this.form.controls["companyId"].value=='' && this.form.controls["userId"].value=='')){
       console.log("Edit Job error");
       this.error = 'You cannot register empty fields. ';
       return;
@@ -141,11 +141,13 @@ export class WorkEditComponent implements OnInit {
   getCompanies(){
     this.companyService.getCompanies().subscribe(data=>{
       this.CompanyList=data;
+      this.CompanyList = this.CompanyList.sort((a,b) => a.name!.localeCompare(b.name!));
     });;
   }
   getUsers(){
     this.userService.getUsers().subscribe((data: User[])=>{
       this.UserList=data;
+      this.UserList = this.UserList.sort((a,b) => a.firstName!.localeCompare(b.firstName!));
     })
   }
   updateCompany(e: any){
@@ -160,6 +162,7 @@ export class WorkEditComponent implements OnInit {
     this.domainService.getDomains().subscribe(data=>{
       this.DomainList = data;
       this.DomainList = this.DomainList.filter( x => x.subdomains!.length > 0);
+      this.DomainList = this.DomainList.sort((a,b) => a.name.localeCompare(b.name));
     },
     error =>{
       console.log(error);
@@ -168,6 +171,11 @@ export class WorkEditComponent implements OnInit {
   changeDomain(event:any){
     console.log(event.target.value);
     this.selectedDomain = this.DomainList.filter(x => x.id == event.target.value)[0];
+    if(this.selectedDomain.name == 'Other')
+      this.form.patchValue({subdomain: this.selectedDomain.subdomains![0].id});
+    else
+      this.form.patchValue({subdomain:''});
+    this.selectedDomain.subdomains = this.selectedDomain.subdomains!.sort((a,b) => a.name.localeCompare(b.name));
     console.log(this.selectedDomain);
   }
   changeSubdomain(event:any){

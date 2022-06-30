@@ -99,7 +99,7 @@
                         {{item.name}}
                     </option>
                 </select>
-                <div *ngIf="selectedDomain.name != ''">
+                <div *ngIf="selectedDomain.name != '' && selectedDomain.name!='Other'">
                     <label class="col-sm-2 control-label">Subdomain*</label>
                     <select id="companyId" name="companyId" formControlName= "subdomain" class="select-picker">
                         <option *ngFor = "let item of selectedDomain.subdomains" [value]="item.id">

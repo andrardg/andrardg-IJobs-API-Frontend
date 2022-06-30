@@ -67,6 +67,9 @@ export class TutorialsComponent implements OnInit {
       this.Tutorials = data;
       this.domainService.getDomains().subscribe(data=>{
         this.DomainList=data;
+        if(!this.admin)
+          this.DomainList = this.DomainList.filter(x=> x.subdomains!.length > 0)
+        console.log(data);
         this.DomainList = this.DomainList.sort((a,b) => a.name.localeCompare(b.name));
         if(this.domainIdUrl){
           this.selectedDomain = this.DomainList.filter( x=> x.id == this.domainIdUrl)[0];
@@ -155,6 +158,7 @@ export class TutorialsComponent implements OnInit {
   }
   addSubdomain(){
     this.addNewSubdomain = true;
+    this.addNewTutorial = false;
   }
   saveSubdomain(){
     this.newSubdomain.domainId = this.selectedDomain.id!;
@@ -179,6 +183,7 @@ export class TutorialsComponent implements OnInit {
 
   addTutorial(){
     this.addNewTutorial = true;
+    this.addNewSubdomain = false;
   }
   saveTutorial(){
     this.newTutorial.link = this.fileService.convertVideoLink(this.newTutorial.link)

@@ -71,7 +71,7 @@ Font Awesome Icon brain Icon | fas fa brain | HTML, CSS
                         </select>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" *ngIf="domainFilter != 'All' && domainFilter != '' && SubdomainList[0].domain!.name != 'Other'">
                     <h2>Subdomain</h2>
                     <div class="list">
                       <div *ngIf="domainFilter != 'All'">

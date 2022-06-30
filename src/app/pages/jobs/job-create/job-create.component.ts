@@ -58,12 +58,13 @@ export class JobCreateComponent implements OnInit {
       return;
     }
 
-    if(this.form.invalid){
+    if(this.form.invalid || (this.admin && this.form.controls["companyId"].value=='')){
       console.log("Create Job error");
       this.error = 'You cannot register empty fields. ';
       return;
     }
     delete this.Job.company;
+    delete this.Job.userId;
     this.Job.jobTitle = this.form.controls['jobTitle'].value.charAt(0).toUpperCase() + this.form.controls['jobTitle'].value.slice(1);
     this.Job.description = this.form.controls['description'].value.charAt(0).toUpperCase() + this.form.controls['description'].value.slice(1);
     this.Job.salary = this.form.controls['salary'].value;
@@ -97,6 +98,7 @@ export class JobCreateComponent implements OnInit {
       console.log(data);
       this.CompanyList=data;
       this.CompanyList = this.CompanyList.filter( x=> x.verifiedAccount == true);
+      this.CompanyList = this.CompanyList.sort((a,b) => a.name!.localeCompare(b.name!));
     });;
   }
   updateCompany(e: any){
@@ -106,14 +108,18 @@ export class JobCreateComponent implements OnInit {
     this.domainService.getDomains().subscribe(data=>{
       this.DomainList = data;
       this.DomainList = this.DomainList.filter( x => x.subdomains!.length > 0);
+      this.DomainList = this.DomainList.sort((a,b) => a.name.localeCompare(b.name));
     },
     error =>{
       console.log(error);
     }
   )};
   changeDomain(event:any){
-    console.log(event.target.value);
     this.selectedDomain = this.DomainList.filter(x => x.id == event.target.value)[0];
-    console.log(this.selectedDomain);
+    if(this.selectedDomain.name == 'Other')
+      this.form.patchValue({subdomain: this.selectedDomain.subdomains![0].id});
+    else
+      this.form.patchValue({subdomain:''});
+    this.selectedDomain.subdomains = this.selectedDomain.subdomains!.sort((a,b) => a.name.localeCompare(b.name));
   }
 }

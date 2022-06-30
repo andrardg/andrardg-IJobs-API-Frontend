@@ -2,7 +2,7 @@
           href=
 "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
 <main class="main">
     <div class="page-left">
         <div class="section" (click)="sectionOne()">
@@ -19,7 +19,7 @@
 
         <div class="section" (click)="sectionTwo()" *ngIf="!admin || admin.id != User.id">
             <div class="row">
-                <div class="column">
+                <div class="column" style="flex-basis:50%">
                     <h1>Documents</h1>
                     <h2>Profile Photo and CV</h2>
                 </div>
@@ -40,6 +40,19 @@
                 </div>
               </div>
         </div>
+
+        <div class="section" (click)="sectionSeven()" *ngIf="!admin || admin.id != id">
+            <div class="row">
+                <div class="column" style="flex-basis:50%">
+                    <h1>Posts</h1>
+                    <h2>Manage posted work ads</h2>
+                </div>
+                <div class="column" style="text-align: right;">
+                    <i class='fa fa-angle-right' style='font-size:20px'></i>
+                </div>
+              </div>
+        </div>
+
         <div class="section" (click)="sectionFour()">
             <div class="row">
                 <div class="column" style="flex-basis: 90%;">
@@ -72,7 +85,7 @@
                 <div class="column" style="flex-basis: 90%;">
                     <h1>Recruitment invitations</h1>
                     <h2 *ngIf="admin">Manage all the invitations</h2>
-                    <h2 *ngIf="!admin">Manage nvitations received</h2>
+                    <h2 *ngIf="!admin">Manage invitations received</h2>
                 </div>
                 <div class="column" style="text-align: right;">
                     <i class='fa fa-angle-right' style='font-size:20px'></i>
@@ -140,20 +153,24 @@
                     <div class="row" style="height: 30%">
                         <div class="column2">
                             <div class="row">
-                                <i class="fa fa-trash" *ngIf="form.controls['photo'].value != '../../../assets/images/profilePhoto.png'" (click)="deletePhoto()" style="font-size:24px;width:10%; padding:0px;cursor:pointer"></i>
+                                <div style="width:15px; margin-right:10px;">
+                                    <i class="fa fa-trash"*ngIf="form.controls['photo'].value != '../../../assets/images/profilePhoto.png'" (click)="deletePhoto()" style="font-size:24px;width:10%; padding:0px;cursor:pointer"></i>
+                                </div>
                                 <label class="custom-file-upload">
                                     <input type="file" accept=".jpg,.png,.jpeg,.gif" (change)="onPhotoChanged($event)"/>
-                                    <i class="material-icons" style="font-size:24px; padding-top:3px;">add_a_photo</i>Change Profile Picture 
+                                    <i class="material-icons" style="font-size:24px; padding-top:3px; margin-right:10px;">add_a_photo</i>Change Picture 
                                 </label>
                             </div>
                             
                         </div>
                         <div class="column2">
                             <div class="row">
-                                <i class="fa fa-trash" *ngIf="CVpreview != '' && CVpreview != null" (click)="deleteCV()" style="font-size:24px;width:10%; padding:0px;cursor:pointer"></i>
+                                <div style="width:15px; margin-right:10px;">
+                                    <i class="fa fa-trash" *ngIf="CVpreview != '' && CVpreview != null" (click)="deleteCV()" style="font-size:24px;width:10%; padding:0px;cursor:pointer"></i>
+                                </div>
                                 <label class="custom-file-upload">
                                     <input type="file" accept=".pdf" (change)="onCvChanged($event)"/>
-                                    <i class="fa fa-upload" style="font-size:24px"></i>Upload new CV
+                                    <i class="fa fa-upload" style="font-size:24px; margin-right:10px;"></i>Upload new CV
                                 </label>
                             </div>
                             
@@ -183,7 +200,7 @@
                     </mat-form-field>
                     <mat-form-field *ngIf="!admin || User.id == admin.id">
                         <mat-label>Old Password</mat-label>
-                        <input matInput type="password" placeholder="Old Password" formControlName="oldpassword">
+                        <input matInput type="password" autocomplete="new-password" placeholder="Old Password" formControlName="oldpassword">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>New Password</mat-label>
@@ -202,15 +219,48 @@
                   </form>
             </div>
 
-            <div  *ngIf="section == 4">
-                <app-application [id]="id"></app-application>
-            </div>
-            <div  *ngIf="section == 5">
-                <div *ngIf="(admin && admin.id!=id) || !admin">
-                    <app-application [id]="id" [User]="User"></app-application>
+            <div *ngIf="section == 7" style="padding-bottom:4rem">
+                <div *ngFor="let row of User.jobs">
+                    <div class="job" *ngIf="User.jobs!.length > 0" (click)="getJobDetails(row.id)">
+                        <div class="row">
+                          <div class="column" style="flex-basis: 20%;">
+                            <div *ngIf="row.user && row.user!.photo != null">
+                              <img src="{{row.user!.photo}}" width="150" height="150" style="object-fit: cover;" />
+                            </div>
+                            <div *ngIf="row.user && row.user!.photo == null">
+                                <img src="../../../assets/images/work.jpg" width="150" height="150" style="object-fit: cover;" />
+                            </div>
+                          </div>
+                  
+                          <div class="column" style="flex-basis: 70%;">
+                            <div class="title">
+                              <a>{{row.jobTitle}}</a>
+                            </div>
+                            <div class="row">
+                              <div class="column">
+                                <a><i class='fa fa-clock-o' style="min-width:30px;"></i>{{row.jobType}}</a>
+                                <a><i class="fa fa-map-marker-alt" style="min-width:30px"></i>{{row.address}}</a>
+                                <a><i class="far fa-lightbulb" style="min-width:30px"></i>{{row.experience}} </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                 </div>
-                <div *ngIf="admin && admin.id==id">
-                    <app-application [id]="id"></app-application>
+                <div *ngIf="User.jobs!.length == 0">
+                    <h2 class="no"> No work ads to show.</h2>
+                  </div>
+            </div>
+
+            <div  *ngIf="section == 4" style="padding-bottom:4rem">
+                <app-application [id]="id" [User]="User"></app-application>
+            </div>
+            <div  *ngIf="section == 5" style="padding-bottom:4rem">
+                <div *ngIf="(admin && admin.id!=id) || !admin">
+                    <app-interview [id]="id" [User]="User"></app-interview>
+                </div>
+                <div *ngIf="admin && admin.id==id" style="padding-bottom:4rem">
+                    <app-interview [id]="id"></app-interview>
                 </div>
             </div>
             <div *ngIf="section == 6">

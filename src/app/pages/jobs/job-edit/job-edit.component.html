@@ -124,7 +124,7 @@
                         {{item.name}}
                     </option>
                 </select>
-                <div *ngIf="selectedDomain.name != ''">
+                <div *ngIf="selectedDomain.name != '' && selectedDomain.name!='Other'">
                     <label class="col-sm-2 control-label">Subdomain*</label>
                     <select class="select-picker" (click)="changeSubdomain($event)">
                         <option disabled selected value> -- select an option -- </option>

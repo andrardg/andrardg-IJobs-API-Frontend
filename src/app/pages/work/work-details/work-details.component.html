@@ -7,10 +7,10 @@
 
 <button *ngIf="showPrevious" style="margin-left:25%;" mat-stroked-button (click)="back()">Back</button>
 <div class="space">
-    <div class="buttons" *ngIf="user != null && alreadyApplied == false" (click)="apply()">
+    <div class="buttons" *ngIf="alreadyApplied == false" (click)="apply()">
         <button mat-stroked-button>Apply now</button>
     </div>
-    <div class="buttons" *ngIf="user != null && canReapply == true" (click)="reapply()">
+    <div class="buttons" *ngIf="canReapply == true" (click)="reapply()">
         <button mat-stroked-button>Reapply here</button>
     </div>
     <div class="buttons" *ngIf="editDeleteRights">
@@ -19,8 +19,8 @@
     </div>
 </div>
 
-<div class="primary" style="cursor: pointer;"  (click)="getCompanyDetails(Job.companyId)">
-    <mat-card class="example-card" *ngIf="Job.company">
+<div class="primary">
+    <mat-card class="example-card" *ngIf="Job.company" style="cursor: pointer;"  (click)="getCompanyDetails(Job.companyId)">
         <h2>Posted By Company</h2>
         <div class="row" style="padding-left:2rem;">
             <div class="column">
@@ -42,7 +42,7 @@
         </div>
     </mat-card>
 
-    <mat-card class="example-card" *ngIf="Job.user">
+    <mat-card class="example-card" *ngIf="Job.user" style="cursor: pointer;"  (click)="getUserDetails(Job.userId)">
         <h2>Posted By User</h2>
         <div class="row" style="padding-left:2rem;">
             <div class="column">
@@ -114,12 +114,13 @@
         </mat-card-content>
 
 
-        <div *ngIf="Job.subdomain!.name != 'Other'">
+        <div *ngIf="Job.subdomain!.name != 'Other' || Job.subdomain!.domain!.name != 'Other'">
             <mat-card-header>
                 <mat-card-title>Domain</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                    <a><i class="fas fa-chart-line" style="min-width:30px"></i>{{Job.subdomain!.name}}</a>
+                <a *ngIf="Job.subdomain!.name != 'Other'"><i class="fas fa-chart-line" style="min-width:30px"></i>{{Job.subdomain!.name}}</a>
+                <a *ngIf="Job.subdomain!.name == 'Other'"><i class="fas fa-chart-line" style="min-width:30px"></i>{{Job.subdomain!.domain!.name}}</a>
             </mat-card-content>
         </div>
     </mat-card>

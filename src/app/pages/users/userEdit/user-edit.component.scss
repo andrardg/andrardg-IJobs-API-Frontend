@@ -59,7 +59,7 @@ display: inline-block;
 cursor: pointer;
 border-radius: 3px;
 font-size: 18px;
-width:85%;
+width:80%;
 height: 2rem;
 
 }
@@ -169,6 +169,11 @@ margin-bottom:2rem;
 box-shadow: -0.2em 0 .4em grey;
 display: flex;
 flex-direction: row;
+}
+.title{
+    padding-left:4rem;
+    padding-bottom:10px;
+    border-bottom: 1px solid black;
 }
 .title2{
 width:100%;

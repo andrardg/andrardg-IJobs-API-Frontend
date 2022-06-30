@@ -35,7 +35,7 @@ export class InterviewComponent implements OnInit {
   admin:any;
   comp = sessionStorage.getItem('Company');
   user = sessionStorage.getItem('User');
-  seeInterviewsOwned: boolean = true;
+  myJobs: boolean = false;
   seeApplication = new Application();
 
   constructor(
@@ -58,11 +58,14 @@ export class InterviewComponent implements OnInit {
       this.admin = JSON.parse(sessionStorage.getItem('Admin') || "");
     if(this.Company)
       this.selectedCompany = this.Company;
+      if(!this.comp)
+        this.getAllCompanies();
     this.getAllInterviews();
   }
   getAllInterviews(){
     this.interviewsService.getInterviews().subscribe(data =>{
       this.interviewsList = data;
+      console.log(this.interviewsList)
       if(this.comp || (this.admin && this.admin.id != this.id)){
         this.interviewsList = this.interviewsList.filter( data => data.application?.job?.companyId == this.id);
         this.interviews = this.interviewsList;
@@ -70,35 +73,39 @@ export class InterviewComponent implements OnInit {
       else if(this.user || (this.admin && this.admin.id != this.id))
         {
           this.interviewsList = this.interviewsList.filter( data => data.application?.job?.userId == this.id || data.application?.userId == this.id);
-          if(this.seeInterviewsOwned == true)
-            this.interviews = this.interviewsList.filter( data => data.application?.job?.userId == this.id);
-          else
-            this.interviews = this.interviewsList.filter( data => data.application?.userId == this.id);
+          this.interviews = this.interviewsList.filter( data => data.application?.userId == this.id);
         }
       else
         this.interviews = this.interviewsList;
       console.log(this.interviews);
-      this.filterByJobId = '';
+      this.filter();
     });
   }
   getAllCompanies(){
     this.companyService.getCompanies().subscribe(data=>{
       this.CompanyList = data;
+      this.CompanyList = this.CompanyList.sort((a,b) => a.name!.localeCompare(b.name!));
     })
   }
-  getInterviewsForCompany(){
-    if(this.filterByCompanyId == 'All')
-      this.interviews = this.interviewsList;
-    else if(this.filterByCompanyId != ''){
-      this.interviews = this.interviewsList.filter(x => x.application?.job?.companyId == this.filterByCompanyId);
-      this.selectedCompany = this.CompanyList.filter( x=> x.id == this.filterByCompanyId)[0];
+  filter(){
+    this.interviews = this.interviewsList;
+    if(this.filterByCompanyId == 'All' || this.filterByCompanyId == '')
+    {
+      this.filterByJobId = 'All';
+      this.selectedCompany = new Company();
     }
-  }
-  getInterviewsForJob(){
-    if(this.filterByJobId == 'All')
-      this.interviews = this.interviewsList;
-    else if(this.filterByJobId != '')
-      this.interviews = this.interviewsList.filter(x => x.application?.jobId == this.filterByJobId);
+  else{
+    this.interviews = this.interviews.filter(x => x.application?.job?.companyId == this.filterByCompanyId);
+    this.selectedCompany = this.CompanyList.filter( x=> x.id == this.filterByCompanyId)[0];
+    }
+
+  if(this.filterByJobId != 'All' && this.filterByJobId != '')
+    this.interviews = this.interviews.filter(x => x.application?.jobId == this.filterByJobId);
+  
+  if(this.myJobs == true && this.user)
+    this.interviews = this.interviews.filter( x=> x.application?.job?.userId == this.id);
+  else if(this.myJobs == false && this.user)
+    this.interviews = this.interviews.filter( x=> x.application?.userId == this.id);
   }
   convertIsOnline(){
     if(this.isOnline == 'Online')
@@ -108,7 +115,7 @@ export class InterviewComponent implements OnInit {
   }
   editInterviewTrue(intv:any){
     this.editInterview = true;
-    this.newInterview = intv;
+    this.newInterview = JSON.parse(JSON.stringify(intv));
     if(intv.isOnline == true)
       this.isOnline = 'Online';
     else
@@ -119,11 +126,14 @@ export class InterviewComponent implements OnInit {
   }
   saveInterview(){
     delete this.newInterview.application;
-    if(!this.admin)
+    if(this.comp)
       this.newInterview.responseCompany = true;
     else
       this.newInterview.responseCompany = false;
-    this.newInterview.responseUser = false;
+    if(this.user)
+      this.newInterview.responseUser = true;
+    else
+      this.newInterview.responseUser = false;
     console.log(this.newInterview);
     this.interviewsService.saveInterview(this.newInterview).subscribe(data=>{
       console.log("Updated sucessfully");
@@ -139,8 +149,7 @@ export class InterviewComponent implements OnInit {
         console.log("Deleted sucessfully");
         alert("Deleted sucessfully");
         this.interviewsList = this.interviewsList.filter( x=> x.id != interview.id);
-        this.getInterviewsForCompany();
-        this.getInterviewsForJob();
+        this.filter();
       })
     }
     else
@@ -148,7 +157,10 @@ export class InterviewComponent implements OnInit {
   }
   confirm(interview:any){
     this.newInterview = interview;
-    this.newInterview.responseCompany = true;
+    if(this.comp)
+      this.newInterview.responseCompany = true;
+    else if(this.user)
+      this.newInterview.responseUser = true;
     delete this.newInterview.application;
     this.interviewsService.saveInterview(this.newInterview).subscribe(data=>{
       console.log("Updated sucessfully");
@@ -183,7 +195,7 @@ export class InterviewComponent implements OnInit {
     this.seeApplication.id = '';
   }
   rejectInterview(interview:any){
-    if (confirm('By confirming, all of your interview for this job will be deleted and your application will be marked as rejected. Are you sure?')) {
+    if (confirm('By confirming, all of your interviews for this job will be deleted and your application will be marked as rejected. Are you sure?')) {
       var app = interview.application;
       app.status = 'Rejected';
       this.interviews = this.interviewsList;
@@ -192,7 +204,17 @@ export class InterviewComponent implements OnInit {
       this.applicationsService.saveApplication(app).subscribe(data =>{
         alert("Application marked as rejected");
         console.log("Application marked as rejected");
+        this.getAllInterviews();
       })
     }
+  }
+  myJobsFalse(){
+    this.myJobs = false;
+    this.filter();
+  }
+  myJobsTrue(){
+    this.myJobs = true;
+    this.filterByCompanyId = 'All';
+    this.filter();
   }
 }

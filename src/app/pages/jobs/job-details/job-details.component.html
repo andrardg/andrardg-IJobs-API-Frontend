@@ -102,12 +102,13 @@
             </div>
         </mat-card-content>
 
-        <div *ngIf="Job.subdomain!.name != 'Other'">
+        <div *ngIf="Job.subdomain!.name != 'Other' || Job.subdomain!.domain!.name != 'Other'">
             <mat-card-header>
                 <mat-card-title>Domain</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                    <a><i class="fas fa-chart-line" style="min-width:30px"></i>{{Job.subdomain!.name}}</a>
+                    <a *ngIf="Job.subdomain!.name != 'Other'"><i class="fas fa-chart-line" style="min-width:30px"></i>{{Job.subdomain!.name}}</a>
+                    <a *ngIf="Job.subdomain!.name == 'Other'"><i class="fas fa-chart-line" style="min-width:30px"></i>{{Job.subdomain!.domain!.name}}</a>
             </mat-card-content>
         </div>
     </mat-card>

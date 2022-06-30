@@ -132,11 +132,13 @@
                         </div>
 
                         <div class="row" style="margin-left:0px">
-                            <i class="fa fa-trash" (click)="deletePhoto()"*ngIf="form.controls['photo'].value != '../../../assets/images/companyProfilePhoto.png'" (click)="deletePhoto()"  style="font-size:24px;width:10%; padding:0px;cursor:pointer"></i>
-                                <label class="custom-file-upload">
-                                    <input type="file" accept=".jpg,.png,.jpeg,.gif" (change)="onPhotoChanged($event)"/>
-                                    <i class="material-icons" style="font-size:24px; padding-top:3px;">add_a_photo</i>Change Profile Picture 
-                                </label>
+                            <div style="width:10%;">
+                                <i class="fa fa-trash" (click)="deletePhoto()"*ngIf="form.controls['photo'].value != '../../../assets/images/companyProfilePhoto.png'" (click)="deletePhoto()"  style="font-size:24px; padding:0px;cursor:pointer"></i>
+                            </div>
+                            <label class="custom-file-upload">
+                                <input type="file" accept=".jpg,.png,.jpeg,.gif" (change)="onPhotoChanged($event)"/>
+                                <i class="material-icons" style="font-size:24px; padding-top:3px;">add_a_photo</i>Change Profile Picture 
+                            </label>
                         </div>
                     </div>
                     
@@ -160,7 +162,7 @@
                     </mat-form-field>
                     <mat-form-field *ngIf="!admin">
                         <mat-label>Old Password</mat-label>
-                        <input matInput type="password" placeholder="oldpassword" formControlName="oldpassword">
+                        <input matInput type="password" autocomplete="new-password" placeholder="oldpassword" formControlName="oldpassword">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>New Password</mat-label>
@@ -239,15 +241,15 @@
                 </div>
             </div>
 
-            <div *ngIf="section == 5">
+            <div *ngIf="section == 5" style="padding-bottom:4rem">
                 <app-application [id]="id" [Company]="Company"></app-application>
             </div>
 
-            <div *ngIf="section == 6">
+            <div *ngIf="section == 6" style="padding-bottom:4rem">
                 <app-interview [id]="id" [Company]="Company"></app-interview>
             </div>
 
-            <div *ngIf="section == 7">
+            <div *ngIf="section == 7" style="padding-bottom:4rem">
                 <app-invite-details [id]="id"></app-invite-details>
             </div>
 
