@@ -4,12 +4,26 @@
     <button *ngIf="myJobs" (click)="myJobsTrue()" mat-raised-button>Interview for my web ads</button>
     <button *ngIf="!myJobs" (click)="myJobsTrue()" mat-button>Interview for my web ads</button>
 </div>
-<div *ngIf="(user && myJobs == false)">
+<div class="form-group" style="padding-bottom:6px; font-size:18px" *ngIf="profileIsCompany==false && myJobs == false">
+    <mat-checkbox [checked]="ownerIsCompany" (change)="ownerIsCompany = !ownerIsCompany; filterByJobId=''; filterByUserId=''; filter()">Post owner is a company</mat-checkbox>
+    <mat-checkbox style="padding-left:20px" [checked]="!ownerIsCompany" (change)="ownerIsCompany = !ownerIsCompany;filterByJobId=''; filterByCompanyId='';filter()">Post owner is a user</mat-checkbox>
+</div>
+<div *ngIf="(ownerIsCompany == true && !Company && myJobs == false)">
     <h2>Filter by Company</h2>
     <select [(ngModel)]="filterByCompanyId" class="select-picker width50" (change) = "filter()">
         <option>All</option>
         <option *ngFor = "let item of CompanyList" [value]="item.id">
             {{item.name}}
+        </option>
+    <i class='fa fa-angle-down'></i>
+    </select>
+</div>
+<div *ngIf="ownerIsCompany == false && (!Company && (!user || (user && myJobs == false)))">
+    <h2>Filter by User</h2>
+    <select [(ngModel)]="filterByUserId" class="select-picker width50" (change) = "filter()">
+        <option>All</option>
+        <option *ngFor = "let item of UserList" [value]="item.id">
+            {{item.firstName}} {{item.lastName}} {{item.id}}
         </option>
     <i class='fa fa-angle-down'></i>
     </select>

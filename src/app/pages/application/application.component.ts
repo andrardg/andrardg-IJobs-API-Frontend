@@ -54,6 +54,7 @@ export class ApplicationComponent implements OnInit {
   subdomainFilter : any = 'All';
   myJobs: boolean = false;
   ownerIsCompany: boolean = true;
+  @Input() profileIsCompany:boolean = false;
 
   constructor(
     private router:Router,
@@ -86,10 +87,10 @@ export class ApplicationComponent implements OnInit {
   getAllApplications(){
     this.applicationsService.getApplications().subscribe(data =>{
       this.ApplicationList = data;
-      if(this.comp || (this.admin && this.admin.id != this.id))
+      if(this.comp || (this.admin && this.admin.id != this.id && this.Company))
         this.ApplicationList = this.ApplicationList.filter( data => data.job?.companyId == this.id);
       
-      else if((this.user || this.User) && !this.admin)
+      else if(this.user ||(this.admin && this.admin.id != this.id && this.User))
         this.ApplicationList = this.ApplicationList.filter( data => data.job?.userId == this.id || data.userId == this.id);
       this.filter();
       console.log(this.applications)
@@ -115,7 +116,7 @@ export class ApplicationComponent implements OnInit {
     })
   }
   filter(){
-    if(this.comp)
+    if(this.comp || this.profileIsCompany == true)
       this.filterByCompanyId = this.id;
     console.log(this.filterByCompanyId, this.filterByUserId, this.filterByJobId, this.domainFilter, this.subdomainFilter, this.seeRejected)
 
@@ -169,6 +170,8 @@ export class ApplicationComponent implements OnInit {
       this.subdomainFilter = 'All'
     if(this.domainFilter != 'All' && this.domainFilter != ''){
       this.SubdomainList = this.DomainList.filter(x => x.id == this.domainFilter)[0].subdomains!;
+      this.SubdomainList = this.SubdomainList.sort((a,b) => a.name!.localeCompare(b.name!));
+
       if(this.subdomainFilter != 'All' && this.subdomainFilter != '')
         this.applications = this.applications.filter( x=> x.job!.subdomainId == this.subdomainFilter);
       else

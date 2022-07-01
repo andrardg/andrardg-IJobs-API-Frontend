@@ -1,16 +1,16 @@
-<div *ngIf="user" style="padding-bottom:1rem">
+<div *ngIf="profileIsCompany == false && (!admin || (admin && admin.id != id))" style="padding-bottom:1rem">
     <button *ngIf="!myJobs" style="padding-right:10px" (click)="myJobsFalse()" mat-raised-button>My applications</button>
     <button *ngIf="myJobs" style="padding-right:10px" (click)="myJobsFalse()" mat-button>My applications</button>
     <button *ngIf="myJobs" (click)="myJobsTrue()" mat-raised-button>Applications for my web ads</button>
     <button *ngIf="!myJobs" (click)="myJobsTrue()" mat-button>Applications for my web ads</button>
 </div>
-<div class="form-group" style="padding-bottom:6px; font-size:18px" *ngIf="(!comp && !Company) && myJobs == false">
+<div class="form-group" style="padding-bottom:6px; font-size:18px" *ngIf="!profileIsCompany && myJobs == false">
     <mat-checkbox [checked]="ownerIsCompany" (change)="ownerIsCompany = !ownerIsCompany; filterByJobId=''; filter()">Posted by a company</mat-checkbox>
     <mat-checkbox style="padding-left:20px" [checked]="!ownerIsCompany" (change)="ownerIsCompany = !ownerIsCompany;filterByJobId=''; filter()">Posted by a user</mat-checkbox>
 </div>
-<div *ngIf="ownerIsCompany == true && ((admin && admin.id == id) || user)">
+<div *ngIf="ownerIsCompany == true && profileIsCompany == false">
     <h2>Filter by Company</h2>
-    <select [(ngModel)]="filterByCompanyId" class="select-picker width50" (change) = "filter()">
+    <select [(ngModel)]="filterByCompanyId" class="select-picker width50" (change) = "filterByJobId='';filter()">
         <option>All</option>
         <option *ngFor = "let item of CompanyList" [value]="item.id">
             {{item.name}}
@@ -18,9 +18,9 @@
     <i class='fa fa-angle-down'></i>
     </select>
 </div>
-<div *ngIf="ownerIsCompany == false && ((admin && admin.id == id) || (!user || (user && myJobs == false)))">
+<div *ngIf="ownerIsCompany == false && ((admin && admin.id==id) || (!user || (user && myJobs == false)))">
     <h2>Filter by User</h2>
-    <select [(ngModel)]="filterByUserId" class="select-picker width50" (change) = "filter()">
+    <select [(ngModel)]="filterByUserId" class="select-picker width50" (change) = "filterByJobId='';filter()">
         <option>All</option>
         <option *ngFor = "let item of UserList" [value]="item.id">
             {{item.firstName}} {{item.lastName}} {{item.id}}
@@ -28,7 +28,7 @@
     <i class='fa fa-angle-down'></i>
     </select>
 </div>
-<div *ngIf="ownerIsCompany == true && ((filterByCompanyId!='All' && filterByCompanyId != '') || comp)">
+<div *ngIf="ownerIsCompany == true && ((filterByCompanyId!='All' && filterByCompanyId != '') || selectedCompany)">
     <h2>Filter by job or work ad</h2>
     <select [(ngModel)]="filterByJobId" class="select-picker width50" (change) = "filter()">
         <option>All</option>
@@ -101,13 +101,14 @@
             <div class="column"style="flex-basis: 70%; margin-botttom:15px">
                 <div class="title2" (click)="getJobDetails(row)" style="cursor:pointer">
                     <a>{{row.job!.jobTitle}}</a>
-                    <a *ngIf="admin && row.job!.companyId">{{row.job!.company!.name}}</a>
-                    <a *ngIf="admin && row.job!.userId">{{row.job!.user!.firstName}} {{row.job!.user!.lastName}}</a>
+                    <a *ngIf="admin && admin.id==id && row.job!.companyId">{{row.job!.company!.name}}</a>
+                    <a *ngIf="admin && admin.id==id && row.job!.userId">{{row.job!.user!.firstName}} {{row.job!.user!.lastName}}</a>
                 </div>
                 <div class="title2">
-                    <a *ngIf="admin || comp || (User && User.id != row.userId)" (click)="getUserDetails(row.userId)" style="cursor:pointer">{{row.user!.firstName}} {{row.user!.lastName}}</a>
+                    <a *ngIf="admin && profileIsCompany == true" (click)="getUserDetails(row.userId)" style="cursor:pointer">{{row.user!.firstName}} {{row.user!.lastName}}</a>
+                    <a *ngIf="comp || (User && User.id != row.userId)" (click)="getUserDetails(row.userId)" style="cursor:pointer">{{row.user!.firstName}} {{row.user!.lastName}}</a>
                     <a *ngIf="User && User.id == row.userId && row.job!.companyId" (click)="getCompanyDetails(row.job!.companyId)" style="cursor:pointer">{{row.job?.company!.name}}</a>
-                    <a *ngIf="User && User.id == row.userId && row.job!.userId" (click)="getUserDetails(row.job!.userId)" style="cursor:pointer">{{row.job!.user!.firstName}} {{row.job!.user!.lastName}}</a>
+                    <a *ngIf="(User && User.id == row.userId && row.job!.userId)" (click)="getUserDetails(row.job!.userId)" style="cursor:pointer">{{row.job!.user!.firstName}} {{row.job!.user!.lastName}}</a>
                     </div>
                 <a *ngIf="seeApplication.id != row.id"><i class="fa fa-clock-o" style="min-width:30px"></i>Status: {{row.status}}</a>
                 <div class="row" st *ngIf="seeApplication.id == row.id">

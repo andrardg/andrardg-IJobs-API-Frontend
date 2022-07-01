@@ -5,12 +5,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Application } from 'app/classes/application';
 import { Company } from 'app/classes/company';
 import { Interview } from 'app/classes/interview';
+import { User } from 'app/classes/user';
 import { ApplicationService } from 'app/services/application.service';
 import { AuthService } from 'app/services/auth.service';
 import { CompaniesService } from 'app/services/companies.service';
 import { FileService } from 'app/services/file.service';
 import { InterviewService } from 'app/services/interview.service';
 import { PreviousRouteService } from 'app/services/previous-route.service';
+import { UsersService } from 'app/services/users.service';
 
 @Component({
   selector: 'app-interview',
@@ -26,8 +28,12 @@ export class InterviewComponent implements OnInit {
   interviewsList : Array<Interview> = [];
   interviews : Array<Interview> = [];
   CompanyList: Array<Company> = [];
+  ownerIsCompany: boolean = true;
+  UserList:Array<User> = [];
   filterByCompanyId :string = '';
+  selectedUser = new User();
   selectedCompany = new Company();
+  filterByUserId : string = '';
   filterByJobId :string = '';
   newInterview = new Interview();
   isOnline:string = '';
@@ -37,6 +43,7 @@ export class InterviewComponent implements OnInit {
   user = sessionStorage.getItem('User');
   myJobs: boolean = false;
   seeApplication = new Application();
+  @Input() profileIsCompany:boolean = false;
 
   constructor(
     private activatedRoute:ActivatedRoute,
@@ -47,7 +54,7 @@ export class InterviewComponent implements OnInit {
     private applicationsService : ApplicationService,
     private interviewsService : InterviewService,
     private previousRouteService: PreviousRouteService,
-    private sanitizer: DomSanitizer,
+    private usersService: UsersService,
     private fileService: FileService) {
     }
 
@@ -61,6 +68,8 @@ export class InterviewComponent implements OnInit {
     //  this.filterByCompanyId = this.id;
     //  this.selectedCompany = this.Company;
     //}
+    if(!this.Company)
+      this.getAllUsers()
     this.getAllCompanies();
     this.getAllInterviews();
   }
@@ -69,19 +78,25 @@ export class InterviewComponent implements OnInit {
       this.Company=data;
       console.log(this.Company);
     });
+  }  
+  getAllUsers(){
+    this.usersService.getUsers().subscribe(data=>{
+      this.UserList = data;
+      this.UserList = this.UserList.sort((a,b) => a.firstName!.localeCompare(b.firstName!));
+    })
   }
   getAllInterviews(){
     this.interviewsService.getInterviews().subscribe(data =>{
       this.interviewsList = data;
       console.log(this.interviewsList)
-      if(this.comp || (this.admin && this.admin.id != this.id)){
+      if(this.comp || (this.admin && this.admin.id != this.id && this.Company)){
         this.interviewsList = this.interviewsList.filter( data => data.application?.job?.companyId == this.id);
         this.interviews = this.interviewsList;
       }
-      else if(this.user || (this.admin && this.admin.id != this.id))
+      else if(this.user || (this.admin && this.admin.id != this.id && this.User))
         {
           this.interviewsList = this.interviewsList.filter( data => data.application?.job?.userId == this.id || data.application?.userId == this.id);
-          this.interviews = this.interviewsList.filter( data => data.application?.userId == this.id);
+          this.interviews = this.interviewsList//.filter( data => data.application?.userId == this.id);
         }
       else
         this.interviews = this.interviewsList;
@@ -100,8 +115,12 @@ export class InterviewComponent implements OnInit {
     this.interviews = this.interviewsList;
     if(this.comp)
       this.filterByCompanyId = this.id;
+
+  if(this.ownerIsCompany == true){
+    this.filterByUserId = '';
     if(this.filterByCompanyId == 'All' || this.filterByCompanyId == '')
     {
+      this.interviews = this.interviews.filter( x=> x.application?.job?.companyId != null)
       this.filterByJobId = 'All';
       this.selectedCompany = new Company();
     }
@@ -109,8 +128,25 @@ export class InterviewComponent implements OnInit {
     this.interviews = this.interviews.filter(x => x.application?.job?.companyId == this.filterByCompanyId);
     this.selectedCompany = this.CompanyList.filter( x=> x.id == this.filterByCompanyId)[0];
     this.selectedCompany.jobs = this.selectedCompany.jobs.sort((a,b) => a.jobTitle!.localeCompare(b.jobTitle!));
-    this.Company = this.CompanyList.filter( x=> x.id == this.filterByCompanyId)[0];
+    //this.Company = this.CompanyList.filter( x=> x.id == this.filterByCompanyId)[0];
     }
+  }
+  else{
+    this.filterByCompanyId = '';
+    if(this.filterByUserId == 'All' || this.filterByUserId == '')
+      {
+        this.interviews = this.interviews.filter( x=> x.application?.job?.userId != null)
+        this.filterByJobId = 'All';
+        this.selectedUser = new User();
+      }
+      if(this.filterByUserId != '' && this.filterByUserId != 'All'){
+        this.interviews = this.interviews.filter(x => x.application?.job?.userId== this.filterByUserId);
+        this.selectedUser = this.UserList.filter( x=> x.id == this.filterByUserId)[0];
+        //this.User = this.UserList.filter( x=> x.id == this.filterByUserId)[0];
+        this.selectedUser.jobs = this.selectedUser.jobs!.sort((a,b) => a.jobTitle!.localeCompare(b.jobTitle!));
+      }
+  }
+    
 
   if(this.filterByJobId != 'All' && this.filterByJobId != '')
     this.interviews = this.interviews.filter(x => x.application?.jobId == this.filterByJobId);
@@ -229,11 +265,13 @@ export class InterviewComponent implements OnInit {
   }
   myJobsFalse(){
     this.myJobs = false;
+    this.ownerIsCompany = false;
     this.filter();
   }
   myJobsTrue(){
     this.myJobs = true;
     this.filterByCompanyId = 'All';
+    this.ownerIsCompany = false;
     this.filter();
   }
 }
